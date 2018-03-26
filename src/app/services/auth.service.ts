@@ -2,16 +2,14 @@ import { User } from './../inteterfaces/user';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 @Injectable()
 export class AuthService {
   authState: any = null;
-  userRef: AngularFireObject<any>;
+  userRef: AngularFirestoreDocument<User>;
   constructor(private afAuth: AngularFireAuth,
-    private db: AngularFireDatabase,
     private afs: AngularFirestore,
     private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
@@ -75,14 +73,14 @@ export class AuthService {
     this.router.navigate(['/'])
   }
   private updateUserData(): void {
-    
+
     const user = {
       email: this.authState.email,
       name: this.authState.displayName
     }
     
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUserId}`)
-    userRef.set(user, { merge: true })
+    this.userRef= this.afs.doc(`users/${this.currentUserId}`)
+    this.userRef.set(user, { merge: true })
   }
   
 }
