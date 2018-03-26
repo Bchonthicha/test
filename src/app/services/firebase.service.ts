@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class FirebaseService {
@@ -34,7 +35,7 @@ export class FirebaseService {
   // public Test_id_new:any;
   public Test_id_new = "test5";
   // public TestScore_id_new:any;
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, private afs: AngularFirestore) {
 
   }
 

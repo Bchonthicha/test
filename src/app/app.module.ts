@@ -160,7 +160,8 @@ import { ExcelService } from './services/excel.service';
 
     FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFirestoreModule
   ],
   // providers: [AuthService, AuthGuard],
   providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService],

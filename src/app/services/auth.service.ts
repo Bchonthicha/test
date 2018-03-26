@@ -1,15 +1,18 @@
+import { User } from './../inteterfaces/user';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 @Injectable()
 export class AuthService {
   authState: any = null;
   userRef: AngularFireObject<any>;
   constructor(private afAuth: AngularFireAuth,
     private db: AngularFireDatabase,
+    private afs: AngularFirestore,
     private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth
@@ -27,51 +30,13 @@ export class AuthService {
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
   }
-  get currentUserAnonymous(): boolean {
-    return this.authenticated ? this.authState.isAnonymous : false
-  }
+
   get currentUserDisplayName(): string {
     if (!this.authState) {
       return 'Guest'
-    } else if (this.currentUserAnonymous) {
-      return 'Anonymous'
     } else {
       return this.authState['displayName'] || 'User without a Name'
     }
-  }
-  githubLogin() {
-    const provider = new firebase.auth.GithubAuthProvider()
-    return this.socialSignIn(provider);
-  }
-  googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider()
-    return this.socialSignIn(provider);
-  }
-  facebookLogin() {
-    const provider = new firebase.auth.FacebookAuthProvider()
-    return this.socialSignIn(provider);
-  }
-  twitterLogin() {
-    const provider = new firebase.auth.TwitterAuthProvider()
-    return this.socialSignIn(provider);
-  }
-  private socialSignIn(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
-        console.log(credential.user);
-        this.authState = credential.user
-        this.updateUserData()
-        this.router.navigate(['/'])
-      })
-      .catch(error => console.log(error));
-  }
-  anonymousLogin() {
-    return this.afAuth.auth.signInAnonymously()
-      .then((user) => {
-        this.authState = user
-        this.router.navigate(['/'])
-      })
-      .catch(error => console.log(error));
   }
   emailSignUp(email: string, password: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
@@ -110,13 +75,23 @@ export class AuthService {
     this.router.navigate(['/'])
   }
   private updateUserData(): void {
-    const path = `users/${this.currentUserId}`; // Endpoint on firebase
-    const userRef: AngularFireObject<any> = this.db.object(path);
-    const data = {
+  //   const path = `users/${this.currentUserId}`; // Endpoint on firebase
+  //   const userRef: AngularFireObject<any> = this.db.object(path);
+  //   const data = {
+  //     email: this.authState.email,
+  //     name: this.authState.displayName
+  //   }
+  //   userRef.update(data)
+  //     .catch(error => console.log(error));
+  // }
+
+    const user = {
       email: this.authState.email,
       name: this.authState.displayName
     }
-    userRef.update(data)
-      .catch(error => console.log(error));
+    
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUserId}`)
+    userRef.set(user, { merge: true })
   }
+  
 }
