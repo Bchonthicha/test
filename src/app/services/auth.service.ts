@@ -75,16 +75,7 @@ export class AuthService {
     this.router.navigate(['/'])
   }
   private updateUserData(): void {
-  //   const path = `users/${this.currentUserId}`; // Endpoint on firebase
-  //   const userRef: AngularFireObject<any> = this.db.object(path);
-  //   const data = {
-  //     email: this.authState.email,
-  //     name: this.authState.displayName
-  //   }
-  //   userRef.update(data)
-  //     .catch(error => console.log(error));
-  // }
-
+    
     const user = {
       email: this.authState.email,
       name: this.authState.displayName
