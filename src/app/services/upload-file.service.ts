@@ -1,19 +1,24 @@
+import { Observable } from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
+
 import * as firebase from 'firebase';
 
-import {FileUpload} from '../upload/fileupload';
+import { FileUpload } from '../upload/fileupload';
+import { Student } from '../inteterfaces/student';
+import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+
+
 
 @Injectable()
 export class UploadFileService {
 
-  constructor(private db: AngularFireDatabase) {}
+  constructor(private afs: AngularFirestore) {}
 
-  private basePath = '/Students';
+  private basePath = '/students';
 
-  pushFileToStorage(fileUpload: FileUpload, progress: {percentage: number},keyS) {
+  pushFileToStorage(fileUpload: FileUpload, progress: {percentage: number}, studentCode:string) {
     const storageRef = firebase.storage().ref();
-    const uploadTask = storageRef.child(`${this.basePath}/${fileUpload.file.name}`).put(fileUpload.file);
+    const uploadTask = storageRef.child(`${this.basePath}/${studentCode}`).put(fileUpload.file);
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
       (snapshot) => {
@@ -28,32 +33,23 @@ export class UploadFileService {
       () => {
         // success
         fileUpload.url = uploadTask.snapshot.downloadURL
-        fileUpload.name = fileUpload.file.name
-        this.saveFileData(fileUpload,keyS)
+        this.updateImageDb(fileUpload.url, studentCode)
       }
     );
   }
 
-  private saveFileData(fileUpload: FileUpload,keyS) {
-    this.db.object('/Students' + '/' + keyS).update(fileUpload);
+  private updateImageDb(url: string, studentCode:string) {
+    const studentRef:AngularFirestoreDocument<Student> = this.afs.doc(`/students/${studentCode}`)
+    studentRef.update({
+      url: url
+    })
   }
 
 
   //delete
-  deleteFileUpload(fileUpload: FileUpload) {
-    this.deleteFileDatabase(fileUpload.$key)
-      .then(() => {
-        this.deleteFileStorage(fileUpload.name)
-      })
-      .catch(error => console.log(error))
-  }
- 
-  private deleteFileDatabase(key: string) {
-    return this.db.list(`${this.basePath}/`).remove(key)
-  }
- 
-  private deleteFileStorage(name: string) {
+  delteUserImage(studentCode:string) {
     const storageRef = firebase.storage().ref()
-    storageRef.child(`${this.basePath}/${name}`).delete()
+    storageRef.child(`${this.basePath}/${studentCode}`).delete()
   }
+
 }
