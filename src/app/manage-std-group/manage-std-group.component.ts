@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ManageStdGroupComponent implements OnInit {
   // AngularFire Ref
-  studentCollection: AngularFirestoreCollection<Student>; 
+  studentCollection: AngularFirestoreCollection<Student>;
   // Firestore database observable
   studentsObservable: Observable<Student[]>;
 
@@ -35,7 +35,7 @@ export class ManageStdGroupComponent implements OnInit {
   // studentList: any;
   // studentOfGroup = [];
 
-  
+
   // dataObj2: any;
 
   // selectedAll: any;
@@ -57,8 +57,8 @@ export class ManageStdGroupComponent implements OnInit {
   // selectedAll2:any;
 
   // Modal Bind
-  groupName:string
-  isSelect:boolean
+  groupName: string
+  isSelect: boolean
 
   ngOnInit() {
   }
@@ -87,54 +87,66 @@ export class ManageStdGroupComponent implements OnInit {
 
     const sectionRef: AngularFirestoreCollection<Section> = this.afs.collection<Section>(`/sections`);
     this.groupList = sectionRef.valueChanges()
+    this.groupList.forEach(data => {
+      //console.log(data);
+      /* data.forEach(data1 => {
+         console.log(data1.members);
+         data1.members.forEach(data2=>{
+           console.log(data2);    
+         })
+       })*/
+    })
   }
 
-  RefreshStudentList(){
-    this.studentsObservable.forEach((students:Student[]) => {
-      this.studentList = students.map((student:Student) => {
-        return <StudentCheckBox> student;
+  RefreshStudentList() {
+    this.studentsObservable.forEach((students: Student[]) => {
+      this.studentList = students.map((student: Student) => {
+        return <StudentCheckBox>student;
       })
     })
   }
 
-  StartAddGroupModal(){
+  StartAddGroupModal() {
     this.groupName = ""
     this.isSelect = false;
-    this.studentList = _.map(this.studentList, (student:StudentCheckBox) => {
-        student.selected = false;
-        return student;
+    this.studentList = _.map(this.studentList, (student: StudentCheckBox) => {
+      student.selected = false;
+      return student;
     });
   }
 
-  createSelectAll(){
-    this.studentList = _.map(this.studentList, (student:StudentCheckBox) => {
-        student.selected = this.isSelect;
-        return student;
+  createSelectAll() {
+    this.studentList = _.map(this.studentList, (student: StudentCheckBox) => {
+      student.selected = this.isSelect;
+      return student;
     });
   }
 
-  createGroup(){
+  createGroup() {
 
     this.members = []
-    let selectStudent = _.filter(this.studentList, (student:StudentCheckBox) => {
+    let selectStudent = _.filter(this.studentList, (student: StudentCheckBox) => {
+
       return student.selected;
     });
-    
-    
-    _.forEach(selectStudent, (student:StudentCheckBox) => {
-      let studentDoc:AngularFirestoreDocument<Student> = this.afs.doc<Student>(`/students/${student.code}`)
+
+
+    _.forEach(selectStudent, (student: StudentCheckBox) => {
+      let studentDoc: AngularFirestoreDocument<Student> = this.afs.doc<Student>(`/students/${student.code}`)
       this.members.push(studentDoc.ref);
     })
 
-    let section:Section = {
+    let section: Section = {
       name: this.groupName,
       members: this.members
     }
+    console.log(section);
+
     const sectionRef: AngularFirestoreDocument<Section> = this.afs.doc<Section>(`/sections/${this.groupName}`);
     sectionRef.set(section);
   }
 
-  goGroupDetail(name:string){
+  goGroupDetail(name: string) {
     this.router.navigate(['dashboard', 'group', name])
   }
 
@@ -218,8 +230,8 @@ export class ManageStdGroupComponent implements OnInit {
   //   })
   //   //console.log(this.std_list_All);
 
-    
-    
+
+
   // }// +++//
 
   // selectAll2() {
@@ -357,7 +369,7 @@ export class ManageStdGroupComponent implements OnInit {
 
   //        this.std_list_All2 = [];
 
-        
+
   //       this.GroupList3 = this.db.list('/Groups/' + this.GroupDatail.key).valueChanges();  //Display Student  //เรียงตาม Student ID
   //       this.GroupList3.forEach(data => {
   //         console.log(data);
@@ -371,14 +383,14 @@ export class ManageStdGroupComponent implements OnInit {
   //         //for update result
   //         this.toGroupDatail(dataSend);      //{key: "group4", group_name: "myyyyy", student_id: Array(3)}
   //       });
-      
+
 
   //     }
   //   });
 
   //   //
 
-// }
+  // }
 
 
   // ngAfterViewInit() {
