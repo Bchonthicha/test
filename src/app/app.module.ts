@@ -93,6 +93,7 @@ import { FeatureToggleModule } from 'ngx-feature-toggle';
 
 //download to excel file
 import { ExcelService } from './services/excel.service';
+import { GroupDetailComponent } from './group-detail/group-detail.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { ExcelService } from './services/excel.service';
     SignupComponent,
     StudentCheckComponent,
     UploadComponent,
-    FormUploadComponent
+    FormUploadComponent,
+    GroupDetailComponent
   ],
   imports: [
     FeatureToggleModule,

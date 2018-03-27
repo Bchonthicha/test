@@ -1,3 +1,4 @@
+import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StudentListComponent } from './student-list/student-list.component';
@@ -56,6 +57,10 @@ const routes: Routes = [
         path: 'manage-std-group',
         component: ManageStdGroupComponent,
        //  canActivate: [AuthGuard]
+      },
+      {
+        path: 'group/:name',
+        component: GroupDetailComponent
       },
       {
         path: 'test',

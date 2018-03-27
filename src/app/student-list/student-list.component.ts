@@ -38,7 +38,7 @@ export class StudentListComponent implements OnInit {
 
   constructor(private afs: AngularFirestore, private firebaseService: FirebaseService, private uploadService: UploadFileService) {
 
-    this.studentCollection = afs.collection<Student>('/students')
+    this.studentCollection = afs.collection<Student>('/students', ref => ref.orderBy('code'))
     this.students = this.studentCollection.valueChanges()
 
   }
