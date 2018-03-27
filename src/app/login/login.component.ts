@@ -6,7 +6,7 @@ import { AuthService } from './../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-hide =true;
+hide = true;
 emailSignup: string;
 passwordSignup: string;
   constructor(private auth: AuthService) { }
@@ -15,7 +15,6 @@ passwordSignup: string;
   }
 
   login(){
-    console.log(this.emailSignup,this.passwordSignup);
     this.auth.emailLogin(this.emailSignup,this.passwordSignup);
   }
 
