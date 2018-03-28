@@ -45,13 +45,16 @@ export class GroupDetailComponent implements OnInit {
     this.sectionObservable = this.sectionRef.valueChanges()
     // Extract Ref to Student Object 
     this.sectionObservable.forEach(section => {
-       if(section && section.members){
+       if(section && section.members && section.members.length > 0){
          this.membersRef = section.members;
          this.members = _.map(section.members, student => {
            // Wait for update to support DocumentRef as input
            // return this.afs.doc(student).valueChanges()
            return this.afs.doc(student.path).valueChanges() 
          });
+       }else{
+         this.membersRef = []
+         this.members = []
        }
 
       this.studentCollection.valueChanges().forEach(students => {
