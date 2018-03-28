@@ -7,7 +7,6 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { FirebaseService } from '../services/firebase.service';
 import { Observable } from 'rxjs/Observable';
 //upload file
-
 import { UploadFileService } from '../services/upload-file.service';
 import { FileUpload } from './fileupload';
 
@@ -21,12 +20,12 @@ export class StudentListComponent implements OnInit {
   }
   // Firestore Collection Ref
   studentCollection: AngularFirestoreCollection<Student>;
-  
+
   // Firestore database observable
   students: Observable<Student[]>;
-  
-  studentLocal: Student = {code: null, name: null, url: null};
-  removeCode:string;
+
+  studentLocal: Student = { code: null, name: null, url: null };
+  removeCode: string;
 
   // Form ngModel
   newStudentCode: string;
@@ -41,6 +40,13 @@ export class StudentListComponent implements OnInit {
     this.studentCollection = afs.collection<Student>('/students', ref => ref.orderBy('code'))
     this.students = this.studentCollection.valueChanges()
 
+    this.students.forEach(data => {
+      //console.log(data);
+      data.forEach(data1 => {
+        console.log(data1.code);
+
+      })
+    })
   }
 
   getStudent() {
@@ -52,11 +58,11 @@ export class StudentListComponent implements OnInit {
     this.newStudentName = "";
   }
 
-  //upload file
+  //upload file picture student
   selectFile(event) {
     this.selectedFiles = event.target.files;
   }
-  
+
   addNewStudent() {
     //Add item with Custom IDs In Firebase
     const id = this.newStudentCode;
@@ -69,33 +75,41 @@ export class StudentListComponent implements OnInit {
     const studentCollection = this.afs.collection<Student>('students');
     studentCollection.doc(id).set(student);
 
-    
-    if(this.selectedFiles){
+
+    if (this.selectedFiles) {
       const file = this.selectedFiles.item(0)
       this.currentFileUpload = new FileUpload(file)
       this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
       this.selectedFiles = null;
     }
-    
+
   }
 
   //----Update
+
   //Set data Edit to modal
   setModalData(student: Student) {
+    //console.log(student);   //this student display ex. {code: "570510100", name: "มาลี ดีใจ", url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=e086515b-7369-4c47-a791-7b64ee5f35d3"}
     this.studentLocal = student;
   }
-  // Update this key
+
+  // Update student name or picture file this key
   UpdateStudent() {
-    
+
     const studentUpdate = {
       name: this.studentLocal.name
     };
 
+    // console.log(studentUpdate); //obj student name (ex. {name: "มาลี ดีใจ"})
+    // console.log(this.studentLocal.code);   //this student code (ex. 570510100)
+
+    //path to update
     const studentRef = this.afs.doc<Student>(`students/${this.studentLocal.code}`);
+    //update data : student_name
     studentRef.update(studentUpdate);
 
-    //upload file
-    if(this.selectedFiles){
+    //upload picture file
+    if (this.selectedFiles) {
       const file = this.selectedFiles.item(0);
       this.currentFileUpload = new FileUpload(file);
       this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, this.studentLocal.code);
@@ -106,13 +120,15 @@ export class StudentListComponent implements OnInit {
   //----Delete
   //Set data delete to modal
   setRemoveCode(code) {
+    //student code to delete (ex. 570510100)
     this.removeCode = code
   }
 
   removeStudent() {
+    //delete student
     this.studentCollection.doc(this.removeCode).delete()
     //Delete picture
-     this.uploadService.delteUserImage(this.removeCode);
+    this.uploadService.delteUserImage(this.removeCode);
   }
 
 }
