@@ -43,7 +43,7 @@ export class StudentListComponent implements OnInit {
     this.students.forEach(data => {
       //console.log(data);
       data.forEach(data1 => {
-        console.log(data1.code);
+      //  console.log(data1.code);
 
       })
     })

@@ -1,0 +1,9 @@
+.logout-click{
+    margin: 15px;
+    margin-right: 20;
+    color: white;
+}
+.logout-click:hover {
+    cursor: pointer;
+    text-decoration:underline;
+  }

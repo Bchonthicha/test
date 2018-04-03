@@ -4,7 +4,9 @@
   .row{
     background-color:whitesmoke;
     /* height: 50px; */
-    margin: 30px;
+    margin-top: 20px;
+    margin-right: 40px;
+    margin-left: 40px;
     
   }
   .item_group{
@@ -39,4 +41,18 @@
 
   background-color:white;
   margin: 50px;
+}
+.student-list{
+  margin: 30px;  
+}
+
+.container{
+  margin: 20px;  
+}
+.picture_show{
+  padding: 5px;
+}
+.picture_show:hover{
+  cursor: pointer;
+  width: 250px;
 }

@@ -76,11 +76,11 @@ export class AuthService {
 
     const user = {
       email: this.authState.email,
-      name: this.authState.displayName
+      // name: this.authState.displayName
     }
-    
-    this.userRef= this.afs.doc(`users/${this.currentUserId}`)
+
+    this.userRef = this.afs.doc(`users/${this.currentUserId}`)
     this.userRef.set(user, { merge: true })
   }
-  
+
 }

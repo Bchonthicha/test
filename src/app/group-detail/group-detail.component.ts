@@ -63,7 +63,7 @@ export class GroupDetailComponent implements OnInit {
           let result = _.findIndex(this.membersRef, stu => {
             //  console.log(student.code);
             if (stu.id == student.code) {             //test to display value
-              console.log(stu.id);
+             // console.log(stu.id);
             }
             //
             return stu.id == student.code             //returns ค่า student ที่มีในกลุ่มนั้นๆแล้ว
@@ -75,7 +75,7 @@ export class GroupDetailComponent implements OnInit {
 
           return <StudentCheckBox>student;
         })
-        console.log(this.newStudentList)              //Student List ที่ยังไม่ได้ถูก add ในกลุ่มนั้นๆ สามารถเพิ่มเข้ามาในกลุ่ม
+       // console.log(this.newStudentList)              //Student List ที่ยังไม่ได้ถูก add ในกลุ่มนั้นๆ สามารถเพิ่มเข้ามาในกลุ่ม
       })
     })
 

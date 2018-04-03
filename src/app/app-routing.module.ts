@@ -41,7 +41,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-   // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
     children: [
       {
         path: '',
@@ -113,6 +113,7 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers:[AuthGuard]
 })
 export class AppRoutingModule { }

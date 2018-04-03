@@ -28,6 +28,7 @@
                       <!-- <input type="checkbox" class="checkthis" /> -->
                       <!-- <input type="checkbox" id="checkall" /> -->
                     </th>
+                    <th scope="col">Picture </th>
                     <th scope="col">Student ID</th>
                     <th scope="col">Student Name</th>
                     <th>Delete</th>
@@ -37,6 +38,7 @@
                   <tr *ngFor="let studentObservable of members; let i=index">
                     <ng-container *ngIf="studentObservable | async as student">
                       <td>{{i+1}}</td>
+                      <img src= {{student.url}} width="60 px" class="picture_show ">
                       <td>{{student.code}}</td>
                       <td>{{student.name}}</td>
                       <td>
