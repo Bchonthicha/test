@@ -30,12 +30,15 @@ export class GroupDetailComponent implements OnInit {
   currentStudent: any
   newMembers: any
   isSelect: boolean
+
   constructor(private route: ActivatedRoute, private router: Router, private afs: AngularFirestore) {
   }
 
   ngOnInit() {
     this.routeSubscribe = this.route.params.subscribe(params => {
-      this.name = params['name'];
+      console.log("params" +params+"++++"+params['name']);
+      
+      this.name = params['name'];   // ชื่อ section ที่เลือก
       this.Refresh();
     });
   }
@@ -75,7 +78,7 @@ export class GroupDetailComponent implements OnInit {
 
           return <StudentCheckBox>student;
         })
-       // console.log(this.newStudentList)              //Student List ที่ยังไม่ได้ถูก add ในกลุ่มนั้นๆ สามารถเพิ่มเข้ามาในกลุ่ม
+      //  console.log(this.newStudentList)              //Student List ที่ยังไม่ได้ถูก add ในกลุ่มนั้นๆ สามารถเพิ่มเข้ามาในกลุ่ม
       })
     })
 
@@ -92,7 +95,7 @@ export class GroupDetailComponent implements OnInit {
   addSelectAll() {
     this.newStudentList = _.map(this.newStudentList, (student: StudentCheckBox) => {     //syntex : _.map(collection, [iteratee=_.identity])
       student.selected = this.isSelect;
-      //console.log(student);     //student ที่ถูกเลือก
+      console.log("-....-"+student);      //student ที่ถูกเลือก
       return student;
     });
   }

@@ -75,7 +75,7 @@ export class StudentListComponent implements OnInit {
     const studentCollection = this.afs.collection<Student>('students');
     studentCollection.doc(id).set(student);
 
-
+  //upload picture file
     if (this.selectedFiles) {
       const file = this.selectedFiles.item(0)
       this.currentFileUpload = new FileUpload(file)

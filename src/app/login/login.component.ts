@@ -20,6 +20,7 @@ passwordSignup: string;
 
   login(){
     this.auth.emailLogin(this.emailSignup,this.passwordSignup);
+
   }
 
   logout(){

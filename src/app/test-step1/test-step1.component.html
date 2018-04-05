@@ -5,8 +5,11 @@
       <div class="form-group">
         <label for="exampleSelect1">Catagory select</label>
         <select class="form-control" id="SelectCategory" name="SelectCategory" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisCategory">
-          <option value="" [selected]="isSelected"> ----Please choose one---- </option>
-          <option *ngFor="let data of arrayVal_cate; let i = index" [ngValue]="i" [selected]="isSelected">{{data?.category_name}}</option>
+          <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
+          <!-- <option *ngFor="let data of arrayVal_cate; let i = index" [ngValue]="i" [selected]="isSelected">{{data?.category_name}}</option> -->
+          <option *ngFor="let subject of subjectList | async " [ngValue]= subject.code [selected]="isSelected">
+              {{subject.code}} : {{subject.name}}
+          </option>
         </select>
       </div>
       <!-- {{SelectThisCategory}} -->
@@ -14,8 +17,10 @@
       <div class="form-group">
         <label for="exampleSelect1">Topic select</label>
         <select class="form-control" id="SelectTopic" name="SelectTopic" (ngModelChange)="numQuestion($event)" [(ngModel)]="SelectTopic">
-          <option *ngFor="let item of arrayTopic_name; let i = index" [ngValue]="i" [selected]="isSelected">
-            {{item.val()}} &nbsp;&nbsp;({{display_arr_choice_type[i]}})</option>
+          <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
+          <option *ngFor="let chapter of chapterList | async " [ngValue]= chapter [selected]="isSelected">
+              {{chapter.code}} : {{chapter.name}}
+            </option>
         </select>
       </div>
 

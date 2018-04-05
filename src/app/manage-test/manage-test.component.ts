@@ -17,10 +17,11 @@ export class ManageTestComponent implements OnInit {
   showMessage: boolean = false;
 
   //value of ngModel
+  Subject_Code:any;
   Subject_Name: any;
   chapter_Name: any;
   type = "";
-  uploadExcel: any;
+  // uploadExcel: any;
 
   //excel convert
   arrayBuffer: any;
@@ -69,9 +70,9 @@ export class ManageTestComponent implements OnInit {
 
   //---clear Manage Test page
   clearManageTest() {
-
-    this.Subject_Name = "";
-    this.chapter_Name = "";
+    this.Subject_Code = null;
+    this.Subject_Name = null;
+    this.chapter_Name = null;
     this.type = "";
     // this.myInputVariable.nativeElement.value = "";
   }

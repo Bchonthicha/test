@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
+// import { AngularFireDatabase, AngularFireList, snapshotChanges } from 'angularfire2/database';
+// import { FirebaseService } from '../services/firebase.service';
+// import { Observable } from 'rxjs/Observable';
+
+//new
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireDatabase, AngularFireList, snapshotChanges } from 'angularfire2/database';
 import { FirebaseService } from '../services/firebase.service';
 import { Observable } from 'rxjs/Observable';
-
+import { Subject } from '../inteterfaces/subject';
+import { Chapter } from '../inteterfaces/chapter';
+import { Question } from '../inteterfaces/question';
+import * as _ from "lodash";
+import { DocumentReference } from '@firebase/firestore-types';
 
 @Component({
   selector: 'app-test-step1',
@@ -34,8 +44,8 @@ export class TestStep1Component implements OnInit {
   // }
   CategoryList: AngularFireList<any>;
   dataObj: Observable<any>;
-  arrayKey_cate = [];
-  arrayVal_cate = [];
+  arrayKey_cate = [];   //array สำหับคีย์ของหมวดหมู่นั้น
+  arrayVal_cate = [];   //array สำหรับแสดงหมวดหมู่
   arrayTopic_name = [];
   arrayNum_question = [];
   arrayquestion_id = [];
@@ -43,100 +53,130 @@ export class TestStep1Component implements OnInit {
   display_choice_type: any;
   display_arr_choice_type = [];
 
-  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+  ////new
+  subjectList: Observable<Subject[]>;           //ชื่อกลุ่มที่นำไปแสดง
+  chapterRefLocal: AngularFirestoreDocument<Chapter>
+  chapterObservable: Observable<Chapter>
+  chapterList: Observable<Chapter[]>;  
 
-    this.CategoryList = this.db.list('/Category');
-    this.dataObj = this.CategoryList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
+  questionCollection: AngularFirestoreCollection<Question>;
+  chapterRef: AngularFirestoreDocument<Chapter>
 
-    let ref = this.db.database.ref('/Category').on("child_added", (snapshotChanges) => {
-      console.log(snapshotChanges.key + ":" + snapshotChanges.val());
-      this.arrayKey_cate.push(snapshotChanges.key);
-      this.arrayVal_cate.push(snapshotChanges.val());
-      // console.log(this.arrayKey_cate);
-      // console.log(this.arrayVal_cate);
-    });
-
-    this.dataObj.forEach(data => {
-      console.log(data);
-      console.log("--------");
-    });
-
-    //
-    this.TestList = this.db.list('/Test');  //Display Student  //เรียงตาม Student ID
-    this.dataObj2 = this.TestList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
-      // console.log("eiei: "+ this.dataObj);
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-    // console.log(this.dataObj2);
-
-    this.dataObj2.forEach((data, index) => {
-      this.numoftestid = data.length + 1;
-      console.log(this.numoftestid);
-
-    });
-    //
+  constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+    /*
+        this.CategoryList = this.db.list('/Category');
+        this.dataObj = this.CategoryList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
+          return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+        });
+    
+        let ref = this.db.database.ref('/Category').on("child_added", (snapshotChanges) => {
+          console.log(snapshotChanges.key + ":" + snapshotChanges.val());
+          this.arrayKey_cate.push(snapshotChanges.key);
+          this.arrayVal_cate.push(snapshotChanges.val());
+          // console.log(this.arrayKey_cate);
+          // console.log(this.arrayVal_cate);
+        });
+    
+        this.dataObj.forEach(data => {
+          console.log(data);
+          console.log("--------");
+        });
+    
+        //
+        this.TestList = this.db.list('/Test');  //Display Student  //เรียงตาม Student ID
+        this.dataObj2 = this.TestList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
+          // console.log("eiei: "+ this.dataObj);
+          return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+        });
+        // console.log(this.dataObj2);
+    
+        this.dataObj2.forEach((data, index) => {
+          this.numoftestid = data.length + 1;
+          console.log(this.numoftestid);
+    
+        });
+        //
+        */
+    //section or group
+    const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
+    this.subjectList = subjectRef.valueChanges()
   }
 
-  onChange(index) {
-    this.choice_type = "";
-    this.array_numOfitem = [];
-    this.arrayTopic_name = [];
-    this.arrayNum_question = [];
-    this.display_arr_choice_type = [];
-    this.arrayquestion_id = [];
-    this.SelectTopic = undefined;
-    this.ADDarrayKey_cate = this.arrayKey_cate[index];
-    console.log(this.arrayKey_cate[index]);
+  onChange(code) {
+    console.log(code);
+    // this.chapterRefLocal = this.afs.doc<Chapter>(`/subjects/${code}/chapters/`)
+    // this.chapterObservable = this.chapterRefLocal.valueChanges()
+    // this.chapterObservable.forEach(chapter => {
+    //   console.log(chapter.name);
 
-    this.arrayVal_cate[index].topic_id.forEach(item => {
-      let path = 'Topics/' + item;
-      // let tmp = this.db.list(path);
+    // })
 
-      let ref = this.db.database.ref(path).on("child_added", (snapshotChanges) => {
+    const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${code}/chapters/`);
+    this.chapterList = chapterRef.valueChanges()
 
-        if (snapshotChanges.key == "topic_name") {
-          this.arrayTopic_name.push(snapshotChanges);
-          // console.log(this.arrayTopic_name);  
-        }
-        else if (snapshotChanges.key == "num_question") {
-          this.arrayNum_question.push(snapshotChanges);
-        }
-        else if (snapshotChanges.key == "choice_type") {
-          this.choice_type = snapshotChanges.val();
-          console.log(snapshotChanges.val());
+    // this.choice_type = "";
+    // this.array_numOfitem = [];
+    // this.arrayTopic_name = [];
+    // this.arrayNum_question = [];
+    // this.display_arr_choice_type = [];
+    // this.arrayquestion_id = [];
+    // this.SelectTopic = "";
+    // this.ADDarrayKey_cate = this.arrayKey_cate[index];
+    // console.log(this.arrayKey_cate[index]);
 
-          switch (this.choice_type) {
-            case 1: {
-              this.display_choice_type = "คำตอบสั้น";
-              break;
-            }
-            case 2: {
-              this.display_choice_type = "2 ตัวเลือก";
-              break;
-            }
-            case 3: {
-              this.display_choice_type = "3 ตัวเลือก";
-              break;
-            }
-            case 4: {
-              this.display_choice_type = "4 ตัวเลือก";
-              break;
-            }
-          }
-          console.log(this.display_choice_type);
-          this.display_arr_choice_type.push(this.display_choice_type);
-        }
+    // this.arrayVal_cate[index].topic_id.forEach(item => {
+    //   let path = 'Topics/' + item;
+    //   // let tmp = this.db.list(path);
 
-        else if (snapshotChanges.key == "question_id") {
-          this.arrayquestion_id.push(snapshotChanges);
-        }
-      });
-    });
+    //   let ref = this.db.database.ref(path).on("child_added", (snapshotChanges) => {
+
+    //     if (snapshotChanges.key == "topic_name") {
+    //       this.arrayTopic_name.push(snapshotChanges);
+    //       // console.log(this.arrayTopic_name);  
+    //     }
+    //     else if (snapshotChanges.key == "num_question") {
+    //       this.arrayNum_question.push(snapshotChanges);
+    //     }
+    //     else if (snapshotChanges.key == "choice_type") {
+    //       this.choice_type = snapshotChanges.val();
+    //       console.log(snapshotChanges.val());
+
+    //       switch (this.choice_type) {
+    //         case 1: {
+    //           this.display_choice_type = "คำตอบสั้น";
+    //           break;
+    //         }
+    //         case 2: {
+    //           this.display_choice_type = "2 ตัวเลือก";
+    //           break;
+    //         }
+    //         case 3: {
+    //           this.display_choice_type = "3 ตัวเลือก";
+    //           break;
+    //         }
+    //         case 4: {
+    //           this.display_choice_type = "4 ตัวเลือก";
+    //           break;
+    //         }
+    //       }
+    //       console.log(this.display_choice_type);
+    //       this.display_arr_choice_type.push(this.display_choice_type);
+    //     }
+
+    //     else if (snapshotChanges.key == "question_id") {
+    //       this.arrayquestion_id.push(snapshotChanges);
+    //     }
+    //   });
+    // });
   }
 
-  numQuestion(index) {
+  numQuestion(chCode) {
+    console.log("Hi....."+chCode + " " + chCode.code+" "+chCode.snapshotChanges());
+    
+    
+
+
+    /*
     this.numOfitem = [];
     this.array_numOfitem = [];
     // console.log("pre" + this.numOfitem);
@@ -153,7 +193,7 @@ export class TestStep1Component implements OnInit {
     for (var i = 1; i <= this.numOfitem; i++) {
       // console.log(i);
       this.array_numOfitem.push(i);
-    }
+    }*/
   }
 
   hack(val) {

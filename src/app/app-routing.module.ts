@@ -15,7 +15,7 @@ import { TestStep2Component } from './test-step2/test-step2.component';
 import { TestStep3Component } from './test-step3/test-step3.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { SignupComponent } from './signup/signup.component';
-
+import { ReportsComponent} from './reports/reports.component';
 import { StudentCheckComponent } from './student-check/student-check.component';
 // Service
 import { AuthService } from './services/auth.service';
@@ -24,16 +24,17 @@ import { AuthGuard } from './guards/auth.guard';
 //upload
 import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 
+//test table
+import { TablePaginationComponent } from './table-pagination/table-pagination.component';
 const routes: Routes = [
   {
-    path: '',
+    path: '',      //เดิมเป็น path: ' '
     component: LoginComponent
   },
   {
-    path: 'form-up',
-    component: FormUploadComponent
+    path:"table",
+    component:TablePaginationComponent
   },
-  
   {
     path: 'signup',
     component: SignupComponent
@@ -41,22 +42,19 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
+    // canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
     children: [
       {
         path: '',
         component: BlankComponent,
-        // canActivate: [AuthGuard]
       },
       {
         path: 'student-list',
         component: StudentListComponent,
-        // canActivate: [AuthGuard]
       },
       {
         path: 'manage-std-group',
         component: ManageStdGroupComponent,
-       //  canActivate: [AuthGuard]
       },
       {
         path: 'group/:name',
@@ -65,55 +63,55 @@ const routes: Routes = [
       {
         path: 'test',
         component: TestComponent,
-        // canActivate: [AuthGuard],
         children: [
           {
             path: '',
             component: TestStep1Component,
-           //  canActivate: [AuthGuard]
           },
           {
             path: 'test-step2',
             component: TestStep2Component,
-          //   canActivate: [AuthGuard]
           },
           {
             path: 'test-step3',
             component: TestStep3Component,
-           //  canActivate: [AuthGuard]
           },
           {
             path: 'quiz',
             component: QuizComponent,
-           //  canActivate: [AuthGuard]
           },
         ]
       },
       {
         path: 'manage-test',
         component: ManageTestComponent,
-        // canActivate: [AuthGuard]
       },
       {
-        path: 'report-of-test',
-        component: ReportOfTestComponent,
-        // canActivate: [AuthGuard]
+        path:'reports',
+        component: ReportsComponent,
+        // children: [
+        //   {
+        //     path: 'report-of-test',
+        //     component: ReportOfTestComponent,
+        //   },
+        //   {
+        //     path: 'report-of-student',
+        //     component: ReportOfStudentComponent,
+        //   }
+        // ]
       },
       {
-        path: 'report-of-student',
-        component: ReportOfStudentComponent,
-        // canActivate: [AuthGuard]
-      },
-      {
-        path:'student-check',
-        component:StudentCheckComponent
+        path: 'student-check',
+        component: StudentCheckComponent
       }
     ]
   }
 ];
+
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[AuthGuard]
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

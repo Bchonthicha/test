@@ -23,8 +23,9 @@ export class DashboardComponent implements OnInit {
     // this.user = auth.currentUser;
     // console.log(this.user)
     console.log("ชั่ยมั่ยชั่ย?" + this.auth.currentUserId)      //key from login
-    //get email show
 
+    //get email show
+/*
     this.userRef = this.afs.doc<User>(`/users/${this.auth.currentUserId}`)
     let test = this.userRef.valueChanges();
 
@@ -32,9 +33,9 @@ export class DashboardComponent implements OnInit {
       console.log(data.email);
       this.thisUser = data.email
     })
-
-
-    //  
+  // 
+*/
+     
   }
 
 

@@ -4,18 +4,19 @@
   <option>Group3</option>
 </select> -->
 
-  <label for="exampleSelect1">Group select</label>
-  <select class="form-control" id="SelectGroup" name="SelectGroup" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisGroup">
-    <option value="" [selected]="isSelected"> ----Please choose one---- </option>
-    <option *ngFor="let data of arrayVal_Group; let i = index" [ngValue]="i" [selected]="isSelected">{{data?.group_name}}</option>
-  </select>
+<label for="exampleSelect1">Group select</label>
+<select class="form-control" id="SelectGroup" name="SelectGroup" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisGroup">
+  <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
+  <option *ngFor="let group of groupList | async  " [ngValue]= group.name [selected]="isSelected">{{group.name}}</option>
+</select>
 
 
 <div class="selectStd-body">
   <table class="table table-striped">
     <thead>
       <tr>
-        <th> <input type="checkbox" class="checkthis" [(ngModel)]="selectedAll" (change)="selectAll();" />
+        <th>
+          <input type="checkbox" class="checkthis" [(ngModel)]="isSelect" (change)="createSelectAll()" />
           <!-- <input type="checkbox" id="checkall" /> -->
         </th>
         <th scope="col">Student ID</th>
@@ -23,12 +24,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student_item of std_list_display" >
+      <tr *ngFor="let student of studentListAdd">
+
         <td>
-          <input type="checkbox" class="checkthis" [(ngModel)]="student_item.selected" (change)="checkIfAllSelected();"/>
+          <input type="checkbox" class="checkthis" [(ngModel)]="student.selected" />
         </td>
-        <td>{{student_item.student_id}}</td>
-        <td>{{student_item.student_name}}</td>
+        <td>{{student.code}}</td>
+        <td>{{student.name}}</td>
+
       </tr>
     </tbody>
   </table>
@@ -38,6 +41,6 @@
   <button type="submit" class="btn btn-danger">Back</button>
 </a>
 <!-- <a [routerLink]="'/dashboard/test/quiz'"> -->
- <button type="submit" class="btn btn-success"  (click)="StartSelectStudent()">Let Go!</button> 
-  <!-- <button type="submit" class="btn btn-success">Let Go!</button> -->
+<button type="submit" class="btn btn-success" (click)="StartSelectStudent()">Let Go!</button>
+<!-- <button type="submit" class="btn btn-success">Let Go!</button> -->
 <!-- </a> -->
