@@ -1,8 +1,13 @@
-add-test{
-    margin: 30px;  
-  }
+add-test {
+  margin: 30px;
+}
 
+.content {
+  background-color: white;
+}
 
-  .content{
-    background-color:white;
-  }
+.addSubject:hover {
+  color: #0066ff;
+  cursor: pointer;
+  text-decoration: underline;
+}

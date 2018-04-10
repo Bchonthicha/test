@@ -54,7 +54,7 @@ export class TestStep1Component implements OnInit {
   display_arr_choice_type = [];
 
   ////new
-  subjectList: Observable<Subject[]>;           //ชื่อกลุ่มที่นำไปแสดง
+  subjectList: Observable<Subject[]>;           //ชื่อsubjectที่นำไปแสดง
   chapterRefLocal: AngularFirestoreDocument<Chapter>
   chapterObservable: Observable<Chapter>
   chapterList: Observable<Chapter[]>;
@@ -108,7 +108,7 @@ export class TestStep1Component implements OnInit {
         });
         //
         */
-    //section or group
+    //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
     this.subjectList = subjectRef.valueChanges()
   }

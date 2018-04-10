@@ -14,7 +14,7 @@ import { Subject } from '../inteterfaces/subject';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { DocumentReference } from '@firebase/firestore-types';
 import { log } from 'util';
-
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-add-test',
@@ -50,10 +50,66 @@ export class AddTestComponent implements OnInit {
   @ViewChild('uploadExcel')
   myInputVariable: any;
   subjectAdd: Subject;
+  subjectList: Observable<Subject[]>;           //ชื่อsubjectที่นำไปแสดง
+  SelectSubject = "";
+  chapterList: Observable<Chapter[]>;
 
-  constructor(private xlservice: ExcelService, private afs: AngularFirestore) { }
+  chapArr: Array<any>;
+  chapLenght: any;
+
+  newSubjectName: any;
+  newSubjectCode: any;
+  subCollection: AngularFirestoreCollection<Subject>;
+  constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
+    //subject
+    const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
+    this.subjectList = subjectRef.valueChanges()
+    this.subCollection = afs.collection<Subject>('/subjects')
+  }
 
   ngOnInit() {
+  }
+  //-------function เมื่อเลือกCatagory select
+  onChange(sub) {
+    console.log("change");
+    this.Subject_Code = sub.code;
+    this.Subject_Name = sub.name;
+
+    const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${this.Subject_Code}/chapters/`);
+    this.chapterList = chapterRef.valueChanges()
+    console.log(this.chapterList);
+
+    this.chapterList.forEach(chap => {
+      this.chapLenght = chap.length;
+      console.log(this.chapLenght);
+      if (this.chapLenght == 0) {
+        this.chapter_Code = "ch0";      ///makeeeeeeeeeeeeeeeeeeeee
+        //make document key in questions
+        this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
+        console.log(this.question_keyAdd);
+      } else {
+        this.chapter_Code = "ch" + this.chapLenght;
+        //make document key in questions
+        this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
+        console.log(this.question_keyAdd);
+      }
+    })
+  }
+  DefaultModal() {
+    console.log("DefaultModal")
+    this.newSubjectName = "";
+    this.newSubjectCode = "";
+  }
+  addNewSubject(data: NgForm) {
+    console.log(this.newSubjectName);
+    console.log(this.newSubjectCode);
+    this.subjectAdd = {
+      code: this.newSubjectCode,
+      name: this.newSubjectName
+    }
+    //----Add subject detail in subject
+    const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
+    subjectRef2.set(this.subjectAdd);
   }
   //---get json data from excel file
   incomingfile(event) {
@@ -61,6 +117,9 @@ export class AddTestComponent implements OnInit {
   }
   //---create new Test
   createNewTest(data: NgForm) {
+
+    //this.subCollection.doc("null").delete()
+
     this.array_excel = [];
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
@@ -101,13 +160,8 @@ export class AddTestComponent implements OnInit {
         console.log(this.question_obj);
 
       })
-//หา chapter key /subjects/201100/chapters
 
-      
-      this.chapter_Code = "ch0";      ///makeeeeeeeeeeeeeeeeeeeee
-      //make document key in questions
-      this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
-      console.log(this.question_keyAdd);
+
 
       //make type string tp number
       let type_num = +this.type;
@@ -120,11 +174,13 @@ export class AddTestComponent implements OnInit {
       }
       console.log(this.questionAdd);
       //----Add data in questions ,document key=subCode_chapterCode
-      // const questionRef: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${this.question_keyAdd}`);
-      // questionRef.set(this.questionAdd);
+      const questionRef: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${this.question_keyAdd}`);
+      questionRef.set(this.questionAdd);
 
       let questionDoc: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${this.question_keyAdd}`)
       console.log(questionDoc.ref);
+
+      console.log(this.chapter_Code);
 
       this.chapterAdd = {
         code: this.chapter_Code,
@@ -134,17 +190,10 @@ export class AddTestComponent implements OnInit {
       console.log(this.chapterAdd);
 
       //----Add chapter in subject
-      // const subjectRef:AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
-      // subjectRef.set(this.chapterAdd);
+      const subjectRef: AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
+      subjectRef.set(this.chapterAdd);
 
-      this.subjectAdd = {
-        code: this.Subject_Code,
-        name: this.Subject_Name
-      }
-      console.log(this.chapterAdd);
-      //----Add subject detail in subject
-      // const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.Subject_Code}`);
-      // subjectRef2.set(this.subjectAdd);
+
     }
 
     fileReader.readAsArrayBuffer(this.file);
@@ -152,6 +201,7 @@ export class AddTestComponent implements OnInit {
   }
   //---clear Manage Test page
   clearAddTest() {
+    this.SelectSubject = "";
     this.Subject_Code = null;
     this.Subject_Name = null;
     this.chapter_Name = null;

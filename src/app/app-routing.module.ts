@@ -28,7 +28,8 @@ const i=0;
 import { TablePaginationComponent } from './table-pagination/table-pagination.component';
 
 import { CookieService } from 'ngx-cookie-service';
-
+import { AddTestComponent } from './add-test/add-test.component';
+import { DeleteTestComponent } from './delete-test/delete-test.component';
 const routes: Routes = [
   { 
     path: '',      //เดิมเป็น path: ' '
@@ -88,6 +89,16 @@ const routes: Routes = [
       {
         path: 'manage-test',
         component: ManageTestComponent,
+        children: [
+          {
+            path: '',
+            component: AddTestComponent,
+          },
+          {
+            path: 'Delete-Test',
+            component: DeleteTestComponent,
+          }
+        ]
       },
       {
         path:'reports',
