@@ -91,6 +91,8 @@ export class ManageStdGroupComponent implements OnInit {
 
     _.forEach(selectStudent, (student: StudentCheckBox) => {
       let studentDoc: AngularFirestoreDocument<Student> = this.afs.doc<Student>(`/students/${student.code}`)
+      console.log(studentDoc.ref);
+      
       this.members.push(studentDoc.ref);
     })
 

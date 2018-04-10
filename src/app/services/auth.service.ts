@@ -5,11 +5,14 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { FirebaseService } from '../services/firebase.service';
+import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class AuthService {
+  cookieValue = 'UNKNOWN';
   authState: any = null;
   userRef: AngularFirestoreDocument<User>;
-  constructor(private afAuth: AngularFireAuth,
+  constructor(private afAuth: AngularFireAuth,private firebaseService: FirebaseService,private cookieService: CookieService,
     private afs: AngularFirestore,
     private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
@@ -37,20 +40,36 @@ export class AuthService {
     }
   }
   emailSignUp(email: string, password: string) {
+
+    
+    this.cookieService.set( 'password', password );
+    this.cookieValue = this.cookieService.get('password');
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user;
         this.updateUserData();
+        this.cookieService.set( 'email', email );
+        this.cookieValue = this.cookieService.get('email');
+
+        // this.firebaseService.userLogin == email;
         this.router.navigate(['dashboard']);
       })
       .catch(error => console.log(error));
   }
   emailLogin(email: string, password: string) {
+    console.log(password);
+    this.cookieService.set( 'password', password );
+    this.cookieValue = this.cookieService.get('password');
     console.log("I am logging in");
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user
         this.updateUserData()
+        // this.firebaseService.userLogin = email;
+        this.cookieService.set( 'email', email );
+        this.cookieValue = this.cookieService.get('email');
+
+
         this.router.navigate(['dashboard'])
       })
       .catch(error => console.log(error));

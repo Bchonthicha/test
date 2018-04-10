@@ -63,6 +63,7 @@ export class TestStep3Component implements OnInit {
   studentListAdd = [];
 
   constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+    /*
     //test show sort time
     let Hero = [
       { name: "Robin Van Persie", age: 28, time: '7/1/2561 16:49:58' },
@@ -74,6 +75,9 @@ export class TestStep3Component implements OnInit {
     });
     console.log("-------------------" + Hero);
     //
+*/
+    console.log("_____________step 3____________");
+    console.log(this.firebaseService.arrayTest2);
 
     //section or group
     const sectionRef: AngularFirestoreCollection<Section> = this.afs.collection<Section>(`/sections`);
@@ -101,7 +105,6 @@ export class TestStep3Component implements OnInit {
           // console.log(d);
           // console.log(this.studentListAdd);
         })
-
       })
     })
   }
@@ -126,14 +129,13 @@ export class TestStep3Component implements OnInit {
   StartSelectStudent() {
     //หา คนใน studentListAdd ที่ selected โดยที่ถ้า selected จะ return true
     let selectStudent = _.filter(this.studentListAdd, (student: StudentCheckBox) => {
-      console.log(student.selected);
+      // console.log(student.selected);
       return student.selected;
     });
 
     //หา student ที่ selectStudent มีค่าเป็น true
     _.forEach(selectStudent, (student: StudentCheckBox) => {
       console.log(student.code);
-
     })
     /*
      alert("std");

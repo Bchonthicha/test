@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 //import { AngularFireAuth } from 'angularfire2/auth';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
@@ -99,6 +100,8 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { NgSemanticModule } from 'ng-semantic';
 import { ReportsComponent } from './reports/reports.component';
 import { TablePaginationComponent } from './table-pagination/table-pagination.component';
+import { AddTestComponent } from './add-test/add-test.component';
+import { DeleteTestComponent } from './delete-test/delete-test.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +126,9 @@ import { TablePaginationComponent } from './table-pagination/table-pagination.co
     FormUploadComponent,
     GroupDetailComponent,
     ReportsComponent,
-    TablePaginationComponent
+    TablePaginationComponent,
+    AddTestComponent,
+    DeleteTestComponent
   ],
   imports: [
     FeatureToggleModule,
@@ -176,7 +181,7 @@ import { TablePaginationComponent } from './table-pagination/table-pagination.co
     NgSemanticModule 
   ],
   // providers: [AuthService, AuthGuard],
-  providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService],
+  providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService,CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

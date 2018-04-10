@@ -3,11 +3,12 @@
     <form #SelectTestForm="ngForm">
       <!-- Select Category -->
       <div class="form-group">
+          <!-- {{now | date :'short'}}  time now -->
         <label for="exampleSelect1">Catagory select</label>
-        <select class="form-control" id="SelectCategory" name="SelectCategory" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisCategory">
+        <select class="form-control" id="SelectCategory" name="SelectCategory" (ngModelChange)="onChange($event)" [(ngModel)]="SelectCategory">
           <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
           <!-- <option *ngFor="let data of arrayVal_cate; let i = index" [ngValue]="i" [selected]="isSelected">{{data?.category_name}}</option> -->
-          <option *ngFor="let subject of subjectList | async " [ngValue]= subject.code [selected]="isSelected">
+          <option *ngFor="let subject of subjectList | async " [ngValue]= subject [selected]="isSelected">
               {{subject.code}} : {{subject.name}}
           </option>
         </select>
@@ -27,9 +28,8 @@
       <!-- Select Number of items -->
       <div class="form-group">
         <label for="exampleTextarea">Number of items</label>
-        <!-- {{numOfitem}} -->
         <select class="form-control" id="SelectNumofItem" name="SelectNumofItem" [(ngModel)]="SelectNumofItem">
-          <option *ngFor="let number of  array_numOfitem">{{number}}</option>
+          <option *ngFor="let number of  array_numOfitem">{{number}}</option> 
         </select>
       </div>
 

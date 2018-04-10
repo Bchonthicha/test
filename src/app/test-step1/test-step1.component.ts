@@ -57,7 +57,18 @@ export class TestStep1Component implements OnInit {
   subjectList: Observable<Subject[]>;           //ชื่อกลุ่มที่นำไปแสดง
   chapterRefLocal: AngularFirestoreDocument<Chapter>
   chapterObservable: Observable<Chapter>
-  chapterList: Observable<Chapter[]>;  
+  chapterList: Observable<Chapter[]>;
+
+  questionAllList = [];
+  questionData: any;
+  amount: number;
+  amountList = [];
+  subCode: any;
+  chapterCode: any;
+  questionTmp = [];
+  now: any;    //timestamp now
+  SelectCategory="";
+  NumOfItemThis: any;
 
   questionCollection: AngularFirestoreCollection<Question>;
   chapterRef: AngularFirestoreDocument<Chapter>
@@ -102,8 +113,11 @@ export class TestStep1Component implements OnInit {
     this.subjectList = subjectRef.valueChanges()
   }
 
+  //-------function เมื่อเลือกCatagory select
   onChange(code) {
-    console.log(code);
+    this.SelectTopic="";
+    this.subCode = code.code;
+    console.log(this.subCode);
     // this.chapterRefLocal = this.afs.doc<Chapter>(`/subjects/${code}/chapters/`)
     // this.chapterObservable = this.chapterRefLocal.valueChanges()
     // this.chapterObservable.forEach(chapter => {
@@ -111,9 +125,10 @@ export class TestStep1Component implements OnInit {
 
     // })
 
-    const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${code}/chapters/`);
+    const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${this.subCode}/chapters/`);
     this.chapterList = chapterRef.valueChanges()
 
+    this.array_numOfitem = [];
     // this.choice_type = "";
     // this.array_numOfitem = [];
     // this.arrayTopic_name = [];
@@ -170,97 +185,105 @@ export class TestStep1Component implements OnInit {
     // });
   }
 
+  //-------function เมื่อเลือกTopic select แล้วแสดงส่วนของ Number of items
   numQuestion(chCode) {
-    console.log("Hi....."+chCode + " " + chCode.code+" "+chCode.snapshotChanges());
-    
-    
+    // console.log(chCode);
+    // console.log(chCode.code);
+    this.chapterCode = chCode.code;
+    // console.log(chCode.name);
+    let questionPath = chCode.questions.path;
+    // console.log(questionPath);
 
+    let questionDoc: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`${questionPath}`)
+    let questions = questionDoc.valueChanges();
+    questions.forEach(data => {
+      // console.log(data);
+      this.questionData = data;
+      this.amount = data.amount;
+      // console.log(this.amount);
 
-    /*
-    this.numOfitem = [];
-    this.array_numOfitem = [];
-    // console.log("pre" + this.numOfitem);
-    // console.log("start" + this.arrayNum_question[index].val());
-    this.ADDarrayquestion_id = this.arrayquestion_id[index].val();
-    this.numOfitem = this.arrayNum_question[index].val();
-    this.ADDtopic_id = this.arrayNum_question[index].ref.parent.key;
-    console.log(this.ADDarrayquestion_id);
+      ///////////////////////////////////////////////////////////มันผิด
+      // console.log(data);
+      console.log(data.question);
+      // console.log(Object.values(data.question));
+      this.questionAllList = Object.values(data.question)
+      //  console.log(data.question[2]);
+      // this.questionAllList = Object.values(data.question)   // มันเอามาแต่ value ไม่เอา key มา obj to array ex.:{0: {…}, 1: {…}, 2: {…}, 3: {…}, 4: {…}} => [{…}, {…}, {…}, {…}, {…}]
+      console.log(this.questionAllList);
 
-    console.log(this.ADDtopic_id);
-    console.log(this.numOfitem);
-    //array display number of item
-    // console.log("second" + this.numOfitem);
-    for (var i = 1; i <= this.numOfitem; i++) {
-      // console.log(i);
-      this.array_numOfitem.push(i);
-    }*/
+      this.amountList = [];
+      for (var i = 1; i <= this.amount; i++) {
+        this.array_numOfitem.push(i);
+      }
+    })
   }
 
-  hack(val) {
-    console.log(val);
-    return Array.from(val);
-  }
   StartSelectTest(data: NgForm) {
+    //set timestamp
+    this.now = Date.now();
+    console.log(this.now); // shows current timestamp
+
+    this.questionTmp = [];
     console.log("is meeeee");
     console.log(data.value);
+    console.log(this.questionAllList);
 
-    console.log(this.ADDarrayquestion_id);
-
-    let rand = -1;
-    console.log(rand);
-    let i = 0;
-    let tmp_question_id = [];
-    while (i < this.SelectNumofItem) {
-      // rand = Math.floor(Math.random() * this.numOfitem);
-      while (this.ADDarrayquestion_id[rand] == 0 || this.ADDarrayquestion_id[rand] == undefined) {
-        // Math.floor(Math.random() *  max);
-        rand = Math.floor(Math.random() * this.numOfitem);
-        console.log("random: " + rand);
-      }
-      console.log("this " + this.ADDarrayquestion_id[rand]);
-      console.log("rand " + rand);
-      tmp_question_id.push(this.ADDarrayquestion_id[rand]);
-      console.log(tmp_question_id);
-      this.ADDarrayquestion_id[rand] = 0;
-      i++;
+    console.log(this.SelectNumofItem);
+    if (this.SelectNumofItem == "" || this.SelectNumofItem == undefined) {
+      this.NumOfItemThis = 1;
+    } else {
+      this.NumOfItemThis = this.SelectNumofItem;
     }
-    // console.log(tmp);
-    let arrayTest1pack = [];
-    console.log(this.ADDtopic_id + "," + this.numOfitem + "," + this.SelectNumofItem + "," + this.InputDescription + "," + "," + tmp_question_id);
-    // let pack_cate_id = {"category_id":this.ADDarrayKey_cate};
-    // let pack_topic_id = {"topic_id":this.ADDtopic_id};
-    // let pack_date = {"test_date":todayDate};
-    // let pack_test_num = {"test_numQuestion":this.SelectNumofItem};
-    // let pack_descript = {"test_description":this.InputDescription};
-    // console.log(tmp_question_id);
-    // let pack_quesion_id = {"question_id":tmp_question_id};
-    // arrayTest1pack.push(pack_cate_id, pack_topic_id, pack_date ,pack_test_num, pack_descript, pack_quesion_id);
+    if (this.NumOfItemThis == this.amount) {
+      this.questionTmp = this.questionAllList;
+      console.log(this.questionTmp);
 
-    // arrayTest1pack.push(this.ADDarrayKey_cate);
-    // arrayTest1pack.push(this.ADDtopic_id);
-    // arrayTest1pack.push(todayDate);
-    // arrayTest1pack.push(this.SelectNumofItem);
-    // arrayTest1pack.push(this.InputDescription);
-    // arrayTest1pack.push(tmp_question_id);
-    arrayTest1pack.push(this.ADDarrayKey_cate, this.ADDtopic_id, this.SelectNumofItem, this.InputDescription, tmp_question_id);
+    } else {
+      let rand = -1;
+      console.log(rand);
+      let i = 0;
+      this.questionTmp = [];
+      while (i < this.NumOfItemThis) {
+        // rand = Math.floor(Math.random() * this.numOfitem);
+        while (this.questionAllList[rand] == 0 || this.questionAllList[rand] == undefined) {
+          // Math.floor(Math.random() *  max);
+          rand = Math.floor(Math.random() * this.amount);
+          //  console.log("random: " + rand);
+        }
+        // console.log("this " + this.questionAllList[rand]);
+        // console.log("rand " + rand);
+        this.questionTmp.push(this.questionAllList[rand]);
+        console.log(this.questionTmp);
+        this.questionAllList[rand] = 0;
+        i++;
+      }
+    }
+
+    //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
+    let arrayTest1pack = [];
+    arrayTest1pack.push(this.SelectCategory, this.SelectTopic, this.NumOfItemThis, this.InputDescription, this.questionTmp);
     console.log(arrayTest1pack);
 
-    this.firebaseService.arrayTest1 = arrayTest1pack;
+    this.firebaseService.arrayTest1 = arrayTest1pack;     //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
 
-    this.firebaseService.Test_id_new = "test" + this.numoftestid;
+    console.log(this.subCode + "_" + this.chapterCode + "_" + this.now);
+    this.firebaseService.Test_id_new = this.subCode + "_" + this.chapterCode + "_" + this.now;    //subject_chapter_timestamp : 205100_ch0_1523089877262
+
+    this.clearTest1();
   }
+
   clearTest1() {
-    alert("clear");
+    // alert("clear");
+    this.chapterList = null;
+    this.questionTmp = [];
+    this.array_numOfitem = [];
     this.SelectThisCategory = [];
+    this.SelectCategory = "";
     this.SelectTopic = undefined;
-    this.SelectNumofItem = undefined;
+    this.SelectNumofItem = "";
     this.InputDescription = "";
   }
-  getCategoryList() {
 
-  }
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
 }

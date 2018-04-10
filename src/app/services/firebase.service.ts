@@ -5,10 +5,27 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class FirebaseService {
+  public userLogin="";
+
   // public arrayTest1:any;
-  public arrayTest1 = ["category1", "T1", "3", "ทดลอง", ["Q3", "Q4", "Q5"]];
+ // public arrayTest1 = ["category1", "T1", "3", "ทดลอง", ["Q3", "Q4", "Q5"]];    //เดิม
+ public arrayTest1 = [
+   {code: "205100", name: "วิทยาศาสตร์"},
+   {code: "ch0", name: "เซลล์", questions: "questions/205100_ch0"},
+   "3",
+   "test na ja",
+    [
+      {answer: 2, choice: ["ผนังเซลล์", "แวคิวโอล", "คลอโรพลาสต์", "ไซโทพลาซึม"], key: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด"},
+      {answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], key: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม"},
+      {answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], key: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม"}
+    ]
+  ];
   // public arrayTest2 :any;
-  public arrayTest2 = ["Q3", "Q4", "Q5"];
+  public arrayTest2 = [
+    {answer: 2, choice: ["ผนังเซลล์", "แวคิวโอล", "คลอโรพลาสต์", "ไซโทพลาซึม"], key: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด"},
+    {answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], key: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม"},
+    {answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], key: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม"}
+  ];
   // public arrayTest3 :any;
   public arrayTest3 = [
     {

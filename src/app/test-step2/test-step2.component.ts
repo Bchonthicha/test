@@ -24,28 +24,32 @@ export class TestStep2Component implements OnInit {
 
   pack_question = [];
   question_list_display = [];
-
+  //new
+  receiveQuestion: any;
   constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService) {
     // console.log(this.firebaseService.arrayTest1);
+    console.log("______in step 2______");
+
     this.receiveTest1 = this.firebaseService.arrayTest1;
-    console.log(this.receiveTest1);    //["category1", "T1", 1518504778921, "4", "ok",["Q4", "Q2", "Q5", "Q1"]]
-    // receiveTest1.forEach(element => {
-    //   console.log(element);
-    // });
-    console.log(this.receiveTest1[4]); // ["Q4", "Q2", "Q5", "Q1"]
-    this.receiveQid = this.receiveTest1[4];
-    // this.receiveQid.forEach(element2 => {
-    //   console.log(element2);
-    // });
-
-
+    console.log(this.receiveTest1);
+    console.log(this.receiveTest1[4]);
+    // ตำแหน่ง4 array คำถาม  [  {answer: 2, choice: Array(4), key: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด"},
+    //   {answer: 3, choice: Array(4), key: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม"},
+    //   {answer: 1, choice: Array(4), key: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม"}
+    // ]
+    this.receiveQuestion = this.receiveTest1[4];
+    this.question_list_display =this.receiveQuestion;
+    // console.log(this.question_list_display[0].choice);
+    
+    
+/*
     //Database
     let sub_index = 0;
     console.log(this.receiveQid);
-    this.receiveQid.forEach((item,index) => {
-    console.log(item);
-    
-      let path = 'Questions/'+item;
+    this.receiveQid.forEach((item, index) => {
+      console.log(item);
+
+      let path = 'Questions/' + item;
       let ref2 = this.db.list(path).valueChanges();
       this.tmpQid.push(item);
 
@@ -54,22 +58,23 @@ export class TestStep2Component implements OnInit {
         console.log(data);
         //
         this.tmp.push(data);
-  
-          // console.log(this.tmp[index]);
-          let tem = {
-            keyQ:this.receiveQid[index],
-            answer_index:data[0],
-            choice:data[1],
-            question:data[2],
-            topic_id:data[3],
-            i:index
-          }
-          // console.log(data[1]);
-          this.question_list_display.push(tem);
-          console.log(this.question_list_display);
+
+        // console.log(this.tmp[index]);
+        let tem = {
+          keyQ: this.receiveQid[index],
+          answer_index: data[0],
+          choice: data[1],
+          question: data[2],
+          topic_id: data[3],
+          i: index
+        }
+        // console.log(data[1]);
+        this.question_list_display.push(tem);
+        console.log(this.question_list_display);
       });
     });
     console.log(this.tmpQid);
+    */
   }
 
   ngOnInit() {
@@ -85,8 +90,8 @@ export class TestStep2Component implements OnInit {
       this.question_list_display[index - 1] = this.question_list_display[index];
       this.question_list_display[index] = tmp;
       //update new value index in object
-      this.question_list_display[index].i= index;
-      this.question_list_display[index-1].i=index-1;
+      this.question_list_display[index].i = index;
+      this.question_list_display[index - 1].i = index - 1;
       console.log(this.question_list_display);
     }
   }
@@ -100,19 +105,19 @@ export class TestStep2Component implements OnInit {
       this.question_list_display[index + 1] = this.question_list_display[index];
       this.question_list_display[index] = tmp;
       //update new value index in object
-      this.question_list_display[index].i= index;
-      this.question_list_display[index+1].i=index+1;
+      this.question_list_display[index].i = index;
+      this.question_list_display[index + 1].i = index + 1;
       console.log(this.question_list_display);
     }
   }
-  StartSelectQuestion(){
+  StartSelectQuestion() {
     let arrayTest2pack = [];
-    alert("youuuuu");
     this.question_list_display.forEach(element => {
-      console.log(element.keyQ);
-      arrayTest2pack.push(element.keyQ);
+      console.log(element);
+      arrayTest2pack.push(element);
     });
-    console.log(arrayTest2pack);
+    // console.log(arrayTest2pack);
     this.firebaseService.arrayTest2 = arrayTest2pack;
+    console.log(this.firebaseService.arrayTest2);
   }
 }

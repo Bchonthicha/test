@@ -23,11 +23,14 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 //upload
 import { FormUploadComponent } from './upload/form-upload/form-upload.component';
-
+const i=0;
 //test table
 import { TablePaginationComponent } from './table-pagination/table-pagination.component';
+
+import { CookieService } from 'ngx-cookie-service';
+
 const routes: Routes = [
-  {
+  { 
     path: '',      //เดิมเป็น path: ' '
     component: LoginComponent
   },
@@ -42,7 +45,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
+  //  canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
     children: [
       {
         path: '',
@@ -112,6 +115,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard,CookieService]
 })
 export class AppRoutingModule { }
