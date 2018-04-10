@@ -6,3 +6,6 @@ delete-test{
   .content{
     background-color:white;
   }
+  .delSub{
+    margin-right: 8px;
+  }

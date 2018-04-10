@@ -22,7 +22,14 @@
 
 <div class="manage-test">
     <div class="content">
-      <p>Hiiiiii</p>
+      <div class="btn-group btn-group-justified ">
+          <a [routerLink]="'/dashboard/manage-test/'" class="btn  addTestBtn bg-success">ADD NEW TEST</a>
+          <a [routerLink]="'/dashboard/manage-test/Edit-Test'" class="btn editTestBtn bg-warning">EDIT TEST</a>
+          <a [routerLink]="'/dashboard/manage-test/Delete-Test'" class="btn deleteTestBtn bg-danger">DELETE TEST</a>
+        </div>
+        <br>
+        <br>
+
             <!--Call Component -->
             <router-outlet></router-outlet>
     </div>

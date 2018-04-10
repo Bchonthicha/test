@@ -1,9 +1,11 @@
-.manage-test{
+edit-test{
     margin: 30px;  
   }
 
 
   .content{
-    /* margin-top: 10px; */
     background-color:white;
+  }
+  .delSub{
+    margin-right: 8px;
   }
