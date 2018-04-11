@@ -18,11 +18,11 @@
               <div class="modal-body">
                 <div class="form-group">
                   <label>Student ID:</label>
-                  <input type="text" class="form-control" id="StdID" name="student_id" ngModel [(ngModel)]="newStudentCode">
+                  <input type="text" class="form-control" id="StdID" name="student_id" ngModel [(ngModel)]="newStudentCode" placeholder="ex.570510637">
                 </div>
                 <div class="form-group">
                   <label>Student Name:</label>
-                  <input type="text" class="form-control" id="StdName" name="student_name" ngModel [(ngModel)]="newStudentName">
+                  <input type="text" class="form-control" id="StdName" name="student_name" ngModel [(ngModel)]="newStudentName" placeholder="ex.ชลธิชา บัวตูม">
                 </div>
                 <!-- upload file -->
                 <div *ngIf="currentFileUpload" class="progress" style="width:400px">

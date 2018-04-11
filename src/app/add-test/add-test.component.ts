@@ -60,6 +60,8 @@ export class AddTestComponent implements OnInit {
   newSubjectName: any;
   newSubjectCode: any;
   subCollection: AngularFirestoreCollection<Subject>;
+  chapterCodeLast: any;
+  
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
     //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
@@ -81,17 +83,25 @@ export class AddTestComponent implements OnInit {
 
     this.chapterList.forEach(chap => {
       this.chapLenght = chap.length;
-      console.log(this.chapLenght);
+      
+      // console.log(this.chapLenght);
       if (this.chapLenght == 0) {
-        this.chapter_Code = "ch0";      ///makeeeeeeeeeeeeeeeeeeeee
+        this.chapter_Code = "0";      ///makeeeeeeeeeeeeeeeeeeeee
         //make document key in questions
         this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
         console.log(this.question_keyAdd);
       } else {
-        this.chapter_Code = "ch" + this.chapLenght;
-        //make document key in questions
+        this.chapterCodeLast = chap[chap.length-1].code;
+        this.chapterCodeLast = +this.chapterCodeLast;   //string to number
+        // console.log(this.chapterCodeLast);
+        this.chapter_Code = (this.chapterCodeLast + 1).toString();
+        console.log(this.chapter_Code);
         this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
         console.log(this.question_keyAdd);
+        // this.chapter_Code = "ch" + this.chapLenght;
+        // //make document key in questions
+        // this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
+        // console.log(this.question_keyAdd);
       }
     })
   }
@@ -116,7 +126,7 @@ export class AddTestComponent implements OnInit {
     this.file = event.target.files[0];
   }
   //---create new Test
-  createNewTest(data: NgForm) {
+  createNewTest() {
 
     //this.subCollection.doc("null").delete()
 
