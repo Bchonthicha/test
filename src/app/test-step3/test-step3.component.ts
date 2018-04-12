@@ -13,6 +13,9 @@ import { Student } from '../inteterfaces/student';
 import { StudentCheckBox } from '../inteterfaces/student-check-box';
 import * as _ from "lodash";
 import { Section } from '../inteterfaces/section';
+import { Exam } from '../inteterfaces/exam';
+import { StudentExam } from '../inteterfaces/studentExam';
+import { QuestionExam } from '../inteterfaces/questionExam';
 import { DocumentReference } from '@firebase/firestore-types';
 
 // import { Router } from '@angular/router';
@@ -24,8 +27,7 @@ import { DocumentReference } from '@firebase/firestore-types';
 export class TestStep3Component implements OnInit {
 
   todayDate: any;
-  receiveTest1: any;
-  receiveTest2: any;
+
   receiveTest3: any;
 
   GroupList: AngularFireList<any>;
@@ -61,6 +63,15 @@ export class TestStep3Component implements OnInit {
   // Temporary Variable =ชั่วคราว
   isSelect: boolean
   studentListAdd = [];
+  now: any;    //timestamp now
+  receiveTest1: any;
+  receiveTest2: any;
+  subject_code: any;
+  chapter_code: any;
+  exam_code: any;
+  examData: Exam;
+  studentExam: StudentExam;
+  questionExam: QuestionExam;
 
   constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
     /*
@@ -77,11 +88,18 @@ export class TestStep3Component implements OnInit {
     //
 */
     console.log("_____________step 3____________");
+    console.log(this.firebaseService.arrayTest1);
     console.log(this.firebaseService.arrayTest2);
+    this.receiveTest1 = this.firebaseService.arrayTest1;
+    this.receiveTest2 = this.firebaseService.arrayTest2;
 
     //section or group
     const sectionRef: AngularFirestoreCollection<Section> = this.afs.collection<Section>(`/sections`);
     this.groupList = sectionRef.valueChanges()
+
+    // console.log(this.receiveTest1[0].code);
+    this.subject_code = this.receiveTest1[0].code;
+    this.chapter_code = this.receiveTest1[1].code;
 
   }
 
@@ -121,79 +139,94 @@ export class TestStep3Component implements OnInit {
   createSelectAll() {
     this.studentListAdd = _.map(this.studentListAdd, (student: StudentCheckBox) => {
       student.selected = this.isSelect;
-      console.log(student.code);
+      // console.log(student.code);
       return student;
     });
   }
 
   StartSelectStudent() {
-    //หา คนใน studentListAdd ที่ selected โดยที่ถ้า selected จะ return true
+    let arrayTest3pack = [];
+    let arrayTest3pack2 = [];
+
+    //set timestamp
+    this.now = Date.now();
+    console.log(this.now); // shows current timestamp
+
+    //set exam code 
+    this.subject_code = this.receiveTest1[0].code;
+    this.chapter_code = this.receiveTest1[1].code;
+
+    this.exam_code = this.subject_code + "_" + this.chapter_code + "_" + this.now
+    console.log(this.exam_code);
+    this.firebaseService.Test_id_new = this.exam_code;    //subject_chapter_timestamp : 205100_ch0_1523089877262
+
+
+    this.examData = {
+      amount: this.receiveTest1[2],
+      chapter_code: this.receiveTest1[1].code,
+      chapter_name: this.receiveTest1[1].name,
+      current_question: 0,
+      date: this.now,
+      description: this.receiveTest1[3],
+      exam_code: this.exam_code,
+      status: "active",
+      subject_code: this.receiveTest1[0].code,
+      subject_name: this.receiveTest1[0].name,
+      type: this.receiveTest1[5]
+    }
+
+    console.log(this.examData);
+    //---add data detail in exam
+    const examRef: AngularFirestoreDocument<Exam> = this.afs.doc<Exam>(`/exam/${this.exam_code}`);
+    examRef.set(this.examData);
+
+    //---หา คนใน studentListAdd ที่ selected โดยที่ถ้า selected จะ return true
     let selectStudent = _.filter(this.studentListAdd, (student: StudentCheckBox) => {
       // console.log(student.selected);
       return student.selected;
     });
 
-    //หา student ที่ selectStudent มีค่าเป็น true
+    //---หา student ที่ selectStudent มีค่าเป็น true
     _.forEach(selectStudent, (student: StudentCheckBox) => {
-      console.log(student.code);
+      // console.log(student.code, student.name, student.url);
+
+      this.studentExam = {
+        code: student.code,
+        name: student.name,
+        score: 0,
+        url: student.url
+      }
+      console.log(this.studentExam);
+
+      //---add students in exam
+      const StudentExamRef: AngularFirestoreDocument<StudentExam> = this.afs.doc<StudentExam>(`/exam/${this.exam_code}/students/${student.code}`)
+      StudentExamRef.set(this.studentExam);
+      arrayTest3pack.push(this.studentExam);
+
     })
-    /*
-     alert("std");
- 
-     let arrayTest3pack = [];
- 
-     // console.log(this.std_list_display);
-     this.std_list_display.forEach((item, index) => {
-       //console.log(item);
-       //console.log(item.selected);
-       if (item.selected == true) {
-         console.log(item);
-         //arrayTest3pack.push(item.student_id);
-         // console.log(arrayTest3pack);
-         this.ObjStudent_detail = {
-           "student_id": item.student_id,
-           "student_name": item.student_name,
-           "score": 0,
-           "url": item.url,
-           "student_answer": [""]
-         }
-         console.log(this.ObjStudent_detail);
- 
-         arrayTest3pack.push(this.ObjStudent_detail);
-         this.firebaseService.arrayTest3 = arrayTest3pack;
-         console.log(arrayTest3pack);
-       }
-     });
-     this.receiveTest1 = this.firebaseService.arrayTest1;
-     this.receiveTest2 = this.firebaseService.arrayTest2;
-     this.receiveTest3 = this.firebaseService.arrayTest3;
-     console.log(this.receiveTest1);
-     console.log(this.receiveTest2);
-     console.log(this.receiveTest3);
- 
-     //this.todayDate = new Date().toUTCString();
-     this.todayDate = new Date().toLocaleString();
-     console.log(this.todayDate);
-     //Add item with Custom IDs In Firebase
-     const key = this.firebaseService.Test_id_new;
-     const data2 = {
-       category_id: this.receiveTest1[0],
-       topic_id: this.receiveTest1[1],
-       test_date: this.todayDate,
-       test_numQuestion: this.receiveTest1[2],     //ต้องแก้เป็น test_numQuestion
-       test_description: this.receiveTest1[3],
-       question: this.receiveTest2,
-       students: this.receiveTest3,
-       test_status: true
-     }
-     console.log(key + "++++" + data2);
- 
-     //create TestScore to database
-     console.log(this.std_list_display);
- 
-     //Add item with Custom IDs In Firebase to Test table
-     this.db.list("/Test").set(key, data2);
-  */
+
+    this.receiveTest2.forEach((question, index) => {
+      // console.log(question, index);
+      this.questionExam = {
+        answer: question.answer,
+        choice: question.choice,
+        code: question.code,
+        indax: index,
+        question: question.question
+      }
+      console.log(this.questionExam);
+      //---add questions in exam
+      const QuestionExamRef: AngularFirestoreDocument<QuestionExam> = this.afs.doc<QuestionExam>(`/exam/${this.exam_code}/questions/${question.code}`)
+      QuestionExamRef.set(this.questionExam);
+
+      arrayTest3pack2.push(this.questionExam);
+    })
+    
+    this.firebaseService.arrayTest3 = arrayTest3pack;
+    console.log(arrayTest3pack);
+
+    this.firebaseService.arrayTest3_2 = arrayTest3pack2;
+    console.log(arrayTest3pack2);
   }
 
   ngOnInit() { }

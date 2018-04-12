@@ -26,10 +26,11 @@ export class TestStep2Component implements OnInit {
   question_list_display = [];
   //new
   receiveQuestion: any;
+  
   constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService) {
     // console.log(this.firebaseService.arrayTest1);
     console.log("______in step 2______");
-
+   
     this.receiveTest1 = this.firebaseService.arrayTest1;
     console.log(this.receiveTest1);
     console.log(this.receiveTest1[4]);

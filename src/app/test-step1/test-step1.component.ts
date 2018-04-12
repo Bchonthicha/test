@@ -66,13 +66,14 @@ export class TestStep1Component implements OnInit {
   subCode: any;
   chapterCode: any;
   questionTmp = [];
-  now: any;    //timestamp now
-  SelectCategory="";
+
+  SelectCategory = "";
   NumOfItemThis: any;
 
   questionCollection: AngularFirestoreCollection<Question>;
   chapterRef: AngularFirestoreDocument<Chapter>
-
+  question_type:any;
+  
   constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
     /*
         this.CategoryList = this.db.list('/Category');
@@ -115,7 +116,7 @@ export class TestStep1Component implements OnInit {
 
   //-------function เมื่อเลือกCatagory select
   onChange(code) {
-    this.SelectTopic="";
+    this.SelectTopic = "";
     this.subCode = code.code;
     console.log(this.subCode);
     // this.chapterRefLocal = this.afs.doc<Chapter>(`/subjects/${code}/chapters/`)
@@ -200,8 +201,8 @@ export class TestStep1Component implements OnInit {
       // console.log(data);
       this.questionData = data;
       this.amount = data.amount;
-      // console.log(this.amount);
-
+      console.log("typeeee"+data.type);
+      this.question_type= data.type;
       ///////////////////////////////////////////////////////////มันผิด
       // console.log(data);
       console.log(data.question);
@@ -219,9 +220,6 @@ export class TestStep1Component implements OnInit {
   }
 
   StartSelectTest(data: NgForm) {
-    //set timestamp
-    this.now = Date.now();
-    console.log(this.now); // shows current timestamp
 
     this.questionTmp = [];
     console.log("is meeeee");
@@ -258,16 +256,15 @@ export class TestStep1Component implements OnInit {
         i++;
       }
     }
-
+    //make type string to number
+    let numOfItemThis_num = +  this.NumOfItemThis;
+  
     //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
     let arrayTest1pack = [];
-    arrayTest1pack.push(this.SelectCategory, this.SelectTopic, this.NumOfItemThis, this.InputDescription, this.questionTmp);
+    arrayTest1pack.push(this.SelectCategory, this.SelectTopic, numOfItemThis_num, this.InputDescription, this.questionTmp,this.question_type);
     console.log(arrayTest1pack);
 
     this.firebaseService.arrayTest1 = arrayTest1pack;     //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
-
-    console.log(this.subCode + "_" + this.chapterCode + "_" + this.now);
-    this.firebaseService.Test_id_new = this.subCode + "_" + this.chapterCode + "_" + this.now;    //subject_chapter_timestamp : 205100_ch0_1523089877262
 
     this.clearTest1();
   }

@@ -1,7 +1,7 @@
-//ข้อคำถามแต่ละข้อ
-export interface subQuestion {
+export interface QuestionExam {
     answer: number,
     choice: Array<any>,
     code: number,
+    indax:number,
     question: string
 }

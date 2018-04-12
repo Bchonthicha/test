@@ -3,7 +3,8 @@
   <option>Group2</option>
   <option>Group3</option>
 </select> -->
-
+<p>dateeeee</p>
+ {{now | date :'short'}} 
 <label for="exampleSelect1">Group select</label>
 <select class="form-control" id="SelectGroup" name="SelectGroup" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisGroup">
   <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>

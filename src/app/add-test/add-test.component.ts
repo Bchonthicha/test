@@ -119,6 +119,7 @@ export class AddTestComponent implements OnInit {
     //----Add subject detail in subject
     const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
     subjectRef2.set(this.subjectAdd);
+    
   }
   //---get json data from excel file
   incomingfile(event) {
@@ -159,7 +160,7 @@ export class AddTestComponent implements OnInit {
         this.sub_question = {
           "answer": this.question_excel[index].answer,
           "choice": choice_arr,
-          "key": this.question_key,
+          "code": this.question_key,
           "question": this.question_excel[index].question
 
         }
@@ -171,7 +172,7 @@ export class AddTestComponent implements OnInit {
 
 
 
-      //make type string tp number
+      //make type string to number
       let type_num = +this.type;
       //console.log(type_num);
 

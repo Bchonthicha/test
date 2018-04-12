@@ -128,7 +128,7 @@ export class EditDetailComponent implements OnInit {
           this.sub_question = {
             "answer": this.question_excel[index].answer,
             "choice": choice_arr,
-            "key": this.question_key,
+            "code": this.question_key,
             "question": this.question_excel[index].question
 
           }
