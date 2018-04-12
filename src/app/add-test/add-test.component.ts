@@ -36,7 +36,6 @@ export class AddTestComponent implements OnInit {
   //excel convert
   arrayBuffer: any;
   file: File;
-  array_excel = [];
   question_excel: subQuestion[];
   question_key: any;
   sub_question: subQuestion;
@@ -61,7 +60,7 @@ export class AddTestComponent implements OnInit {
   newSubjectCode: any;
   subCollection: AngularFirestoreCollection<Subject>;
   chapterCodeLast: any;
-  
+
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
     //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
@@ -83,7 +82,7 @@ export class AddTestComponent implements OnInit {
 
     this.chapterList.forEach(chap => {
       this.chapLenght = chap.length;
-      
+
       // console.log(this.chapLenght);
       if (this.chapLenght == 0) {
         this.chapter_Code = "0";      ///makeeeeeeeeeeeeeeeeeeeee
@@ -91,7 +90,7 @@ export class AddTestComponent implements OnInit {
         this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
         console.log(this.question_keyAdd);
       } else {
-        this.chapterCodeLast = chap[chap.length-1].code;
+        this.chapterCodeLast = chap[chap.length - 1].code;
         this.chapterCodeLast = +this.chapterCodeLast;   //string to number
         // console.log(this.chapterCodeLast);
         this.chapter_Code = (this.chapterCodeLast + 1).toString();
@@ -130,7 +129,6 @@ export class AddTestComponent implements OnInit {
 
     //this.subCollection.doc("null").delete()
 
-    this.array_excel = [];
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       this.arrayBuffer = fileReader.result;

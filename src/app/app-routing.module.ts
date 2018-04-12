@@ -31,6 +31,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AddTestComponent } from './add-test/add-test.component';
 import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
+import { EditDetailComponent } from './edit-detail/edit-detail.component';
+
 const routes: Routes = [
   { 
     path: '',      //เดิมเป็น path: ' '
@@ -103,6 +105,10 @@ const routes: Routes = [
           {
             path: 'Delete-Test',
             component: DeleteTestComponent,
+          },
+          {
+            path: 'edit/:subjectChapCode',
+            component: EditDetailComponent
           }
         ]
       },

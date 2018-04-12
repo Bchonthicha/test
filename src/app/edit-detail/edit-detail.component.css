@@ -1,0 +1,15 @@
+editDetail{
+    margin: 30px;  
+  }
+
+
+  .content{
+    background-color:white;
+  }
+  .tableShow{
+    background-color:#f2f2f2;
+  }
+  u {
+    /* text-decoration: underline; */
+    border-bottom: double 2px;
+}

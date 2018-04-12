@@ -9,3 +9,8 @@ edit-test{
   .delSub{
     margin-right: 8px;
   }
+  
+  .detail:hover{
+    cursor: pointer;
+    text-decoration: underline; 
+    }

@@ -103,6 +103,7 @@ import { TablePaginationComponent } from './table-pagination/table-pagination.co
 import { AddTestComponent } from './add-test/add-test.component';
 import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
+import { EditDetailComponent } from './edit-detail/edit-detail.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { EditTestComponent } from './edit-test/edit-test.component';
     TablePaginationComponent,
     AddTestComponent,
     DeleteTestComponent,
-    EditTestComponent
+    EditTestComponent,
+    EditDetailComponent
   ],
   imports: [
     FeatureToggleModule,
