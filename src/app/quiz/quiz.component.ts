@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FirebaseService } from '../services/firebase.service';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireDatabase, AngularFireList, snapshotChanges } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+
+import { Exam } from '../inteterfaces/exam';
+import { StudentExam } from '../inteterfaces/studentExam';
+import { QuestionExam } from '../inteterfaces/questionExam';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
@@ -18,7 +25,7 @@ export class QuizComponent implements OnInit {
   receiveTest1: any;
   receiveTest2: any;
   receiveTest3: any;
-
+  receiveTest3_2: any;
   //สำหรับการดึงค่าจาก database ในตาราง testList
   testList: any;
   dataObj_pre: any;
@@ -41,8 +48,7 @@ export class QuizComponent implements OnInit {
   total_num_cal: any;
   //ตัวเลขปของงคำถามมัจจุบัน
   current_num: any;
-  //ตัวเลขเปอร์เซ็นต์ที่แสดง
-  doing_percent: any;
+
 
   //ดึงค่าจาก database ในตาราง TestScore
   TestScoreList: AngularFireList<any>;
@@ -52,56 +58,82 @@ export class QuizComponent implements OnInit {
   testID: any;
   //รหัส Topic ที่แสดงอยู่ตอนนี้
   Topic: any;
-  //รหัส question ที่แสดงอยู่ตอนนี้
-  Q_no: any;
-  //ผลเฉลยของคำถามที่แสดงอยู่ตอนนี้
-  Q_answer_index: any;
+
 
   //สำหรับเก็บค่าเพื่อแสดงในส่วนของรายการคำตอบที่รับเข้ามา และ ประมวลผล
   pack_array_testList: any;
   array_testList = [];
 
+  //new
+  studentExamCollection: AngularFirestoreCollection<StudentExam>;
+  students: Observable<StudentExam[]>;
 
+  questionExamCollection: AngularFirestoreCollection<QuestionExam>;
+  questions: Observable<QuestionExam[]>;
+  questionsList: any;
+  examObservable: Observable<Exam>
+  examSubDisplay: any;
+  examChapDisplay: any;
+  examDesDisplay: any;
+  //ตัวเลขเปอร์เซ็นต์ที่แสดง
+  doing_percent: any;
+  question_show: any;
+  choice_show: any;
+  //รหัส question ที่แสดงอยู่ตอนนี้
+  Q_no: any;
+  //ผลเฉลยของคำถามที่แสดงอยู่ตอนนี้
+  Q_answer_index: any;
+  //ตำแหน่งคำถาม
+  Q_index: any;
+  examType: any;
+  examStatus: any;
+  ansObservable: any;
+  constructor(private router: Router, private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
 
-  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService) {
-    // test score add to database
-    this.TestScoreList = this.db.list('/TestScore');  //Display Test
-
-    this.dataObj2 = this.TestScoreList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-
-    // this.dataObj.subscribe( data => {
-    //   console.log(data);
-    // });
-    //this.test();
+    //ลองคำนวนเพื่อใช้สรุป
+    let hii = [10, 30, 10];
+    console.log(hii);
+    console.log(Math.max.apply(null, hii));
+    console.log(Math.min.apply(null, hii));
+    // console.log(Math.sqrt(this.variance(hii)));
+    let sum = hii.reduce((previous, current) => current += previous);
+    let avg = (sum / hii.length).toFixed(2);
+    console.log(avg);
     //
 
     //list pubilc for test step
     this.receiveTest1 = this.firebaseService.arrayTest1;
     this.receiveTest2 = this.firebaseService.arrayTest2;
     this.receiveTest3 = this.firebaseService.arrayTest3;
-    // console.log(this.receiveTest1);
-    // console.log(this.receiveTest2);
-    // console.log(this.receiveTest3);
-
-    //
-
+    this.receiveTest3_2 = this.firebaseService.arrayTest3_2;
     this.testID = this.firebaseService.Test_id_new;
+
+    console.log(this.receiveTest1);
+    // console.log(this.receiveTest2);
+    console.log(this.receiveTest3);
+    console.log(this.receiveTest3_2);
     console.log(this.testID);
 
-    let path = 'Test/' + this.testID;
-    let ref2 = this.db.list(path).valueChanges();
+    //
+    //---exam data detail
+    const examRefLocal = this.afs.doc<Exam>(`/exam/${this.testID}`)
+    this.examObservable = examRefLocal.valueChanges()
+    console.log(this.examObservable);
 
-    ref2.forEach(data => {
+    this.examObservable.forEach(exam => {
+      console.log(exam);
 
-      console.log(data[1]);    //["category1",["Q5", "Q4", "Q3"], [570510640, 570510641, 570510642], "Tue, 27 Feb 2018 08:18:32 GMT", "ก่อนเรียน", "3", "T1"]
-      this.Topic = data[6];
-      console.log(data[6]);
-      console.log(data[5]);
+      this.examSubDisplay = exam.subject_name;
+      this.examChapDisplay = exam.chapter_name;
+      this.examDesDisplay = exam.description;
+      this.examType = exam.type;
+      this.examStatus = exam.status;
 
-      this.total_num = data[5];
-      this.total_num_cal = data[5];
+      console.log("status   =  " + this.examStatus);
+
+      console.log(this.examSubDisplay, this.examChapDisplay, this.examDesDisplay);
+      this.total_num = exam.amount;
+      this.total_num_cal = exam.amount;
       this.current_num = 0;
 
       if (this.current_num == 0) {
@@ -109,66 +141,54 @@ export class QuizComponent implements OnInit {
       } else {
         this.doing_percent = ((this.current_num / this.total_num_cal) * 100).toFixed(2);;
       }
-
-
-      let path = 'Topics/' + data[6];
-      let ref3 = this.db.list(path).valueChanges();
-
-      ref3.subscribe(data => {
-        // console.log("size" + this.receiveQid.length);
-        console.log(data);
-        console.log(data[5]);
-        this.topic_name_display = data[5];
-      });
-
-      this.q_id = data[1];
-      console.log(this.q_id);
-      this.q_id.forEach(item => {
-        console.log(item);
-        let path = 'Questions/' + item;
-        let ref4 = this.db.list(path).valueChanges();
-
-        ref4.subscribe(data => {
-          // console.log("size" + this.receiveQid.length);
-          console.log(data);
-          console.log(data[2]);
-
-          let tem = {
-            keyQ: item,
-            answer_index: data[0],
-            choice: data[1],
-            question: data[2],
-            topic_id: data[3],
-            status: false
-          }
-          console.log(tem);
-          this.question_display.push(tem);
-          console.log(this.question_display);
-
-          console.log((this.current_num));
-          console.log(this.question_display[(this.current_num)]);
-          console.log(this.question_display[(this.current_num)].keyQ);
-          this.Q_no = (this.question_display[(this.current_num)].keyQ);
-          console.log(this.question_display[(this.current_num)].question);
-          console.log(this.question_display[(this.current_num)].answer_index);
-          this.Q_answer_index = this.question_display[(this.current_num)].answer_index;
-
-          this.question_display2 = this.question_display[(this.current_num)].question;
-          console.log(this.question_display2);
-
-          this.choice_display = this.question_display[(this.current_num)].choice;
-          this.choice_display.forEach(item3 => {
-            console.log(item3);
-          });
-        });
-
-      })
     })
 
+    //---student in exam
+    this.studentExamCollection = afs.collection<StudentExam>(`/exam/${this.testID}/students`, ref => ref.orderBy('code'))
+    this.students = this.studentExamCollection.valueChanges()
 
-    //call function set_oldScore
-    //   this.set_oldScore();
-    //  console.log(this.score_old2);
+    this.students.forEach(stu => {
+      console.log(stu);
+      stu.forEach(data1 => {
+        console.log(data1.code);
+      })
+    })
+    //---question in exam
+    this.questionExamCollection = afs.collection<QuestionExam>(`/exam/${this.testID}/questions`, ref => ref.orderBy('code'))
+    this.questions = this.questionExamCollection.valueChanges()
+
+    this.questions.forEach(ques => {
+      console.log(ques);
+      // ques.forEach(data1 => {
+      //   console.log(data1.code);
+      //   console.log(data1.indax);
+      // })
+
+      //test show sort indax
+      this.questionsList = ques.sort(function (obj1, obj2) {
+        // Ascending: first age less than the previous
+        return obj1.indax - obj2.indax;
+      });
+      // console.log(this.questionsList[this.current_num]);
+      this.question_show = this.questionsList[this.current_num].question;
+      // console.log(this.question_show);
+
+      if (this.examType == 1) {
+        this.choice_show = null;
+      } else {
+        this.choice_show = this.questionsList[this.current_num].choice;
+      }
+
+
+      // console.log(this.choice_show);
+      this.Q_answer_index = this.questionsList[this.current_num].answer;
+      // console.log(this.Q_answer_index);
+      this.Q_no = this.questionsList[this.current_num].code;
+      // console.log(this.Q_no);
+      this.Q_index = this.questionsList[this.current_num].indax;
+      // console.log(this.Q_index);
+
+    })
   }
 
   ngOnInit() {
@@ -210,31 +230,27 @@ export class QuizComponent implements OnInit {
 
     this.db.list("/TestList").push(data);
 
-    /*console.log(this.tesssttext1); 
-    console.log(this.tesssttext2);  
-    let scoreSum = 0;
-    if (this.tesssttext2 == 1) {
-      scoreSum = scoreSum + 1;
-      console.log(scoreSum);
-    }
-
-    let testeiei = { "id": this.tesssttext1, "name": "nametest" + this.tesssttext1, "Score": scoreSum, "Answer": this.tesssttext2 };
-    console.log(testeiei.id);
-
-    this.eiei.forEach((data, index) => {
-      console.log("dataaa=" + data + " indexxxx" + index);
-      console.log(data.id);
-      if (data.id == testeiei.id) {
-        console.log("sameeeeee");
-        this.eiei.splice(index, 1);
-      }
-    });
-    this.eiei.push(testeiei);
-    */
-    // this.displayStulist();
   }
   inputAnswer() {
+    console.log("inputAnswer");
 
+    const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
+    this.ansObservable = answerRefLocal.valueChanges()
+    console.log(this.ansObservable);
+
+    this.ansObservable.forEach(d => {
+      console.log(d["570510638"]["0"]);
+
+
+  
+      // let selectStudent = _.filter(d, (student: StudentCheckBox) => {
+
+      //   return student.selected;
+      // });
+    })
+
+
+    /*
     //database ของ TestList
     this.testList = this.db.list('/TestList');
     this.dataObj_pre = this.testList.snapshotChanges().map(changes => {
@@ -272,6 +288,7 @@ export class QuizComponent implements OnInit {
         }
       });
     });
+    */
   }
 
   ProcessAnswer() {
@@ -304,51 +321,72 @@ export class QuizComponent implements OnInit {
     });
   }
   NextQuestion() {
-    //เก็บใน database ตาราง TestScore 
-    console.log(this.array_testList);
-
 
     //เริ่มข้อคำถามใหม่
-    this.array_testList = [];
+
     if (this.current_num < this.total_num - 1) {
       alert("NextQuestion");
       this.current_num = this.current_num + 1;
-      console.log(this.current_num);
-      console.log(this.question_display[(this.current_num)].question);
-      console.log(this.question_display[(this.current_num)].keyQ);
-      this.Q_no = (this.question_display[(this.current_num)].keyQ);
-      this.Q_answer_index = (this.question_display[(this.current_num)].answer_index);
-      this.question_display2 = this.question_display[(this.current_num)].question;
-      // console.log( this.question_display2);
-      this.choice_display = this.question_display[(this.current_num)].choice;
-      this.choice_display.forEach(item3 => {
-        console.log(item3);
-        console.log(this.question_display[(this.current_num)].answer_index);
+      // console.log(this.current_num);
 
-      });
+      // console.log(this.questionsList[this.current_num]);
+      this.question_show = this.questionsList[this.current_num].question;
+      // console.log(this.question_show);
+      if (this.examType == 1) {
+        this.choice_show = null;
+      } else {
+        this.choice_show = this.questionsList[this.current_num].choice;
+      }
+      // console.log(this.choice_show);
+      this.Q_answer_index = this.questionsList[this.current_num].answer;
+      // console.log(this.Q_answer_index);
+      this.Q_no = this.questionsList[this.current_num].code;
+      // console.log(this.Q_no);
+      this.Q_index = this.questionsList[this.current_num].indax;
+      // console.log(this.Q_index);
+
       this.doing_percent = ((this.current_num / this.total_num_cal) * 100).toFixed(2);
-      this.question_display[(this.current_num - 1)].status = true;
-      console.log(this.question_display);
 
     } else {
+      this.current_num = this.current_num + 1;
+      console.log(this.current_num);
       alert("หมด");
-      this.question_display[(this.current_num)].status = true;
-      console.log(this.question_display);
+      this.doing_percent = ((this.current_num / this.total_num_cal) * 100).toFixed(2);
+
+      //update examStatus
+      console.log("UpdateExam");
+
+      const statusUpdate = {
+        status: "finish"
+      };
+      //path to update
+      const examRef = this.afs.doc<Exam>(`exam/${this.testID}`);
+      examRef.update(statusUpdate).then(() => {
+        console.log("update Subject");
+        this.router.navigate(['dashboard', 'test', 'scores'])
+      });
     }
   }
 
   PuaseTest() {
     alert("Puase");
+    //update examStatus
+    console.log("UpdateExam");
+
+    const statusUpdate = {
+      status: "puase"
+    };
+    //path to update
+    const examRef = this.afs.doc<Exam>(`exam/${this.testID}`);
+    examRef.update(statusUpdate).then(() => {
+      console.log("update Subject");
+      this.router.navigate(['dashboard'])
+    })
   }
   SkipQuestion() {
     alert("Skip");
     this.total_num_cal = this.total_num_cal - 1;
     this.doing_percent = ((this.current_num / this.total_num_cal) * 100).toFixed(2);
   }
-
-  displayStulist() {
-    alert("heyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-  }
-
 
 }

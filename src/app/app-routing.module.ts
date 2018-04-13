@@ -32,7 +32,7 @@ import { AddTestComponent } from './add-test/add-test.component';
 import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
 import { EditDetailComponent } from './edit-detail/edit-detail.component';
-
+import { ScoresComponent } from './scores/scores.component';
 const routes: Routes = [
   { 
     path: '',      //เดิมเป็น path: ' '
@@ -87,6 +87,10 @@ const routes: Routes = [
             path: 'quiz',
             component: QuizComponent,
           },
+          {
+            path:'scores',
+            component:ScoresComponent
+          }
         ]
       },
       {

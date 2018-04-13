@@ -57,11 +57,11 @@ export class FirebaseService {
 
   public arrayTest3_2 =[
     { answer: 2, choice: ["ผนังเซลล์", "แวคิวโอล", "คลอโรพลาสต์", "ไซโทพลาซึม"], code: "0", indax: 0,question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด" },
-    { answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], code: "1", indax: 1,question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม" },
-    { answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], code: "3",indax: 2, question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม" }
+    { answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], code: "1", indax: 2,question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม" },
+    { answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], code: "3",indax: 1, question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม" }
   ];
   // public Test_id_new:any;
-  public Test_id_new = "test5";
+  public Test_id_new = "205100_0_1523556030900";
   // public TestScore_id_new:any;
   constructor(private db: AngularFireDatabase, private afs: AngularFirestore) {
 

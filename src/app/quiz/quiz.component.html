@@ -5,9 +5,12 @@
       <div class="row header_test_left">
     
         <div class="col-md-9">
-            <h3>
-                <b> Topic:</b>  &nbsp; &nbsp; {{topic_name_display}}
-              </h3>
+            <h4>
+                <b> Subject:</b>  &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp; <b> Chapter:</b>  &nbsp; &nbsp; {{examChapDisplay}}
+              </h4>
+              <h4>
+                  <b> Description:</b>  &nbsp; &nbsp; {{examDesDisplay}} 
+                </h4>
               <div class="btnn-header">
                   <button type="submit" class="btn btn-warning btn-md" style="width: 45%;" (click)="PuaseTest()">
                     <span class="glyphicon glyphicon-pause"></span> Puase</button>
@@ -28,8 +31,8 @@
       </div>
       <div class="row body_test_left">
         <div class="content-body ">
-            <h3>  <b> ข้อที่ {{current_num +1}}:</b> {{question_display2}} </h3>
-            <p *ngFor="let data of choice_display ; let i=index">
+            <h3>  <b> ข้อที่ {{current_num +1}}:</b> {{question_show}} </h3>
+            <p *ngFor="let data of choice_show ; let i=index">
                 <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>
               </p>
              <!-- test -->

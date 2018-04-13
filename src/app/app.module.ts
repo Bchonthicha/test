@@ -104,6 +104,7 @@ import { AddTestComponent } from './add-test/add-test.component';
 import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
 import { EditDetailComponent } from './edit-detail/edit-detail.component';
+import { ScoresComponent } from './scores/scores.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { EditDetailComponent } from './edit-detail/edit-detail.component';
     AddTestComponent,
     DeleteTestComponent,
     EditTestComponent,
-    EditDetailComponent
+    EditDetailComponent,
+    ScoresComponent
   ],
   imports: [
     FeatureToggleModule,
