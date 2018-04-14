@@ -26,7 +26,6 @@ export class ExcelService {
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Student');
     XLSX.writeFile(workbook, excelFileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-
   }
 
 }

@@ -105,7 +105,9 @@ import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
 import { EditDetailComponent } from './edit-detail/edit-detail.component';
 import { ScoresComponent } from './scores/scores.component';
-
+//
+import {ChartModule} from 'primeng/chart';
+import {AccordionModule} from 'primeng/accordion';
 @NgModule({
   declarations: [
     AppComponent,
@@ -134,7 +136,8 @@ import { ScoresComponent } from './scores/scores.component';
     DeleteTestComponent,
     EditTestComponent,
     EditDetailComponent,
-    ScoresComponent
+    ScoresComponent,
+
   ],
   imports: [
     FeatureToggleModule,
@@ -184,7 +187,9 @@ import { ScoresComponent } from './scores/scores.component';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
-    NgSemanticModule 
+    NgSemanticModule ,
+    ChartModule,
+    AccordionModule
   ],
   // providers: [AuthService, AuthGuard],
   providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService,CookieService ],
