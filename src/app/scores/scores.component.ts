@@ -7,7 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoresComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+        //ลองคำนวนเพื่อใช้สรุป
+        let hii = [10, 30, 10];
+        console.log(hii);
+        console.log(Math.max.apply(null, hii));
+        console.log(Math.min.apply(null, hii));
+        // console.log(Math.sqrt(this.variance(hii)));
+        let sum = hii.reduce((previous, current) => current += previous);
+        let avg = (sum / hii.length).toFixed(2);
+        console.log(avg);
+        //
+   }
 
   ngOnInit() {
   }

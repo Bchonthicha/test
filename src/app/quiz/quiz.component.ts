@@ -34,15 +34,6 @@ export class QuizComponent implements OnInit {
   //["Q5", "Q4", "Q3"]
   q_id: any;
 
-  //ชื่อ topic ที่แสดง
-  topic_name_display: any;
-
-  //array ของ list รายการคำถามทั้งหมด
-  question_display = [];
-  //ผลแสดงคำถามที่แสดงในข้อนั้นๆ
-  question_display2: any;
-  //choice ที่นำไปแสดง
-  choice_display: any;
   //จำนวนคำถามที่มี รับมาจาก database
   total_num: any;
   //จำนวนคำถามสำหรับคำนวน
@@ -50,16 +41,8 @@ export class QuizComponent implements OnInit {
   //ตัวเลขปของงคำถามมัจจุบัน
   // current_num: any;
 
-
-  //ดึงค่าจาก database ในตาราง TestScore
-  TestScoreList: AngularFireList<any>;
-  dataObj2: any;
-
   //รหัส test ที่แสดงอยู่ตอนนี้
   testID: any;
-  //รหัส Topic ที่แสดงอยู่ตอนนี้
-  Topic: any;
-
 
   //สำหรับเก็บค่าเพื่อแสดงในส่วนของรายการคำตอบที่รับเข้ามา และ ประมวลผล
   pack_array_testList: any;
@@ -92,24 +75,22 @@ export class QuizComponent implements OnInit {
   examStatus: any;
   ansObservable: any;
   student_temp = [];
+  student_tempOri = [];
   answer: any;
   array_testListProcess = [];
   answerCheck: any;
+  answerCheckImg: any;
   current_question: any;
   questionObj: any;
 
+  isprocess: Boolean = false;
+
+  isValidProcess: Boolean = false;
+  isValidNext: boolean = true;
+
   constructor(private router: Router, private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+    this.array_testListProcess = [];
     this.array_testList = [];
-    //ลองคำนวนเพื่อใช้สรุป
-    let hii = [10, 30, 10];
-    console.log(hii);
-    console.log(Math.max.apply(null, hii));
-    console.log(Math.min.apply(null, hii));
-    // console.log(Math.sqrt(this.variance(hii)));
-    let sum = hii.reduce((previous, current) => current += previous);
-    let avg = (sum / hii.length).toFixed(2);
-    console.log(avg);
-    //
 
     //list pubilc for test step
     this.receiveTest1 = this.firebaseService.arrayTest1;
@@ -124,15 +105,39 @@ export class QuizComponent implements OnInit {
     console.log(this.receiveTest3_2);
     console.log(this.testID);
 
-    //exam data detail
-    this.examDataDetail();
+    const examRefLocal = this.afs.doc<Exam>(`/exam/${this.testID}`)
+    this.examObservable = examRefLocal.valueChanges()
+
+    this.examObservable.forEach(exam => {
+      console.log(exam.status);
+      this.examStatus = exam.status;
+      //exam data detail
+      if (this.examStatus == "Puase") {
+        alert("status = " + this.examStatus);
+        this.router.navigate(['dashboard'])
+      } else {
+        this.examDataDetail();
+      }
+    });
+
+
     //---
+    this.isValidProcess = false;
+    this.isValidNext = true;
 
+    //call inputAnswer
+    // setInterval(() => {
+    //   this.inputAnswer();
+    // }, 5000);
 
-
+    // this.inputAnswer();
   }
 
   examDataDetail() {
+    this.array_testList = [];
+    console.log("examDataDetail");
+    console.log("status   =  " + this.examStatus);
+
     //---exam data detail
     const examRefLocal = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.examObservable = examRefLocal.valueChanges()
@@ -169,6 +174,7 @@ export class QuizComponent implements OnInit {
       console.log(stu);
       stu.forEach(data1 => {
         console.log(data1.code);
+        this.student_tempOri.push(data1);
         this.student_temp.push(data1);
       })
     })
@@ -194,6 +200,8 @@ export class QuizComponent implements OnInit {
 
       }
     })
+
+
   }
   ngOnInit() {
 
@@ -208,7 +216,9 @@ export class QuizComponent implements OnInit {
   }
 
   inputAnswer() {
+    this.isprocess = false;
     console.log("inputAnswer");
+    this.array_testListProcess = [];
     this.array_testList = [];
     const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
     this.ansObservable = answerRefLocal.valueChanges()
@@ -237,15 +247,21 @@ export class QuizComponent implements OnInit {
             answer: this.answer
           }
           //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
-          this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
-          // this.array_testList.push(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
+          //this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
+           this.array_testList.push(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
           console.log(this.array_testList);     //ที่ตรงกับที่กำลังทำ     
         }
       })
     })
+
   }
 
   ProcessAnswer() {
+    this.isValidNext = false;
+    this.isValidProcess = true;
+    this.student_temp = this.student_tempOri;
+    this.isprocess = true;
+
     //ค่าผลเฉลยตามชนิดของแบบทดสอบ
     if (this.examType == 1) {
       this.answerCheck = this.answerType1;
@@ -265,6 +281,7 @@ export class QuizComponent implements OnInit {
 
       console.log(stu);
       console.log(stu.code);
+      console.log("นี่ฉันเองงงงงงงงงงงงงงงงง   " + stu.score);
       console.log(this.Q_no);
       // this.array_testList = [];
       this.ansObservable.subscribe(ans => {
@@ -275,10 +292,19 @@ export class QuizComponent implements OnInit {
         if (this.answer != undefined) {             //ได้รับคำตอบมา
           if (this.answer == this.answerCheck) { //คำตอบถูก
             console.log(this.answer + "===" + this.answerCheck);
-            let new_score = stu.score + 1;         //บวกคะแนนเพิ่ม
-            console.log(new_score);
-            stu.score = new_score;
+            // let new_score = stu.score + 1;         //บวกคะแนนเพิ่ม
+            // console.log(new_score);
+            stu.score = stu.score + 1;
             console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
+            this.answerCheckImg = "assets/dist/img/corract.png";
+            //update ค่า score ใน database
+            let newScoreUp = {
+              score: stu.score+1
+            }
+            const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${stu.code}`);
+            examRef.update(newScoreUp)
+          } else {
+            this.answerCheckImg = "assets/dist/img/incorract.png";
           }
           //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
           this.pack_array_testList = {
@@ -286,7 +312,7 @@ export class QuizComponent implements OnInit {
             student_name: stu.name,
             score: stu.score,
             url: stu.url,
-            answer: this.answer
+            answer: this.answerCheckImg
           }
           console.log(this.pack_array_testList);
 
@@ -297,15 +323,15 @@ export class QuizComponent implements OnInit {
             student_name: stu.name,
             score: stu.score,
             url: stu.url,
-            answer: this.answer
+            answer: "assets/dist/img/question.png"
           }
           console.log(this.pack_array_testList);
         }
 
         //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
-        this.array_testList.push(this.pack_array_testList);  //เพิ่มเข้าข้างหลัง
-        console.log(this.array_testList);     //ที่ตรงกับที่กำลังทำ     
-        this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
+        this.array_testListProcess.push(this.pack_array_testList);  //เพิ่มเข้าข้างหลัง
+        console.log(this.array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
+        // this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
       })
     })
 
@@ -313,20 +339,27 @@ export class QuizComponent implements OnInit {
 
   NextQuestion() {
     this.array_testList = [];
-    console.log(this.array_testListProcess);
-    this.array_testList.forEach(data => {
-      console.log(data.student_id, data.score);
-      //update ค่า score ใน database
-      let newScoreUp = {
-        score: data.score
-      }
-      const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${data.student_id}`);
-      examRef.update(newScoreUp)
-    })
+    this.array_testListProcess = [];
 
-    //เริ่มข้อคำถามใหม่
+    this.isValidNext = true;
+    this.isValidProcess = false;
+    this.isprocess = false;
+
+    // console.log(this.array_testListProcess);
+    // this.array_testListProcess.forEach(data => {
+    //   console.log(data.student_id, data.score);
+    //   //update ค่า score ใน database
+    //   let newScoreUp = {
+    //     score: data.score
+    //   }
+    //   const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${data.student_id}`);
+    //   examRef.update(newScoreUp)
+    // })
+
+    //เริ่มข้อคำถามใหม่ 
 
     if (this.current_question < this.total_num - 1) {
+
       console.log("NextQuestion");
       this.current_question = this.current_question + 1;
 
@@ -374,6 +407,10 @@ export class QuizComponent implements OnInit {
   }
 
   SkipQuestion() {
+    this.isValidNext = true;
+    this.isValidProcess = false;
+    this.isprocess = false;
+
     console.log("skip");
     console.log("old " + this.current_question);
     //update question status
@@ -414,6 +451,4 @@ export class QuizComponent implements OnInit {
       });
     }
   }
-
-
 }
