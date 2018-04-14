@@ -212,7 +212,8 @@ export class TestStep3Component implements OnInit {
         choice: question.choice,
         code: question.code,
         indax: index,
-        question: question.question
+        question: question.question,
+        status: true
       }
       console.log(this.questionExam);
       //---add questions in exam

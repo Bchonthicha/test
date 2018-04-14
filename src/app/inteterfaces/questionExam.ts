@@ -3,5 +3,6 @@ export interface QuestionExam {
     choice: Array<any>,
     code: number,
     indax:number,
-    question: string
+    question: string,
+    status:boolean
 }

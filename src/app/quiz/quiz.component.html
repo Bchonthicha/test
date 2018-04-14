@@ -31,19 +31,19 @@
       </div>
       <div class="row body_test_left">
         <div class="content-body ">
-            <h3>  <b> ข้อที่ {{current_num +1}}:</b> {{question_show}} </h3>
+            <h3>  <b> ข้อที่ {{current_question+1}}:</b> {{question_show}} </h3>
             <p *ngFor="let data of choice_show ; let i=index">
                 <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>
               </p>
              <!-- test -->
              <br>
-        <div>
+      <!--    <div>
           รหัส:<input type="text" name="testttname1" id="testttname1"[(ngModel)]="tesssttext1">
           คำตอบ:<input type="text" name="testttname2" id="testttname2"[(ngModel)]="tesssttext2">
         <button type="submit" class="btn-warning btn-md" style="width: 25%;"(click)="TestStuList()">
          TestStuList </button>
         </div>
-      <!-- test end -->
+     test end -->
         </div>
         <br>
       <button type="submit" class="btn btn-info btn-md" style="width: 25%;" (click)="inputAnswer()">
