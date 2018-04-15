@@ -112,7 +112,7 @@ export class QuizComponent implements OnInit {
       console.log(exam.status);
       this.examStatus = exam.status;
       //exam data detail
-      if (this.examStatus == "Puase") {
+      if (this.examStatus == "pause") {
         alert("status = " + this.examStatus);
         this.router.navigate(['dashboard'])
       } else {
@@ -392,12 +392,12 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  PuaseTest() {
-    console.log("Puase");
+  pauseTest() {
+    console.log("pause");
 
     //update examStatus
     const statusUpdate = {
-      status: "puase"
+      status: "pause"
     };
     const examRef = this.afs.doc<Exam>(`exam/${this.testID}`);
     examRef.update(statusUpdate).then(() => {

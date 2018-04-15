@@ -7,3 +7,36 @@
     margin-top: 20px;
     background-color:white;
   }
+
+  .header{
+    background: #d8e9f3;
+    padding: 15px;
+    height: 120px;
+  }
+  .reft_content{
+    background:#F8F8FF;
+
+  }
+  .right_content{
+    background: white;
+
+  }
+  #table-wrapper {
+    position:relative;
+  }
+  #table-scroll {
+    height:590px;
+    overflow:auto;  
+    margin-top:20px;
+  }
+  #table-wrapper table {
+    width:100%;
+  
+  }
+  .table-hover{
+
+    margin-top: 40px;
+  }
+  .scores {
+    margin: 5px;
+  }

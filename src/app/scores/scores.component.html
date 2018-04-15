@@ -1,67 +1,88 @@
 <div class="scores">
-    <div class="row">
-        <div class="col-md-12 header" >.col-md-12</div>
-      
+  <div class="row">
+    <div class="col-md-12 header">
+      <h4>
+        <p>
+          <b> exem code:</b> &nbsp; &nbsp; {{exam_code}} &nbsp; &nbsp;&nbsp; &nbsp;
+          <b> subject name:</b> &nbsp; &nbsp; {{subject_name}} &nbsp; &nbsp;&nbsp; &nbsp;
+          <b> chapter name:</b> &nbsp; &nbsp; {{chapter_name}}
+        </p>
+        <p>
+          <b> description:</b> &nbsp; &nbsp; {{description}} &nbsp; &nbsp;&nbsp; &nbsp;
+          <b> type:</b> &nbsp; &nbsp; {{type}}
+        </p>
+        <p>
+          <b> amount:</b> &nbsp; &nbsp; {{amount}} &nbsp; &nbsp;&nbsp; &nbsp;
+          <b> date:</b> &nbsp; &nbsp;  {{date | date :'short'}} 
+        </p>
+
+      </h4>
     </div>
-    <div class="row">
-        <div class="col-md-7 reft_content">
-          <table class="table table-hover">
-            <thead>
-                <tr>
-                    <td colspan='5' align="center">
-                        
-                          <ng-container *ngIf="isbar">
-                             <p-chart type="bar" [data]="data"></p-chart>
-                          </ng-container>
-                          <ng-container *ngIf="isline">
-                              <p-chart type="line" [data]="data"></p-chart>
-                           </ng-container>
-                           <div class="btn-group btn-group-justified ">
-                              <a class="btn  addTestBtn bg-info" (click)="barBtn()"> Bar</a>
-                              <a class="btn editTestBtn bg-danger" (click)="lineBtn()"> Line </a>
-                            </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td> <b> Max : </b> {{max}} </td>
-                    <td> <b> Min : </b> {{min}}</td>
-                  </tr>
-                  <tr>
-                      <td><b> Average : </b>{{avg}}</td>
-                      <td><b> Standard Deviation : </b> {{std}} </td>
-                    </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="col-md-5 right_content" >
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th> #
-                    </th>
-                    <th scope="col">Student ID</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr  *ngFor="let data of studentShow; let i=index">
-                      <td>{{i+1}}</td>
-                      <td>{{data.code}}</td>
-                      <td>{{data.name}}</td>
-                      <td>{{data.score}}</td>
-                  </tr>
-                  <tr>
-                      <td colspan='4' align="center">
-                           <button (click)="exportToExcel()" class="btn btn-primary">Export to excel</button>
-                      </td>
-                   
-                  </tr>
-                </tbody>
-              </table>
-        </div>
-      </div>
+
   </div>
+  <div class="row">
+    <div class="col-md-7 reft_content">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td colspan='5' align="center">
+
+              <ng-container *ngIf="isbar">
+                <p-chart type="bar" [data]="data1"></p-chart>
+              </ng-container>
+              <ng-container *ngIf="isline">
+                <p-chart type="line" [data]="data2"></p-chart>
+              </ng-container>
+              <div class="btn-group btn-group-justified ">
+                <a class="btn  addTestBtn bg-info" (click)="barBtn()"> Bar</a>
+                <a class="btn editTestBtn bg-danger" (click)="lineBtn()"> Line </a>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <b> Max : </b> {{max}} </td>
+            <td>
+              <b> Min : </b> {{min}}</td>
+          </tr>
+          <tr>
+            <td>
+              <b> Average : </b>{{avg}}</td>
+            <td>
+              <b> Standard Deviation : </b> {{std}} </td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="col-md-5 right_content table-scroll">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th> #
+            </th>
+            <th scope="col">Student ID</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of studentShow; let i=index">
+            <td>{{i+1}}</td>
+            <td>{{data.code}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.score}}</td>
+          </tr>
+          <tr>
+            <td colspan='4' align="center">
+              <button (click)="exportToExcel()" class="btn btn-primary">Export to excel</button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

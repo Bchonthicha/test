@@ -206,18 +206,18 @@ export class TestStep3Component implements OnInit {
     })
 
     this.receiveTest2.forEach((question, index) => {
-      // console.log(question, index);
+      console.log(question, index);
       this.questionExam = {
         answer: question.answer,
         choice: question.choice,
-        code: question.code,
+        code: question.key,
         indax: index,
         question: question.question,
         status: true
       }
       console.log(this.questionExam);
       //---add questions in exam
-      const QuestionExamRef: AngularFirestoreDocument<QuestionExam> = this.afs.doc<QuestionExam>(`/exam/${this.exam_code}/questions/${question.code}`)
+      const QuestionExamRef: AngularFirestoreDocument<QuestionExam> = this.afs.doc<QuestionExam>(`/exam/${this.exam_code}/questions/${question.key}`)
       QuestionExamRef.set(this.questionExam);
 
       arrayTest3pack2.push(this.questionExam);
