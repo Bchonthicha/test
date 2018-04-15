@@ -1,4 +1,33 @@
 <div class="test">
-  <p>test</p>
-  <a [routerLink]="['/dashboard/student-list']">Student List</a>
-</div>
+
+  <div class="box box-info">
+    <div class="content">
+      <!-- Trigger the modal with a button -->
+
+      <button type="button" class="btn btn-primary createTest" (click)="createTest()">
+        <h4>
+          <i class="fa fa-plus"></i>
+        </h4>
+      </button>
+
+      <div class="row">
+        <div class="col-md-3" *ngFor="let exam of examPause">
+
+          <div class="item_group" (click)="goToQuiz(exam.exam_code)">
+            <div class="row rowPic" style="text-align: center">
+              <img src="assets/dist/img/picP2.png" class="pause-image">
+            </div>
+
+            <div class="row rowContent" style="text-align: center">
+              <h5>
+                {{exam.exam_code}}
+                <br>
+                <b> Date: </b>{{exam.date | date :'short'}}
+              </h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

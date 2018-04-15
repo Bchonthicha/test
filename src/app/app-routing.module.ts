@@ -60,7 +60,7 @@ const routes: Routes = [
         component: StudentListComponent,
       },
       {
-        path: 'manage-std-group',
+        path: 'manage-student-group',
         component: ManageStdGroupComponent,
       },
       {

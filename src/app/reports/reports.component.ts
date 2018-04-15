@@ -52,19 +52,19 @@ export class ReportsComponent implements OnInit {
   students: Observable<StudentExam[]>;
   studentExamCollection: AngularFirestoreCollection<StudentExam>;
 
-    //array ที่ใช้เอาไปแสดงผล
-    studentShow = [];
-    scoreGraph = [];
-    codeGraph = [];
+  //array ที่ใช้เอาไปแสดงผล
+  studentShow = [];
+  scoreGraph = [];
+  codeGraph = [];
 
   constructor(private afs: AngularFirestore, private excelService: ExcelService) {
     //สำหรับใช้ export excel
     this.excelService = excelService;
-    //subject
+    //Exam
     const ExamRef: AngularFirestoreCollection<Exam> = this.afs.collection<Exam>(`/exam`);
     this.ExamList = ExamRef.valueChanges()
 
-    this.ExamListShow= [];
+    this.ExamListShow = [];
     this.ExamList.subscribe(data => {
       console.log(data);
       data.forEach(d => {
@@ -85,9 +85,9 @@ export class ReportsComponent implements OnInit {
     console.log("change");
     console.log(dataExam);
     this.isdataExam = true;
-    this.studentShow=[];
-    this.scoreGraph=[];
-    this.codeGraph=[];
+    this.studentShow = [];
+    this.scoreGraph = [];
+    this.codeGraph = [];
     //รายละเอียดส่วนหัวของรายงาน
     this.amount = dataExam.amount;
     this.subject_name = dataExam.subject_name;

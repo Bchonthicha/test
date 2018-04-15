@@ -153,7 +153,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   backGroupListPage() {
-    this.router.navigate(['dashboard', 'manage-std-group'])
+    this.router.navigate(['dashboard', 'manage-student-group'])
   }
 
 }
