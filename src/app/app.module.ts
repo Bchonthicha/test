@@ -108,6 +108,9 @@ import { ScoresComponent } from './scores/scores.component';
 //
 import {ChartModule} from 'primeng/chart';
 import {AccordionModule} from 'primeng/accordion';
+
+///
+import { NumberOnlyDirective } from './number.directive';
 @NgModule({
   declarations: [
     AppComponent,
@@ -137,7 +140,7 @@ import {AccordionModule} from 'primeng/accordion';
     EditTestComponent,
     EditDetailComponent,
     ScoresComponent,
-
+    NumberOnlyDirective
   ],
   imports: [
     FeatureToggleModule,
@@ -189,7 +192,8 @@ import {AccordionModule} from 'primeng/accordion';
     AngularFirestoreModule,
     NgSemanticModule ,
     ChartModule,
-    AccordionModule
+    AccordionModule,
+    
   ],
   // providers: [AuthService, AuthGuard],
   providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService,CookieService ],

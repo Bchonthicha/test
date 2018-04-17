@@ -51,6 +51,7 @@ export class BlankComponent implements OnInit {
     const statusUpdate = {
       status: "active"
     };
+    
     const examRef = this.afs.doc<Exam>(`exam/${exam_code}`);
     examRef.update(statusUpdate).then(() => {
       //go to display scores page  
