@@ -58,9 +58,14 @@ export class DashboardComponent implements OnInit {
   }
 
   signOut() {
+    console.log("signOut");
+    this.thisUser=null;
+    this.firebaseService.userLogin = "";
     this.cookieService.set('email','UNKNOWN');
     this.cookieService.set('password','UNKNOWN');
-    this.firebaseService.userLogin = "";
+    // this.cookieService.deleteAll();
+    // this.cookieService.delete('email');
+    console.log("signOut",this.cookieService.get('email'));
     this.auth.signOut();
   }
 

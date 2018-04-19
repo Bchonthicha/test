@@ -11,12 +11,13 @@ import { FirebaseService } from '../services/firebase.service';
   styleUrls: ['./blank.component.css']
 })
 export class BlankComponent implements OnInit {
-  examPause=[];
+  examPause = [];
   ExamList: Observable<Exam[]>;
-  
-  constructor(private afs: AngularFirestore, private router: Router, private firebaseService: FirebaseService) { 
-    this.examPause=[];
+
+  constructor(private afs: AngularFirestore, private router: Router, private firebaseService: FirebaseService) {
+    this.examPause = [];
     //Exam
+
     const ExamRef: AngularFirestoreCollection<Exam> = this.afs.collection<Exam>(`/exam`);
     this.ExamList = ExamRef.valueChanges()
 
@@ -36,30 +37,32 @@ export class BlankComponent implements OnInit {
 
   ngOnInit() {
   }
-  createTest(){
+  createTest() {
     console.log("createTest");
-    this.router.navigate(['dashboard','test']) 
-    
+    this.router.navigate(['dashboard', 'test'])
+
   }
-  goToQuiz(exam_code){
+  goToQuiz(exam_code) {
 
     console.log("goToQuiz");
     console.log(exam_code);
-    
-    this.firebaseService.Test_id_new = exam_code;
+    let examCode;
+    examCode = exam_code
+    this.firebaseService.Test_id_new = examCode;
+    this.examPause = [];
     //update examStatus
     const statusUpdate = {
       status: "active"
     };
-    
-    const examRef = this.afs.doc<Exam>(`exam/${exam_code}`);
+
+    const examRef = this.afs.doc<Exam>(`exam/${examCode}`);
     examRef.update(statusUpdate).then(() => {
       //go to display scores page  
-      this.examPause=[];
-      this.router.navigate(['dashboard','test','quiz']) 
+      this.examPause = [];
+      this.router.navigate(['dashboard', 'test', 'quiz'])
     });
-    
-    
-    
+
+
+
   }
 }

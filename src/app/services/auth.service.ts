@@ -12,7 +12,7 @@ export class AuthService {
   cookieValue = 'UNKNOWN';
   authState: any = null;
   userRef: AngularFirestoreDocument<User>;
-  constructor(private afAuth: AngularFireAuth,private firebaseService: FirebaseService,private cookieService: CookieService,
+  constructor(private afAuth: AngularFireAuth, private firebaseService: FirebaseService, private cookieService: CookieService,
     private afs: AngularFirestore,
     private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
@@ -41,24 +41,25 @@ export class AuthService {
   }
   emailSignUp(email: string, password: string) {
 
-    
-    this.cookieService.set( 'password', password );
+
+    this.cookieService.set('password', password);
     this.cookieValue = this.cookieService.get('password');
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.authState = user;
         this.updateUserData();
-        this.cookieService.set( 'email', email );
+        this.cookieService.set('email', email);
         this.cookieValue = this.cookieService.get('email');
 
         // this.firebaseService.userLogin == email;
         this.router.navigate(['dashboard']);
       })
-      .catch(error => console.log(error));
+      // .catch(error => console.log(error));
+      .catch(error => alert(error));
   }
   emailLogin(email: string, password: string) {
     console.log(password);
-    this.cookieService.set( 'password', password );
+    this.cookieService.set('password', password);
     this.cookieValue = this.cookieService.get('password');
     console.log("I am logging in");
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
@@ -66,13 +67,14 @@ export class AuthService {
         this.authState = user
         this.updateUserData()
         // this.firebaseService.userLogin = email;
-        this.cookieService.set( 'email', email );
+        this.cookieService.set('email', email);
         this.cookieValue = this.cookieService.get('email');
 
 
         this.router.navigate(['dashboard'])
       })
-      .catch(error => console.log(error));
+      // .catch(error => console.log(error));
+      .catch(error => alert(error));
   }
   resetPassword(email: string) {
     const fbAuth = firebase.auth();
@@ -90,6 +92,11 @@ export class AuthService {
   signOut(): void {
     this.afAuth.auth.signOut();
     this.router.navigate(['/'])
+    this.cookieValue = 'UNKNOWN';
+    this.cookieService.set('email', 'UNKNOWN');
+    this.cookieService.set('password', 'UNKNOWN');
+    console.log(this.cookieService.get('email'));
+
   }
   private updateUserData(): void {
 

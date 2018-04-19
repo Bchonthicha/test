@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { ChartModule } from 'primeng/chart';
 import { AccordionModule } from "primeng/accordion";
 import { ExcelService } from '../services/excel.service';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-scores',
@@ -54,12 +55,12 @@ export class ScoresComponent implements OnInit {
   date: any;
   exam_code: string;
 
-  constructor(private afs: AngularFirestore, private excelService: ExcelService) {
+  constructor(private afs: AngularFirestore, private excelService: ExcelService, private firebaseService: FirebaseService) {
     //สำหรับใช้ export excel
     this.excelService = excelService;
-
-    this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
-
+    this.testID = this.firebaseService.Test_id_new;
+    //this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
+// this.testID="205100_0_1523986758534";
     //---data in exam
     this.ExamDoc = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.dataExam = this.ExamDoc.valueChanges()

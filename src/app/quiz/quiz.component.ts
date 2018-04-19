@@ -75,7 +75,6 @@ export class QuizComponent implements OnInit {
   examStatus: any;
   ansObservable: any;
   student_temp = [];
-  student_tempOri = [];
   answer: any;
   array_testListProcess = [];
   answerCheck: any;
@@ -146,19 +145,21 @@ export class QuizComponent implements OnInit {
 
     // this.inputAnswer();
 
+    //list answer
     this.ansObservable.subscribe(ans => {
-      this.AnsObservableResult = ans
+      this.AnsObservableResult = ans;
+      console.log(this.AnsObservableResult);
+
       this.answerProcessList(this.AnsObservableResult)
       this.scoreProcess(this.AnsObservableResult)
     })
 
-
   }
+
   answerProcessList(ans) {
     console.log(this.Q_no);
-
     const array_testList = [];
-    console.log(ans);
+    console.log("ans in answerProcessList=", ans);
     let pack_array_testList = {};
     this.student_temp.forEach(stu => {
 
@@ -191,14 +192,18 @@ export class QuizComponent implements OnInit {
   }
 
   scoreProcess(ans) {
+    console.log("ans in scoreProcess=", ans);
+
     //ค่าผลเฉลยตามชนิดของแบบทดสอบ
     if (this.examType == 1) {
       this.answerCheck = this.answerType1;
     } else {
       this.answerCheck = this.Q_answer_index;
     }
-    
+
     console.log("ansObservable");
+    let new_score;
+
     const array_testListProcess = [];
     this.student_temp.forEach(stu => {
 
@@ -213,40 +218,42 @@ export class QuizComponent implements OnInit {
       let pack_array_testList = {};
       //ตรวจคำตอบ
       if (this.answer != undefined) {             //ได้รับคำตอบมา
-        console.log(this.answer +  this.answerCheck);
-        
+        console.log("input=" + this.answer + "ans= " + this.answerCheck);
+
         if (this.answer == this.answerCheck) { //คำตอบถูก
-          console.log(this.answer + "===" + this.answerCheck);
-          // let new_score = stu.score + 1;         //บวกคะแนนเพิ่ม
-          // console.log(new_score);
-          stu.score = stu.score + 1;
-          console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
+          new_score = stu.score + 1;         //บวกคะแนนเพิ่ม
+          console.log(new_score);
+          // stu.score = stu.score + 1;
+          console.log(stu.code + "in" + this.Q_no + "==" + this.answer + "===" + this.answerCheck);
           this.answerCheckImg = "assets/dist/img/corract.png";
           //update ค่า score ใน database
-          let newScoreUp = {
-            score: stu.score + 1
-          }
-          const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${stu.code}`);
-          examRef.update(newScoreUp)
+          // let newScoreUp = {
+          //   score: stu.score + 1
+          // }
+          // const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${stu.code}`);
+          // examRef.update(newScoreUp)
         } else {
           this.answerCheckImg = "assets/dist/img/incorract.png";
+          new_score = stu.score;
         }
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
           student_name: stu.name,
-          score: stu.score,
+          // score: stu.score,
+          score: new_score,
           url: stu.url,
           answer: this.answerCheckImg
         }
         console.log(pack_array_testList);
 
       } else {                                   //ไม่ได้รับคำตอบมา ไม่มีคะแนนบวกเพิ่ม
+        new_score = stu.score;
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
           student_name: stu.name,
-          score: stu.score,
+          score: new_score,
           url: stu.url,
           answer: "assets/dist/img/question.png"
         }
@@ -261,6 +268,7 @@ export class QuizComponent implements OnInit {
     this.array_testListProcess = array_testListProcess;
     console.log(this.array_testListProcess);
   }
+
   examDataDetail(callback) {
     console.log("examDataDetail");
     console.log("status   =  " + this.examStatus);
@@ -303,7 +311,6 @@ export class QuizComponent implements OnInit {
       if (!this.isExamDataDetailLoaded) {
         stu.forEach(data1 => {
           console.log(data1.code);
-          this.student_tempOri.push(data1);
           this.student_temp.push(data1);
         })
         callback(this.student_temp)
@@ -358,10 +365,9 @@ export class QuizComponent implements OnInit {
   ProcessAnswer() {
     this.isValidNext = false;
     this.isValidProcess = true;
-    this.student_temp = this.student_tempOri;
     this.isprocess = true;
 
-  
+
 
     console.log("process answer");
     // const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
@@ -374,6 +380,23 @@ export class QuizComponent implements OnInit {
   }
 
   NextQuestion() {
+
+    console.log(this.array_testListProcess);
+    this.array_testListProcess.forEach((d,indax )=> {
+      console.log(d.student_id + "=" + d.score);
+      //update ค่า score ใน database
+      let newScoreUp = {
+        score: d.score
+      }
+      const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${d.student_id}`);
+      examRef.update(newScoreUp)
+      //ต้อง update ค่า score ใน student_temp
+      this.student_temp[indax].score = d.score;
+      console.log(this.student_temp[indax].score);
+      
+    })
+    console.log(this.student_temp);
+    
     this.array_testList = [];
     this.array_testListProcess = [];
 

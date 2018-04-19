@@ -25,7 +25,7 @@
             {{doing_percent}}%
           </h1>
           <h4>
-            {{current_num}}/{{total_num_cal}} ข้อ
+            {{current_question}}/{{total_num_cal}} ข้อ
           </h4>
 
         </div>
@@ -47,13 +47,13 @@
      test end -->
         </div>
         <br>
-        <button type="submit" class="btn btn-info btn-md" style="width: 25%;" (click)="inputAnswer()">
-          <span class="glyphicon glyphicon-open"></span> Input Answer</button>
+        <!-- <button type="submit" class="btn btn-info btn-md" style="width: 25%;" (click)="inputAnswer()">
+          <span class="glyphicon glyphicon-open"></span> Input Answer</button> -->
         <!-- <button type="submit" class="btn btn-success btn-md" style="width: 30%;" (click)="ProcessAnswer()" [disabled]= isValidProcess> -->
             <button type="submit" class="btn btn-success btn-md" style="width: 30%;" (click)="ProcessAnswer()" >
           <span class="	glyphicon glyphicon glyphicon-refresh"></span> Process Answer </button>
         <!-- <button type="submit" class="btn btn-primary btn-md" style="width: 25%;" (click)="NextQuestion()" [disabled]= isValidNext> -->
-            <button type="submit" class="btn btn-primary btn-md" style="width: 25%;" (click)="NextQuestion()" >
+            <button type="submit" class="btn btn-primary btn-md" style="width: 30%;" (click)="NextQuestion()" >
           <span class="	glyphicon glyphicon-forward"></span> Next </button>
       </div>
     </div>

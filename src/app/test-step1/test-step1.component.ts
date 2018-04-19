@@ -271,6 +271,7 @@ export class TestStep1Component implements OnInit {
 
   clearTest1() {
     // alert("clear");
+    confirm("confirm to clear this form");
     this.chapterList = null;
     this.questionTmp = [];
     this.array_numOfitem = [];

@@ -210,6 +210,7 @@ export class AddTestComponent implements OnInit {
   }
   //---clear Manage Test page
   clearAddTest() {
+    confirm("confirm to clear this form");
     this.SelectSubject = "";
     this.Subject_Code = null;
     this.Subject_Name = null;

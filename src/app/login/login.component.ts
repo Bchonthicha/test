@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
     console.log(cookieValue_email);
 
     if (cookieValue_email != "UNKNOWN") {
-      console.log("iffffffff");
 
       this.auth.emailLogin(cookieValue_email, cookieValue_pass);
 
