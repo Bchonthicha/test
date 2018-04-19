@@ -15,6 +15,7 @@ import { Chapter } from '../inteterfaces/chapter';
 import { Question } from '../inteterfaces/question';
 import * as _ from "lodash";
 import { DocumentReference } from '@firebase/firestore-types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-test-step1',
@@ -72,9 +73,9 @@ export class TestStep1Component implements OnInit {
 
   questionCollection: AngularFirestoreCollection<Question>;
   chapterRef: AngularFirestoreDocument<Chapter>
-  question_type:any;
-  
-  constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+  question_type: any;
+
+  constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService ,private router: Router) {
     /*
         this.CategoryList = this.db.list('/Category');
         this.dataObj = this.CategoryList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
@@ -112,6 +113,17 @@ export class TestStep1Component implements OnInit {
     //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
     this.subjectList = subjectRef.valueChanges()
+    // this.subjectList.forEach(sub=>{
+    //   console.log(sub);
+
+    //   console.log(sub.length)
+    //   if(sub.length>0 || !null|| !undefined){
+    //     console.log(sub[0]);
+    //     this.SelectCategory= sub[0].code;
+    //     console.log(this.SelectCategory);
+    //     this.onChange(sub[0].code);
+    //   }
+    // })
   }
 
   //-------function เมื่อเลือกCatagory select
@@ -119,12 +131,6 @@ export class TestStep1Component implements OnInit {
     this.SelectTopic = "";
     this.subCode = code.code;
     console.log(this.subCode);
-    // this.chapterRefLocal = this.afs.doc<Chapter>(`/subjects/${code}/chapters/`)
-    // this.chapterObservable = this.chapterRefLocal.valueChanges()
-    // this.chapterObservable.forEach(chapter => {
-    //   console.log(chapter.name);
-
-    // })
 
     const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${this.subCode}/chapters/`);
     this.chapterList = chapterRef.valueChanges()
@@ -201,8 +207,8 @@ export class TestStep1Component implements OnInit {
       // console.log(data);
       this.questionData = data;
       this.amount = data.amount;
-      console.log("typeeee"+data.type);
-      this.question_type= data.type;
+      console.log("typeeee" + data.type);
+      this.question_type = data.type;
       ///////////////////////////////////////////////////////////มันผิด
       // console.log(data);
       console.log(data.question);
@@ -220,66 +226,86 @@ export class TestStep1Component implements OnInit {
   }
 
   StartSelectTest(data: NgForm) {
-
-    this.questionTmp = [];
-    console.log("is meeeee");
-    console.log(data.value);
-    console.log(this.questionAllList);
-
-    console.log(this.SelectNumofItem);
-    if (this.SelectNumofItem == "" || this.SelectNumofItem == undefined) {
-      this.NumOfItemThis = 1;
+    if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined) {
+      alert("Please enter all fields.");
     } else {
-      this.NumOfItemThis = this.SelectNumofItem;
-    }
-    if (this.NumOfItemThis == this.amount) {
-      this.questionTmp = this.questionAllList;
-      console.log(this.questionTmp);
+      let c = confirm("Are you sure to go to the next step?");
+      if (c == true) {
+        this.questionTmp = [];
+        console.log("is meeeee");
+        console.log(data.value);
+        console.log(this.questionAllList);
 
-    } else {
-      let rand = -1;
-      console.log(rand);
-      let i = 0;
-      this.questionTmp = [];
-      while (i < this.NumOfItemThis) {
-        // rand = Math.floor(Math.random() * this.numOfitem);
-        while (this.questionAllList[rand] == 0 || this.questionAllList[rand] == undefined) {
-          // Math.floor(Math.random() *  max);
-          rand = Math.floor(Math.random() * this.amount);
-          //  console.log("random: " + rand);
+        console.log(this.SelectNumofItem);
+        if (this.SelectNumofItem == "" || this.SelectNumofItem == undefined) {
+          this.NumOfItemThis = 1;
+        } else {
+          this.NumOfItemThis = this.SelectNumofItem;
         }
-        // console.log("this " + this.questionAllList[rand]);
-        // console.log("rand " + rand);
-        this.questionTmp.push(this.questionAllList[rand]);
-        console.log(this.questionTmp);
-        this.questionAllList[rand] = 0;
-        i++;
-      }
+        if (this.NumOfItemThis == this.amount) {
+          this.questionTmp = this.questionAllList;
+          console.log(this.questionTmp);
+
+        } else {
+          let rand = -1;
+          console.log("rand");
+
+          console.log(rand);
+          let i = 0;
+          this.questionTmp = [];
+          while (i < this.NumOfItemThis) {
+            // rand = Math.floor(Math.random() * this.numOfitem);
+            while (this.questionAllList[rand] == 0 || this.questionAllList[rand] == undefined) {
+              // Math.floor(Math.random() *  max);
+              rand = Math.floor(Math.random() * this.amount);
+              //  console.log("random: " + rand);
+            }
+            // console.log("this " + this.questionAllList[rand]);
+            // console.log("rand " + rand);
+            this.questionTmp.push(this.questionAllList[rand]);
+            console.log(this.questionTmp);
+            this.questionAllList[rand] = 0;
+            i++;
+          }
+        }
+        //make type string to number
+        let numOfItemThis_num = +  this.NumOfItemThis;
+
+        //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
+        let arrayTest1pack = [];
+        arrayTest1pack.push(this.SelectCategory, this.SelectTopic, numOfItemThis_num, this.InputDescription, this.questionTmp, this.question_type);
+        console.log(arrayTest1pack);
+
+        this.firebaseService.arrayTest1 = arrayTest1pack;     //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
+
+        //clear
+        this.chapterList = null;
+        this.questionTmp = [];
+        this.array_numOfitem = [];
+        this.SelectThisCategory = [];
+        this.SelectCategory = "";
+        this.SelectTopic = undefined;
+        this.SelectNumofItem = "";
+        this.InputDescription = "";
+      
+      // /dashboard/test/test-step2
+      this.router.navigate(['dashboard','test','test-step2'])
     }
-    //make type string to number
-    let numOfItemThis_num = +  this.NumOfItemThis;
-  
-    //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
-    let arrayTest1pack = [];
-    arrayTest1pack.push(this.SelectCategory, this.SelectTopic, numOfItemThis_num, this.InputDescription, this.questionTmp,this.question_type);
-    console.log(arrayTest1pack);
-
-    this.firebaseService.arrayTest1 = arrayTest1pack;     //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
-
-    this.clearTest1();
   }
-
+}
   clearTest1() {
     // alert("clear");
-    confirm("confirm to clear this form");
-    this.chapterList = null;
-    this.questionTmp = [];
-    this.array_numOfitem = [];
-    this.SelectThisCategory = [];
-    this.SelectCategory = "";
-    this.SelectTopic = undefined;
-    this.SelectNumofItem = "";
-    this.InputDescription = "";
+    let c = confirm("confirm to clear this form");
+    if (c == true) {
+      this.chapterList = null;
+      this.questionTmp = [];
+      this.array_numOfitem = [];
+      this.SelectThisCategory = [];
+      this.SelectCategory = "";
+      this.SelectTopic = undefined;
+      this.SelectNumofItem = "";
+      this.InputDescription = "";
+    }
   }
 
   ngOnInit() { }

@@ -201,8 +201,6 @@ export class AddTestComponent implements OnInit {
       //----Add chapter in subject
       const subjectRef: AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
       subjectRef.set(this.chapterAdd);
-
-
     }
 
     fileReader.readAsArrayBuffer(this.file);
@@ -210,12 +208,14 @@ export class AddTestComponent implements OnInit {
   }
   //---clear Manage Test page
   clearAddTest() {
-    confirm("confirm to clear this form");
+   let c =  confirm("confirm to clear this form");
+   if(c==true){
     this.SelectSubject = "";
     this.Subject_Code = null;
     this.Subject_Name = null;
     this.chapter_Name = null;
     this.type = "";
+   }
     // this.myInputVariable.nativeElement.value = "";
   }
 

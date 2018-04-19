@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireDatabase, AngularFireList, snapshotChanges } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-test-step2',
   templateUrl: './test-step2.component.html',
@@ -27,7 +29,7 @@ export class TestStep2Component implements OnInit {
   //new
   receiveQuestion: any;
   
-  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService) {
+  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService,private router: Router) {
     // console.log(this.firebaseService.arrayTest1);
     console.log("______in step 2______");
    
@@ -113,6 +115,8 @@ export class TestStep2Component implements OnInit {
   }
   StartSelectQuestion() {
     let arrayTest2pack = [];
+    let c = confirm("Are you sure to go to the next step?");
+    if (c == true) {
     this.question_list_display.forEach(element => {
       console.log(element);
       arrayTest2pack.push(element);
@@ -121,4 +125,6 @@ export class TestStep2Component implements OnInit {
     this.firebaseService.arrayTest2 = arrayTest2pack;
     console.log(this.firebaseService.arrayTest2);
   }
+  this.router.navigate(['dashboard','test','test-step3'])
+}
 }

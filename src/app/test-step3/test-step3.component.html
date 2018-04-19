@@ -3,7 +3,6 @@
   <option>Group2</option>
   <option>Group3</option>
 </select> -->
-<p>dateeeee</p>
  {{now | date :'short'}} 
 <label for="exampleSelect1">Group select</label>
 <select class="form-control" id="SelectGroup" name="SelectGroup" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisGroup">
@@ -38,9 +37,9 @@
   </table>
 </div>
 
-<a [routerLink]="'/dashboard/test/test-step2'">
+<!-- <a [routerLink]="'/dashboard/test/test-step2'">
   <button type="submit" class="btn btn-danger">Back</button>
-</a>
+</a> -->
 <!-- <a [routerLink]="'/dashboard/test/quiz'"> -->
 <button type="submit" class="btn btn-success" (click)="StartSelectStudent()">Let Go!</button>
 <!-- <button type="submit" class="btn btn-success">Let Go!</button> -->

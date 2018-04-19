@@ -49,7 +49,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
+    //canActivate: [AuthGuard],     //ถ้ายังไม่ได้ login จะยังเข้าไม่ได้
     children: [
       {
         path: '',
