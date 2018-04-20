@@ -1,5 +1,6 @@
 add-test {
   margin: 30px;
+  
 }
 
 .content {
@@ -10,4 +11,19 @@ add-test {
   color: #0066ff;
   cursor: pointer;
   text-decoration: underline;
+}
+.tableShow {
+  background-color: #f2f2f2;
+}
+
+u {
+  /* text-decoration: underline; */
+  border-bottom: double 2px;
+}
+.buttonForm{
+  text-align: center
+}
+.bntAdd{
+  width: 20%;
+  margin: 5px;
 }

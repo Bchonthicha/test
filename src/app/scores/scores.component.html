@@ -12,7 +12,7 @@
           <b> type:</b> &nbsp; &nbsp; {{type}}
         </p>
         <p>
-          <b> amount:</b> &nbsp; &nbsp; {{amount}} &nbsp; &nbsp;&nbsp; &nbsp;
+          <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;
           <b> date:</b> &nbsp; &nbsp;  {{date | date :'short'}} 
         </p>
 
@@ -77,7 +77,10 @@
           </tr>
           <tr>
             <td colspan='4' align="center">
-              <button (click)="exportToExcel()" class="btn btn-primary">Export to excel</button>
+              <button (click)="exportToExcel()" class="btn btn-primary bntAdd">
+                <span class="glyphicon glyphicon-export"></span>  Export to excel</button>
+                <button (click)="exitTest()" class="btn btn-danger bntAdd">
+                    <span class="glyphicon glyphicon-off"></span> Close </button>
             </td>
 
           </tr>

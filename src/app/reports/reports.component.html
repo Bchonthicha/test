@@ -14,6 +14,22 @@
           </select>
         </div>
       </form>
+        <!-- display when no data question to be add -->
+        <br>
+        <br>
+        <ng-container *ngIf="!isdataExam">
+          <div class="scores">
+        <div class="row" style="background-color: white">
+            <div class="col-md-12 tableShow">
+              <p style="text-align: center">
+                <br>
+               --- no data ---    
+              </p>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+        <!--  -->
       <div class="scores" *ngIf="isdataExam">
         <div class="row">
           <div class="col-md-12 header">
@@ -28,7 +44,7 @@
                 <b> type:</b> &nbsp; &nbsp; {{type}}
               </p>
               <p>
-                <b> amount:</b> &nbsp; &nbsp; {{amount}} &nbsp; &nbsp;&nbsp; &nbsp;
+                <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;
                 <b> date:</b> &nbsp; &nbsp; {{date | date :'short'}}
               </p>
 
@@ -94,7 +110,8 @@
                 </tr>
                 <tr>
                   <td colspan='4' align="center">
-                    <button (click)="exportToExcel()" class="btn btn-primary">Export to excel</button>
+                    <button (click)="exportToExcel()" class="btn btn-primary bntAdd">
+                        <span class="glyphicon glyphicon-export"></span>&nbsp;Export to excel</button>
                   </td>
 
                 </tr>

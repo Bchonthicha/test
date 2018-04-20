@@ -67,23 +67,23 @@ export class FirebaseService {
 
   }
 
-  getStudent() {
-    const path = '/Students';
-    return this.db.list(path);
-  }
+  // getStudent() {
+  //   const path = '/Students';
+  //   return this.db.list(path);
+  // }
 
-  getStudentCheck() {
-    const path = '/Student-check';
-    return this.db.list(path);
-  }
+  // getStudentCheck() {
+  //   const path = '/Student-check';
+  //   return this.db.list(path);
+  // }
 
   // getXXX(){
   //   const path = '/Students';
   //   return this.db.list(path, ref => ref.orderByChild('index'));
   // }
 
-  getCategoryList() {
-    const path = '/Category';
-    return this.db.list(path);
-  }
+  // getCategoryList() {
+  //   const path = '/Category';
+  //   return this.db.list(path);
+  // }
 }

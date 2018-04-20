@@ -38,10 +38,21 @@
         <label for="exampleTextarea">Description</label>
         <textarea class="form-control" id="InputDescription" rows="2" name="InputDescription" [(ngModel)]="InputDescription"></textarea>
       </div>
-      <button type="submit" class="btn btn-danger" (click)="clearTest1()">Clear</button>
-      <!-- <a [routerLink]="'/dashboard/test/test-step2'"> -->
-        <button type="submit" class="btn btn-success" (click)="StartSelectTest(SelectTestForm)">Next</button>
-      <!-- </a> -->
+
+        <!-- button -->
+        <div class="row">
+            <div class="col-md-12 ">
+              <p class="buttonForm">
+                <br>
+                <br>
+                <button type="submit" class="btn btn-primary bntAdd" (click)="clearTest1();">
+                    <span class="glyphicon glyphicon-repeat"></span> Clear</button>
+                <button type="submit" class="btn btn-success  bntAdd" (click)="StartSelectTest(SelectTestForm)">
+                    <span class="	glyphicon glyphicon-forward"></span> Next Step</button>
+              </p>
+            </div>
+          </div>
+          <!--  -->
     </form>
   </div>
 </div>

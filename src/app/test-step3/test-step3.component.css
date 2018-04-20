@@ -2,3 +2,12 @@
   margin-top: 10px;
   padding: 20px;
 }
+
+.buttonForm {
+  text-align: center
+}
+
+.bntAdd {
+  width: 20%;
+  margin-left: 5px;
+}

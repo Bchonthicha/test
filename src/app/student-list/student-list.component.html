@@ -2,8 +2,8 @@
   <div class="box box-info">
     <div class="container">
       <!-- Trigger the modal with a button New -->
-      <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal" (click)="DefaultModal()">
-        <i class="fa fa-user-plus"></i> ADD NEW STUDENT</button>
+      <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal" (click)="DefaultModal()">
+        <i class="fa fa-user-plus"></i> NEW STUDENT</button>
       <!-- Modal ADD-->
       <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog  modal-md">
@@ -65,11 +65,11 @@
                     <!-- <input type="checkbox" class="checkthis" /> -->
                     <!-- <input type="checkbox" id="checkall" /> -->
                   </th>
-                  <th>Picture</th>
+                  <th >Picture</th>
                   <th scope="col">Student ID</th>
                   <th scope="col">Student Name</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th class="thisTextCenter">Edit</th>
+                  <th class="thisTextCenter">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,17 +81,17 @@
                   <td>{{student?.code}}</td>
                   <td>{{student?.name}}</td>
 
-                  <td>
+                  <td class="thisTextCenter">
                     <p data-placement="top" data-toggle="tooltip" title="Edit">
-                      <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" (click)="setModalData(student)">
+                      <button class="btn btn-warning btn-xs" style="font-size: 16px;" data-title="Edit" data-toggle="modal" data-target="#edit" (click)="setModalData(student)">
                         <span class="glyphicon glyphicon-pencil"></span>
                       </button>
                     </p>
                   </td>
-                  <td>
+                  <td class="thisTextCenter">
                     <p data-placement="top" data-toggle="tooltip" title="Delete">
                       <!-- <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" type="button" (click)="delStd(data)"> -->
-                      <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" (click)="setRemoveCode(student.code)">
+                      <button class="btn btn-danger btn-xs" data-title="Delete" style="font-size: 16px;" data-toggle="modal" data-target="#delete" (click)="setRemoveCode(student.code)">
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
                     </p>

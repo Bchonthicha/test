@@ -4,7 +4,7 @@
     <div class="col-md-8">
       <div class="row header_test_left">
 
-        <div class="col-md-9">
+        <div class="col-md-10">
           <h4>
             <b> Subject:</b> &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp;
             <b> Chapter:</b> &nbsp; &nbsp; {{examChapDisplay}}
@@ -12,15 +12,21 @@
           <h4>
             <b> Description:</b> &nbsp; &nbsp; {{examDesDisplay}}
           </h4>
-          <div class="btnn-header">
+          <div class="btn-group btn-group-justified ">
+              <a  (click)="pauseTest()" class="btn PauseBtn">
+                <span class="glyphicon glyphicon-pause"></span> Pause</a>
+              <a (click)="SkipQuestion()" class="btn SkipBtn">
+                <span class="	glyphicon glyphicon-step-forward"></span> Skip</a>
+            </div>
+          <!-- <div class="btnn-header">
             <button type="submit" class="btn btn-warning btn-md" style="width: 45%;" (click)="pauseTest()">
               <span class="glyphicon glyphicon-pause"></span> Pause</button>
             <button type="submit" class="btn btn-danger btn-md" style="width: 45%;" (click)="SkipQuestion()">
               <span class="	glyphicon glyphicon-step-forward"></span> Skip</button>
-          </div>
+          </div> -->
 
         </div>
-        <div class="col-md-3 header_numOfTest_left">
+        <div class="col-md-2 header_numOfTest_right">
           <h1>
             {{doing_percent}}%
           </h1>
@@ -46,15 +52,21 @@
         </div>
      test end -->
         </div>
-        <br>
-        <!-- <button type="submit" class="btn btn-info btn-md" style="width: 25%;" (click)="inputAnswer()">
-          <span class="glyphicon glyphicon-open"></span> Input Answer</button> -->
-        <!-- <button type="submit" class="btn btn-success btn-md" style="width: 30%;" (click)="ProcessAnswer()" [disabled]= isValidProcess> -->
-            <button type="submit" class="btn btn-success btn-md" style="width: 30%;" (click)="ProcessAnswer()" >
-          <span class="	glyphicon glyphicon glyphicon-refresh"></span> Process Answer </button>
-        <button type="submit" class="btn btn-primary btn-md" style="width: 25%;" (click)="NextQuestion()" [disabled]= isValidNext>
-            <!-- <button type="submit" class="btn btn-primary btn-md" style="width: 30%;" (click)="NextQuestion()" > -->
-          <span class="	glyphicon glyphicon-forward"></span> Next </button>
+       <!-- button -->
+<div class="row">
+  <div class="col-md-12 ">
+    <p class="buttonForm">
+
+      <button type="submit" class="btn btn-primary btn-md bntAdd" (click)="ProcessAnswer()">
+        <span class="	glyphicon glyphicon glyphicon-refresh"></span> Process Answer </button>
+      <button type="submit" class="btn btn-success btn-md bntAdd"(click)="NextQuestion()" [disabled]=isValidNext>
+        <span class="	glyphicon glyphicon-forward"></span> Next </button>
+    </p>
+  </div>
+</div>
+<!--  -->
+          
+
       </div>
     </div>
     <div class="col-md-4 display_list_right " id="table-wrapper">

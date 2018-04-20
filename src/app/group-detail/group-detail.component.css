@@ -2,11 +2,10 @@
     margin: 30px;  
   }
   .row{
-    background-color:whitesmoke;
     /* height: 50px; */
     margin-top: 20px;
     margin-right: 40px;
-    margin-left: 40px;
+    margin-left: 80px;
     
   }
   .item_group{
@@ -40,14 +39,14 @@
 .button_group{
 
   background-color:white;
-  margin: 50px;
+  margin: 20px;
 }
 .student-list{
   margin: 30px;  
 }
 
 .container{
-  margin: 20px;  
+  margin-top: 40px;  
 }
 .picture_show{
   padding: 5px;
@@ -55,4 +54,7 @@
 .picture_show:hover{
   cursor: pointer;
   width: 250px;
+}
+.thisTextCenter{
+  text-align: center;
 }

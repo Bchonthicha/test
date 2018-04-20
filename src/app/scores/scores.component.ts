@@ -8,6 +8,8 @@ import { ChartModule } from 'primeng/chart';
 import { AccordionModule } from "primeng/accordion";
 import { ExcelService } from '../services/excel.service';
 import { FirebaseService } from '../services/firebase.service';
+import { QuestionExam } from '../inteterfaces/questionExam';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-scores',
@@ -55,8 +57,15 @@ export class ScoresComponent implements OnInit {
   date: any;
   exam_code: string;
 
-  constructor(private afs: AngularFirestore, private excelService: ExcelService, private firebaseService: FirebaseService) {
+    //questions
+    questions: Observable<QuestionExam[]>;
+    questionExamCollection: AngularFirestoreCollection<QuestionExam>;
+
+      //number of question doing
+  doing: number;
+  constructor(private afs: AngularFirestore,private router: Router, private excelService: ExcelService, private firebaseService: FirebaseService) {
     //สำหรับใช้ export excel
+    this.doing = 0;
     this.excelService = excelService;
     this.testID = this.firebaseService.Test_id_new;
     //this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
@@ -98,7 +107,18 @@ export class ScoresComponent implements OnInit {
       this.date = data.date;
       this.exam_code = data.exam_code;
     })
-
+    //---question in exam
+    this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.exam_code}/questions`)
+    this.questions = this.questionExamCollection.valueChanges()
+    this.questions.subscribe(ques => {
+      console.log(ques);
+      ques.forEach(data => {
+        console.log(data.status);
+        if (data.status == true) {
+          this.doing = this.doing + 1;
+        }
+      })
+    });
     //---student in exam
     this.studentExamCollection = this.afs.collection<StudentExam>(`/exam/${this.testID}/students`, ref => ref.orderBy('score'))
     this.students = this.studentExamCollection.valueChanges()
@@ -205,6 +225,9 @@ export class ScoresComponent implements OnInit {
   //-------function export เป็น excel file
   exportToExcel(event) {
     this.excelService.exportAsExcelFile(this.studentShow, this.testID);
+  }
+  exitTest(){
+    this.router.navigate(['dashboard', 'test'])
   }
   ngOnInit() {
   }

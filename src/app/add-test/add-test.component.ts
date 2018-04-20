@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef } from '@angular/core';
 import { ExcelService } from '../services/excel.service';
 import { NgForm } from '@angular/forms';
 import * as XLSX from 'ts-xlsx';
@@ -29,7 +29,7 @@ export class AddTestComponent implements OnInit {
   //value of ngModel
   Subject_Code: any;
   Subject_Name: any;
-  chapter_Name: any;
+  chapter_Name = null;
   type = "";
   // uploadExcel: any;
 
@@ -46,8 +46,10 @@ export class AddTestComponent implements OnInit {
 
   question_keyAdd: any;
   chapter_Code: any;
-  @ViewChild('uploadExcel')
+
+  @ViewChild('uploadExcel') uploadExcel: ElementRef;;
   myInputVariable: any;
+
   subjectAdd: Subject;
   subjectList: Observable<Subject[]>;           //ชื่อsubjectที่นำไปแสดง
   SelectSubject = "";
@@ -61,7 +63,13 @@ export class AddTestComponent implements OnInit {
   subCollection: AngularFirestoreCollection<Subject>;
   chapterCodeLast: any;
 
+  isDisplayQuestion: boolean = true;
+  question_objDisplay = [];
+  createTestBnt: boolean = true;
+
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
+    console.log(this.file + "file");
+
     //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
     this.subjectList = subjectRef.valueChanges()
@@ -109,72 +117,104 @@ export class AddTestComponent implements OnInit {
     this.newSubjectName = "";
     this.newSubjectCode = "";
   }
+
   addNewSubject(data: NgForm) {
-    console.log(this.newSubjectName);
-    console.log(this.newSubjectCode);
-    this.subjectAdd = {
-      code: this.newSubjectCode,
-      name: this.newSubjectName
+    if (this.newSubjectCode == "" || this.newSubjectName == "") {
+      alert("Please enter all fields.");
+    } else {
+      console.log(this.newSubjectName);
+      console.log(this.newSubjectCode);
+      this.subjectAdd = {
+        code: this.newSubjectCode,
+        name: this.newSubjectName
+      }
+      //----Add subject detail in subject
+      const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
+      subjectRef2.set(this.subjectAdd);
+
     }
-    //----Add subject detail in subject
-    const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
-    subjectRef2.set(this.subjectAdd);
-    
+
+
   }
   //---get json data from excel file
   incomingfile(event) {
+
     this.file = event.target.files[0];
+    console.log(this.file);
+    console.log(this.file.name);
+
+  }
+  //--- Upload ecel and display
+  Upload() {
+    this.question_objDisplay = [];
+    console.log("display question");
+    if (this.file == undefined) {
+      alert("ไม่ได้เลือกไฟล์");
+    }
+    else {
+      alert("ครบ");
+      this.isDisplayQuestion = false;
+      this.createTestBnt = false;
+
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        this.arrayBuffer = fileReader.result;
+        var data = new Uint8Array(this.arrayBuffer);
+        var arr = new Array();
+        console.log(data.length);
+
+        for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, { type: "binary" });
+        var first_sheet_name = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[first_sheet_name];
+        // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+        this.question_excel = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+
+        console.log(this.question_excel);
+
+        this.question_excel.forEach((question, index) => {
+          this.amount = index + 1;
+          console.log(question);
+          console.log(index);
+          this.question_key = index;
+          console.log(this.question_excel[index].choice);
+
+          //make array type of choice
+          let choice_string = (this.question_excel[index].choice).toString();
+          var re = /\s*,\s*/;
+          var choice_arr = choice_string.split(re);
+
+          //add sub question
+          this.sub_question = {
+            "answer": this.question_excel[index].answer,
+            "choice": choice_arr,
+            "code": this.question_key,
+            "question": this.question_excel[index].question
+          }
+          console.log(this.question_objDisplay);
+
+          this.question_objDisplay.push(this.sub_question)
+          // console.log(this.sub_question);
+          this.question_obj[this.question_key] = this.sub_question;
+          console.log(this.question_obj);
+        })
+      }
+      fileReader.readAsArrayBuffer(this.file);
+    }
   }
   //---create new Test
   createNewTest() {
 
-    //this.subCollection.doc("null").delete()
-
-    let fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      this.arrayBuffer = fileReader.result;
-      var data = new Uint8Array(this.arrayBuffer);
-      var arr = new Array();
-      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary" });
-      var first_sheet_name = workbook.SheetNames[0];
-      var worksheet = workbook.Sheets[first_sheet_name];
-      // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
-      this.question_excel = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      console.log(this.question_excel);
-
-      this.question_excel.forEach((question, index) => {
-        this.amount = index + 1;
-        console.log(question);
-        console.log(index);
-        this.question_key = index;
-        console.log(this.question_excel[index].choice);
-
-        //make array type of choice
-        let choice_string = (this.question_excel[index].choice).toString();
-        var re = /\s*,\s*/;
-        var choice_arr = choice_string.split(re);
-
-        //add sub question
-        this.sub_question = {
-          "answer": this.question_excel[index].answer,
-          "choice": choice_arr,
-          "code": this.question_key,
-          "question": this.question_excel[index].question
-
-        }
-        // console.log(this.sub_question);
-        this.question_obj[this.question_key] = this.sub_question;
-        console.log(this.question_obj);
-
-      })
-
-
-
+    if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "") {
+      alert("ไม่ครบ");
+    }
+    else {
+      alert("ครบ");
+      console.log(this.question_obj);
       //make type string to number
       let type_num = +this.type;
-      //console.log(type_num);
+      console.log(type_num);
 
       this.questionAdd = {
         amount: this.amount,
@@ -201,22 +241,30 @@ export class AddTestComponent implements OnInit {
       //----Add chapter in subject
       const subjectRef: AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
       subjectRef.set(this.chapterAdd);
-    }
 
-    fileReader.readAsArrayBuffer(this.file);
-    //this.clearAddTest();
+      this.isDisplayQuestion = true;
+      this.createTestBnt = true;
+      this.question_objDisplay = [];
+    }
+    // this.clearAddTest();
   }
   //---clear Manage Test page
   clearAddTest() {
-   let c =  confirm("confirm to clear this form");
-   if(c==true){
-    this.SelectSubject = "";
-    this.Subject_Code = null;
-    this.Subject_Name = null;
-    this.chapter_Name = null;
-    this.type = "";
-   }
-    // this.myInputVariable.nativeElement.value = "";
+    let c = confirm("confirm to clear this form");
+    if (c == true) {
+      this.isDisplayQuestion = true;
+      this.createTestBnt = true;
+      this.question_objDisplay = [];
+
+      this.SelectSubject = "";
+      this.Subject_Code = null;
+      this.Subject_Name = null;
+      this.chapter_Name = null;
+      this.type = "";
+      console.log(this.file);
+      this.file = undefined;
+      console.log(this.file);
+    }
   }
 
 }

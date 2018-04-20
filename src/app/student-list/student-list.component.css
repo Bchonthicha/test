@@ -26,3 +26,6 @@
   overflow: auto;
   max-height: 500px;
 }
+.thisTextCenter{
+  text-align: center;
+}

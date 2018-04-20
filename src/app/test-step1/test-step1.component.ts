@@ -226,7 +226,7 @@ export class TestStep1Component implements OnInit {
   }
 
   StartSelectTest(data: NgForm) {
-    if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined) {
+    if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined||this.InputDescription =="") {
       alert("Please enter all fields.");
     } else {
       let c = confirm("Are you sure to go to the next step?");
@@ -307,6 +307,7 @@ export class TestStep1Component implements OnInit {
       this.InputDescription = "";
     }
   }
+
 
   ngOnInit() { }
 

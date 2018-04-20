@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentExam } from '../inteterfaces/studentExam';
+import { QuestionExam } from '../inteterfaces/questionExam';
 import { Exam } from '../inteterfaces/exam';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -49,13 +50,21 @@ export class ReportsComponent implements OnInit {
   // lineChart
   data2: any;
 
+  //student
   students: Observable<StudentExam[]>;
   studentExamCollection: AngularFirestoreCollection<StudentExam>;
+
+  //questions
+  questions: Observable<QuestionExam[]>;
+  questionExamCollection: AngularFirestoreCollection<QuestionExam>;
 
   //array ที่ใช้เอาไปแสดงผล
   studentShow = [];
   scoreGraph = [];
   codeGraph = [];
+
+  //number of question doing
+  doing: number;
 
   constructor(private afs: AngularFirestore, private excelService: ExcelService) {
     //สำหรับใช้ export excel
@@ -82,6 +91,7 @@ export class ReportsComponent implements OnInit {
   ngOnInit() {
   }
   onChange(dataExam) {
+    this.doing = 0;
     console.log("change");
     console.log(dataExam);
     this.isdataExam = true;
@@ -120,6 +130,18 @@ export class ReportsComponent implements OnInit {
     this.date = dataExam.date;
     this.exam_code = dataExam.exam_code;
 
+    //---question in exam
+    this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.exam_code}/questions`)
+    this.questions = this.questionExamCollection.valueChanges()
+    this.questions.subscribe(ques => {
+      console.log(ques);
+      ques.forEach(data => {
+        console.log(data.status);
+        if (data.status == true) {
+          this.doing = this.doing + 1;
+        }
+      })
+    });
     //---student in exam
     this.studentExamCollection = this.afs.collection<StudentExam>(`/exam/${this.exam_code}/students`, ref => ref.orderBy('score'))
     this.students = this.studentExamCollection.valueChanges()
