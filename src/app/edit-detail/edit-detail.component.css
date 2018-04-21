@@ -14,3 +14,13 @@ u {
   /* text-decoration: underline; */
   border-bottom: double 2px;
 }
+.buttonForm{
+  text-align: center
+}
+.bntAdd{
+  width: 20%;
+  margin: 5px;
+}
+.tableShow2{
+background-color: #FFF0F0;
+}

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import * as firebase from 'firebase';
 
-import { FileUpload } from '../upload/fileupload';
+import { FileUpload } from '../student-list/fileupload';
 import { Student } from '../inteterfaces/student';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 

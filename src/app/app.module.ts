@@ -81,8 +81,6 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 
 //Upload file to firebass
-import { UploadComponent } from './upload/upload.component';
-import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 import { UploadFileService } from './services/upload-file.service';
 
 //create graph/chart
@@ -127,8 +125,6 @@ import { NumberOnlyDirective } from './number.directive';
     TestStep2Component,
     TestStep3Component,
     SignupComponent,
-    UploadComponent,
-    FormUploadComponent,
     GroupDetailComponent,
     ReportsComponent,
     AddTestComponent,

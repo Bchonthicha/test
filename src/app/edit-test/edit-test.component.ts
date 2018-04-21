@@ -61,30 +61,35 @@ export class EditTestComponent implements OnInit {
     let subjectCode = subject.code;
     let subjectName = subject.name;
     let ChapterCode = Chapter.code;
-    
+
     localStorage.setItem('subjectKey', subjectCode);
     localStorage.setItem('subjectName', subjectName);
     localStorage.setItem('chapterKey', ChapterCode);
-    localStorage.setItem('chapterName',Chapter.name);
-    
-    let subjectChapCode ="Subject" +subjectCode+ "Chapter"+ChapterCode;
-    this.router.navigate(['dashboard','manage-test','edit', subjectChapCode ]) //ไป path : /dashboard/group/group_name ที่คลิกเลือก
+    localStorage.setItem('chapterName', Chapter.name);
+
+    let subjectChapCode = "Subject" + subjectCode + "Chapter" + ChapterCode;
+    this.router.navigate(['dashboard', 'manage-test', 'edit', subjectChapCode]) //ไป path : /dashboard/group/group_name ที่คลิกเลือก
 
   }
   UpdateSubject() {
-    console.log("UpdateSubject");
+    // console.log(this.subjectLocal.name)
+    if (this.subjectLocal.name == "") {
+      alert("Unsuccessful : Please enter subject name.");
+    } else {
+      console.log("UpdateSubject");
 
-    const subjectUpdate = {
-      name: this.subjectLocal.name
-    };
-    //path to update
-    const subjectRef = this.afs.doc<Subject>(`subjects/${this.subjectLocal.code}`);
-    //update data : student_name
-    subjectRef.update(subjectUpdate).then(() => {
-      console.log("update Subject");
+      const subjectUpdate = {
+        name: this.subjectLocal.name
+      };
+      //path to update
+      const subjectRef = this.afs.doc<Subject>(`subjects/${this.subjectLocal.code}`);
+      //update data : student_name
+      subjectRef.update(subjectUpdate).then(() => {
+        console.log("update Subject");
 
-      this.Refresh()
-    });
+        this.Refresh()
+      });
+    }
   }
 
   ngOnInit() {

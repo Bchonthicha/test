@@ -21,9 +21,6 @@ import { ReportsComponent} from './reports/reports.component';
 import { AuthService } from './services/auth.service';
 // Guard
 import { AuthGuard } from './guards/auth.guard';
-//upload
-import { FormUploadComponent } from './upload/form-upload/form-upload.component';
-const i=0;
 
 import { CookieService } from 'ngx-cookie-service';
 import { AddTestComponent } from './add-test/add-test.component';

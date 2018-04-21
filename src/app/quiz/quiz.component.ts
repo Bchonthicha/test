@@ -120,7 +120,7 @@ export class QuizComponent implements OnInit {
       this.examStatus = exam.status;
       //exam data detail
       if (this.examStatus == "pause") {
-        alert("status = " + this.examStatus);
+        alert("Quiz paused! ");
         this.router.navigate(['dashboard'])
       } else {
         this.examDataDetail((studentList) => {
@@ -209,7 +209,7 @@ export class QuizComponent implements OnInit {
 
       console.log(stu);
       console.log(stu.code);
-      console.log("นี่ฉันเองงงงงงงงงงงงงงงงง   " + stu.score);
+      // console.log("นี่ฉันเองงงงงงงงงงงงงงงงง   " + stu.score);
       console.log(this.Q_no);
       // this.array_testList = [];
       this.answer = ans[stu.code][this.Q_no];
@@ -297,7 +297,7 @@ export class QuizComponent implements OnInit {
       if (this.current_question == 0) {
         this.doing_percent = 0;
       } else {
-        this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(2);;
+        this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);;
       }
     })
 
@@ -426,7 +426,7 @@ export class QuizComponent implements OnInit {
       this.current_question = this.current_question + 1;
       console.log(this.current_question);
       console.log("finish");
-      this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(2);
+      this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
 
       //update examStatus
       const statusUpdate = {
@@ -442,6 +442,8 @@ export class QuizComponent implements OnInit {
   }
 
   pauseTest() {
+    let c = confirm("confirm to pause this Quiz");
+    if (c == true) {
     console.log("pause");
 
     //update examStatus
@@ -454,8 +456,11 @@ export class QuizComponent implements OnInit {
       this.router.navigate(['dashboard'])
     })
   }
+  }
 
   SkipQuestion() {
+    let c = confirm("confirm to skip this question");
+    if (c == true) {
     this.isValidNext = true;
     this.isValidProcess = false;
     this.isprocess = false;
@@ -487,7 +492,7 @@ export class QuizComponent implements OnInit {
       this.current_question = this.current_question + 1;
       console.log(this.current_question);
       console.log("finish");
-      this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(2);
+      this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
 
       //update examStatus
       const statusUpdate = {
@@ -499,6 +504,7 @@ export class QuizComponent implements OnInit {
         this.router.navigate(['dashboard', 'test', 'scores'])
       });
     }
+  }
   }
 
   updateAllInfo() {

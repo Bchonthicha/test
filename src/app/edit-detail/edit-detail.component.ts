@@ -45,9 +45,12 @@ export class EditDetailComponent implements OnInit {
   @ViewChild('uploadExcel')
   myInputVariable: any;
 
-  selectedFiles: FileList
-  constructor(private xlservice: ExcelService, private route: ActivatedRoute, private router: Router, private afs: AngularFirestore) {
+  selectedFiles: FileList;
+  isDisplayQuestion: boolean = true;
+  question_objDisplay = [];
 
+  constructor(private xlservice: ExcelService, private route: ActivatedRoute, private router: Router, private afs: AngularFirestore) {
+    this.question_objDisplay = [];
     this.Subject_Code = localStorage.getItem("subjectKey");
     this.Subject_Name = localStorage.getItem("subjectName");
     console.log(this.Subject_Code + "*********" + this.Subject_Name);
@@ -86,23 +89,22 @@ export class EditDetailComponent implements OnInit {
     this.file = event.target.files[0];
     this.selectedFiles = event.target.files;
   }
-  updateTest() {
-    console.log("UpdateSubject");
-    //update data : chapter name
-    const chapter_nameUpdate = {
-      name: this.chapter_Name
-    };
-    const subjectRef = this.afs.doc<Chapter>(`subjects/${this.Subject_Code}/chapters/${this.Chapter_Code}`);
-    subjectRef.update(chapter_nameUpdate);
-
-    if (this.selectedFiles) {
-      console.log("เลือก");
+  Upload() {
+    this.question_objDisplay = [];
+    console.log("display question");
+    if (this.file == undefined) {
+      alert("Please select file");
+    }
+    else {
+      this.isDisplayQuestion = false;
 
       let fileReader = new FileReader();
       fileReader.onload = (e) => {
         this.arrayBuffer = fileReader.result;
         var data = new Uint8Array(this.arrayBuffer);
         var arr = new Array();
+        console.log(data.length);
+
         for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
         var bstr = arr.join("");
         var workbook = XLSX.read(bstr, { type: "binary" });
@@ -110,14 +112,15 @@ export class EditDetailComponent implements OnInit {
         var worksheet = workbook.Sheets[first_sheet_name];
         // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
         this.question_excel = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-        // console.log(this.question_excel);
+
+        console.log(this.question_excel);
 
         this.question_excel.forEach((question, index) => {
           this.amount = index + 1;
-          // console.log(question);
-          // console.log(index);
+          console.log(question);
+          console.log(index);
           this.question_key = index;
-          // console.log(this.question_excel[index].choice);
+          console.log(this.question_excel[index].choice);
 
           //make array type of choice
           let choice_string = (this.question_excel[index].choice).toString();
@@ -130,13 +133,33 @@ export class EditDetailComponent implements OnInit {
             "choice": choice_arr,
             "code": this.question_key,
             "question": this.question_excel[index].question
-
           }
+          console.log(this.question_objDisplay);
+
+          this.question_objDisplay.push(this.sub_question)
           // console.log(this.sub_question);
           this.question_obj[this.question_key] = this.sub_question;
-          // console.log(this.question_obj);
-
+          console.log(this.question_obj);
         })
+      }
+      fileReader.readAsArrayBuffer(this.file);
+    }
+  }
+
+  updateTest() {
+    if (this.chapter_Name == "") {
+      alert("Please enter chapter name. ");
+    } else {
+      console.log("UpdateSubject");
+      //update data : chapter name
+      const chapter_nameUpdate = {
+        name: this.chapter_Name
+      };
+      const subjectRef = this.afs.doc<Chapter>(`subjects/${this.Subject_Code}/chapters/${this.Chapter_Code}`);
+      subjectRef.update(chapter_nameUpdate);
+
+      if (this.selectedFiles && this.isDisplayQuestion == false) {
+        console.log("เลือก");
 
         //make type string tp number
         let type_num = +this.type;
@@ -150,25 +173,22 @@ export class EditDetailComponent implements OnInit {
         const questionRef = this.afs.doc<Question>(`questions/${this.questionCode}`);
         questionRef.update(this.questionAdd);
 
+        this.selectedFiles = null;
+      } else {
+        console.log("ไม่ได้เลือก");
+
+        //update data : chapter name
+        const questionUpdate = {
+          amount: this.amount,
+          question: this.question,
+          type: this.type
+        };
+        const questionRef = this.afs.doc<Question>(`questions/${this.questionCode}`);
+        questionRef.update(questionUpdate);
       }
-      fileReader.readAsArrayBuffer(this.file);
 
-      this.selectedFiles = null;
-    } else {
-
-      console.log("ไม่ได้เลือก");
-
-      //update data : chapter name
-      const questionUpdate = {
-        amount: this.amount,
-        question: this.question,
-        type: this.type
-      };
-      const questionRef = this.afs.doc<Question>(`questions/${this.questionCode}`);
-      questionRef.update(questionUpdate);
+      this.goBackEditTeste();
     }
-
-    this.goBackEditTeste();
   }
 
 }

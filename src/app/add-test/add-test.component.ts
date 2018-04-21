@@ -68,7 +68,8 @@ export class AddTestComponent implements OnInit {
   createTestBnt: boolean = true;
   subjectAddcheck: boolean = true;
   subjectCheck = [];
-
+  selectedFiles: FileList;
+  
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
     console.log(this.file + "file");
 
@@ -161,7 +162,7 @@ export class AddTestComponent implements OnInit {
 
   //---get json data from excel file
   incomingfile(event) {
-
+    this.selectedFiles = event.target.files;
     this.file = event.target.files[0];
     console.log(this.file);
     // console.log(this.file.name);
@@ -285,6 +286,7 @@ export class AddTestComponent implements OnInit {
       console.log(this.file);
       this.file = undefined;
       console.log(this.file);
+      this.selectedFiles = null;
     }
   }
 

@@ -75,7 +75,7 @@ export class ManageStdGroupComponent implements OnInit {
     this.studentList = _.map(this.studentList, (student: StudentCheckBox) => {
       student.selected = this.isSelect;
       // console.log(student.code);
-      
+
       return student;
     });
   }
@@ -87,12 +87,15 @@ export class ManageStdGroupComponent implements OnInit {
 
       return student.selected;
     });
+    console.log(selectStudent.length);
 
-
-    _.forEach(selectStudent, (student: StudentCheckBox) => {
+    if(this.groupName=="" || selectStudent.length == 0){
+      alert("Unsuccessful : Please enter all fields or select student.");
+    } else {
+        _.forEach(selectStudent, (student: StudentCheckBox) => {
       let studentDoc: AngularFirestoreDocument<Student> = this.afs.doc<Student>(`/students/${student.code}`)
       console.log(studentDoc.ref);
-      
+
       this.members.push(studentDoc.ref);
     })
 
@@ -103,12 +106,12 @@ export class ManageStdGroupComponent implements OnInit {
     console.log(section);
 
     const sectionRef: AngularFirestoreDocument<Section> = this.afs.doc<Section>(`/sections/${this.groupName}`);
-    sectionRef.set(section);
+     sectionRef.set(section);
   }
-
+}
   goGroupDetail(name: string) {
-    console.log("goGroupDetail"+name);    //section name ที่ section1
-    
+    console.log("goGroupDetail" + name);    //section name ที่ section1
+
     this.router.navigate(['dashboard', 'group', name]) //ไป path : /dashboard/group/group_name ที่คลิกเลือก
   }
 }
