@@ -61,7 +61,7 @@ export class FirebaseService {
   //   { answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], code: "3",indax: 1, question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม" }
   // ];
   // public Test_id_new:any;
-  public Test_id_new = "123412_2_1523771449226";
+  public Test_id_new = "205100_1_1524330147111";
   // public TestScore_id_new:any;
   constructor(private db: AngularFireDatabase, private afs: AngularFirestore) {
 

@@ -69,7 +69,7 @@ export class AddTestComponent implements OnInit {
   subjectAddcheck: boolean = true;
   subjectCheck = [];
   selectedFiles: FileList;
-  
+
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
     console.log(this.file + "file");
 
@@ -136,17 +136,36 @@ export class AddTestComponent implements OnInit {
       console.log(this.newSubjectName);
       console.log(this.newSubjectCode);
       //
-      this.subjectCheck.forEach(data => {
-        console.log(data.code);
-        if (data.code == this.newSubjectCode) {
-          alert("Unsuccessful : This code already exists.");
-        } else {
-          this.subjectAddcheck = false;
+      console.log(this.subjectCheck);
+      //ไม่มีวิชาในระบบ
+      if (this.subjectCheck.length==0) {
+        console.log("ไม่มี");
+        
+        this.subjectAdd = {
+          code: this.newSubjectCode,
+          name: this.newSubjectName
         }
-        //
-      })
+        console.log(this.subjectAdd);
+
+        //----Add subject detail in subject
+        const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
+        subjectRef2.set(this.subjectAdd);
+      } else {
+        this.subjectCheck.forEach(data => {
+          console.log(data.code);
+          if (data.code == this.newSubjectCode) {
+            console.log("ซ้ำ");
+            alert("Unsuccessful : This code already exists.");
+          } else {
+            this.subjectAddcheck = false;
+          }
+          //
+        })
+      }
+
 
       if (this.subjectAddcheck == false) {
+        console.log("โอเค");
         this.subjectAdd = {
           code: this.newSubjectCode,
           name: this.newSubjectName
@@ -229,7 +248,7 @@ export class AddTestComponent implements OnInit {
   //---create new Test
   createNewTest() {
 
-    if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "") {
+    if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == ""||this.type == "" ||this.chapter_Name == "" ) {
       alert("Please enter all fields. ");
     }
     else {
@@ -262,13 +281,23 @@ export class AddTestComponent implements OnInit {
 
       //----Add chapter in subject
       const subjectRef: AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
-      subjectRef.set(this.chapterAdd);
-
-      this.isDisplayQuestion = true;
-      this.createTestBnt = true;
-      this.question_objDisplay = [];
+      subjectRef.set(this.chapterAdd).then(() => {
+        this.isDisplayQuestion = true;
+        this.createTestBnt = true;
+        this.question_objDisplay = [];
+  
+        this.SelectSubject = "";
+        this.Subject_Code = null;
+        this.Subject_Name = null;
+        this.chapter_Name = null;
+        this.type = "";
+        console.log(this.file);
+        this.file = undefined;
+        console.log(this.file);
+        this.selectedFiles = null;
+      });
     }
-    // this.clearAddTest();
+    // 
   }
   //---clear Manage Test page
   clearAddTest() {

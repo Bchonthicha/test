@@ -110,11 +110,13 @@ export class ScoresComponent implements OnInit {
       this.exam_code = data.exam_code;
     })
     //---question in exam
-    this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.exam_code}/questions`)
+    this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.testID}/questions`)
     this.questions = this.questionExamCollection.valueChanges()
+    
     this.questions.subscribe(ques => {
       console.log(ques);
       ques.forEach(data => {
+          
         console.log(data.status);
         if (data.status == true) {
           this.doing = this.doing + 1;

@@ -328,6 +328,8 @@ export class QuizComponent implements OnInit {
       this.question_show = this.questionObj[0].question;
       this.Q_no = this.questionObj[0].code;
       this.updateAllInfo()
+      console.log("Q_no===="+ this.Q_no);
+      
       if (this.examType == 1) {
         this.choice_show = null;
         this.Q_answer_index = this.questionObj[0].answer;
@@ -335,6 +337,8 @@ export class QuizComponent implements OnInit {
         console.log("ans= " + this.answerType1);
       } else {
         this.choice_show = this.questionObj[0].choice;
+        console.log(this.choice_show);
+        
         this.Q_answer_index = this.questionObj[0].answer;
         console.log("ans= " + this.Q_answer_index);
 

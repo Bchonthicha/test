@@ -71,7 +71,7 @@
                     <p class="display_question_item" *ngFor="let itemChoice of question_item.choice;let i = index">
 
                       <!-- {{question_item.choice[0]}} -->
-                      &nbsp;&nbsp;&nbsp; &nbsp; [{{i}}]&nbsp;{{itemChoice}}
+                      &nbsp;&nbsp;&nbsp; &nbsp; [{{i+1}}]&nbsp;{{itemChoice}}
                     </p>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <u>
@@ -149,7 +149,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-warning">
-          <span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to create new tast?
+          <span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to create new test?
         </div>
       </div>
       <div class="modal-footer ">

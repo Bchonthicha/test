@@ -66,8 +66,5 @@ export class BlankComponent implements OnInit {
       this.examPause = [];
       this.router.navigate(['dashboard', 'test', 'quiz'])
     });
-
-
-
   }
 }
