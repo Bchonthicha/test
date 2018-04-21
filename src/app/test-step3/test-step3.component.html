@@ -1,17 +1,28 @@
-<!-- <select class="form-control form-control-lg" data-live-search="true">
-  <option>Group1</option>
-  <option>Group2</option>
-  <option>Group3</option>
-</select> -->
- {{now | date :'short'}} 
+<!-- {{now | date :'short'}}  -->
 <label for="exampleSelect1">Group select</label>
 <select class="form-control" id="SelectGroup" name="SelectGroup" (ngModelChange)="onChange($event)" [(ngModel)]="SelectThisGroup">
   <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
   <option *ngFor="let group of groupList | async  " [ngValue]= group.name [selected]="isSelected">{{group.name}}</option>
 </select>
 
+ <!-- display when no data question to be add -->
+ <br>
+ <br>
+ <ng-container *ngIf="!isdataStudent">
+   <div class="scores">
+ <div class="row" style="background-color: white">
+     <div class="col-md-12 tableShow">
+       <p style="text-align: center">
+         <br>
+        --- no data ---    
+       </p>
+     </div>
+   </div>
+ </div>
+ </ng-container>
+ <!--  -->
 
-<div class="selectStd-body">
+<div class="selectStd-body" *ngIf="isdataStudent">
   <table class="table table-hover">
     <thead>
       <tr>
@@ -37,23 +48,15 @@
   </table>
 </div>
 
-<!-- <a [routerLink]="'/dashboard/test/test-step2'">
-  <button type="submit" class="btn btn-danger">Back</button>
-</a> -->
-<!-- <a [routerLink]="'/dashboard/test/quiz'"> -->
-<!-- <button type="submit" class="btn btn-success" (click)="StartSelectStudent()">Let Go!</button> -->
-<!-- <button type="submit" class="btn btn-success">Let Go!</button> -->
-<!-- </a> -->
-
 <!-- button -->
-<div class="row">
-    <div class="col-md-12 ">
-      <p class="buttonForm">
-        <br>
-        <br>
-        <button type="submit" class="btn btn-success bntAdd"(click)="StartSelectStudent()">
-            <span class="	glyphicon glyphicon-forward"></span> &nbsp;Let Go!</button>
-      </p>
-    </div>
+<div class="row" *ngIf="isdataStudent">
+  <div class="col-md-12 ">
+    <p class="buttonForm">
+      <br>
+      <br>
+      <button type="submit" class="btn btn-success bntAdd" (click)="StartSelectStudent()">
+        <span class="	glyphicon glyphicon-forward"></span> &nbsp;Let Go!</button>
+    </p>
   </div>
-  <!--  -->
+</div>
+<!--  -->

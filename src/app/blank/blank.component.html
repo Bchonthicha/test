@@ -2,6 +2,23 @@
 
   <div class="box box-info">
     <div class="content">
+              <!-- display when no data question to be add -->
+              <br>
+              <br>
+              <ng-container *ngIf="!isDisplayPause">
+              <div class="row">
+                  <div class="col-md-12 tableShow">
+                    <p style="text-align: center">
+                      <br>
+                     --- No quiz paused. ---    
+            
+                    </p>
+                  </div>
+                </div>
+              </ng-container>
+              <!--  -->
+     <!-- <label style="background-color: wheat"><h4>The quiz was paused</h4></label> 
+      <br> -->
       <!-- Trigger the modal with a button -->
 
       <button type="button" class="btn btn-primary createTest" (click)="createTest()">
@@ -9,6 +26,16 @@
           <i class="fa fa-plus"></i>
         </h4>
       </button>
+
+      <ng-container *ngIf="isDisplayPause">
+          <div class="row">
+              <div class="col-md-12 tableShow">
+                <p style="text-align: center">
+                 --- Quiz paused. ---         
+                </p>
+                <br>
+              </div>
+            </div>
 
       <div class="row">
         <div class="col-md-3" *ngFor="let exam of examPause">
@@ -28,6 +55,7 @@
           </div>
 
         </div>
-      </div>
+      </div>          
+    </ng-container>
     </div>
   </div>

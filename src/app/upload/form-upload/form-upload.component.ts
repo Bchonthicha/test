@@ -27,6 +27,6 @@ export class FormUploadComponent implements OnInit {
   upload() {
     const file = this.selectedFiles.item(0)
     this.currentFileUpload = new FileUpload(file);
-    this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress,'test')
+    this.uploadService.pushFileToStorage(this.currentFileUpload,'test')
   }
 }

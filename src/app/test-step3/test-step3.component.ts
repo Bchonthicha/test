@@ -74,20 +74,11 @@ export class TestStep3Component implements OnInit {
   studentExam: StudentExam;
   questionExam: QuestionExam;
 
+  isdataStudent: boolean = false;
+
   constructor(private router: Router, private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
-    /*
-    //test show sort time
-    let Hero = [
-      { name: "Robin Van Persie", age: 28, time: '7/1/2561 16:49:58' },
-      { name: "Theo Walcott", age: 22, time: '5/2/2561 16:49:58' },
-      { name: "Bacary Sagna", age: 26, time: '27/2/2560 16:45:58' }
-    ].sort(function (obj1, obj2) {
-      // Ascending: first age less than the previous
-      return obj1.age - obj2.age;
-    });
-    console.log("-------------------" + Hero);
-    //
-*/
+   this.isdataStudent =false;
+
     console.log("_____________step 3____________");
     console.log(this.firebaseService.arrayTest1);
     console.log(this.firebaseService.arrayTest2);
@@ -105,7 +96,7 @@ export class TestStep3Component implements OnInit {
   }
 
   onChange(name) {
-
+    this.isdataStudent = true;
     this.preAddStudentDialog();
     console.log(name);
     // this.studentCollection = this.afs.collection<Student>('/students', ref => ref.orderBy('code'));

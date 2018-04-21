@@ -33,7 +33,10 @@ export class StudentListComponent implements OnInit {
   //upload file
   selectedFiles: FileList
   currentFileUpload: FileUpload
-  progress: { percentage: number } = { percentage: 0 }
+  // progress: { percentage: number } = { percentage: 0 }
+
+  studentsCheck = [];
+  studentAddcheck: boolean = true;
 
   constructor(private afs: AngularFirestore, private firebaseService: FirebaseService, private uploadService: UploadFileService) {
 
@@ -43,8 +46,8 @@ export class StudentListComponent implements OnInit {
     this.students.forEach(data => {
       //console.log(data);
       data.forEach(data1 => {
-      //  console.log(data1.code);
-
+        // console.log(data1.code);
+        // this.studentsCheck.push(data1);
       })
     })
   }
@@ -64,24 +67,43 @@ export class StudentListComponent implements OnInit {
   }
 
   addNewStudent() {
-    //Add item with Custom IDs In Firebase
-    const id = this.newStudentCode;
-    const student: Student = {
-      code: this.newStudentCode,
-      name: this.newStudentName,
-      url: null
-    }
 
-    const studentCollection = this.afs.collection<Student>('students');
-    studentCollection.doc(id).set(student);
+    if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
+      alert("Unsuccessful : Please enter all fields.");
+    } else {
+      //Add item with Custom IDs In Firebase
+      // console.log(this.newStudentCode);
+      // this.studentsCheck.forEach(data => {
+      //   if (data.code == this.newStudentCode) {
+      //     alert("Unsuccessful : This code already exists.");
+      //   } else {
+      //     this.studentAddcheck = false;
+      //   }
+      // })
+      // if (this.studentAddcheck == false) {
+        const id = this.newStudentCode;
+        const student: Student = {
+          code: this.newStudentCode,
+          name: this.newStudentName,
+          url: null
+        }
+        console.log(student);
+        console.log(this.selectedFiles);
 
-  //upload picture file
-    if (this.selectedFiles) {
-      const file = this.selectedFiles.item(0)
-      this.currentFileUpload = new FileUpload(file)
-      this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
-      this.selectedFiles = null;
-    }
+        const studentCollection = this.afs.collection<Student>('students');
+        studentCollection.doc(id).set(student);
+
+        //upload picture file
+        if (this.selectedFiles) {
+          const file = this.selectedFiles.item(0)
+          this.currentFileUpload = new FileUpload(file)
+          // this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
+          this.uploadService.pushFileToStorage(this.currentFileUpload, id)
+          this.selectedFiles = null;
+        }
+      }
+
+    // }
 
   }
 
@@ -112,7 +134,7 @@ export class StudentListComponent implements OnInit {
     if (this.selectedFiles) {
       const file = this.selectedFiles.item(0);
       this.currentFileUpload = new FileUpload(file);
-      this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, this.studentLocal.code);
+      this.uploadService.pushFileToStorage(this.currentFileUpload, this.studentLocal.code);
       this.selectedFiles = null;
     }
   }

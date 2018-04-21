@@ -3,17 +3,9 @@
     <div class="content">
 
       <form #SelectManageTest="ngForm">
-        <!-- <div class="form-group">
-        <label>Subject Code:</label>
-        <input type="text" class="form-control" id="SubjectCode" name="SubjectCode" ngModel [(ngModel)]="Subject_Code">
-      </div>
-      <div class="form-group">
-        <label>Subject Name:</label>
-        <input type="text" class="form-control" id="SubjectName" name="SubjectName" ngModel [(ngModel)]="Subject_Name">
-      </div> -->
         <div class="form-group">
           <label for="exampleSelect1">Subject select &nbsp; or &nbsp;
-            <a class="AddSubject" data-toggle="modal" data-target="#myModal" (click)="DefaultModal()">Add Subject</a>
+            <a class="AddSubject" data-toggle="modal" data-target="#myModalAddSub" (click)="DefaultModal()">Add Subject</a>
           </label>
           <select class="form-control" id="SelectCategory" name="SelectCategory" (ngModelChange)="onChange($event)" [(ngModel)]="SelectSubject">
             <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
@@ -113,7 +105,7 @@
 
 
 <!-- Modal ADD-->
-<div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="myModalAddSub" role="dialog">
   <div class="modal-dialog  modal-md">
     <!-- Modal size sm,md-->
     <!-- Modal content-->
@@ -126,7 +118,7 @@
         <div class="modal-body">
           <div class="form-group">
             <label>Subject Code:</label>
-            <input type="text" class="form-control" id="newSubjectCode" name="newSubjectCode" ngModel [(ngModel)]="newSubjectCode" placeholder="ex. 205100">
+            <input type="text" class="form-control" myNumberOnly  id="newSubjectCode" name="newSubjectCode" ngModel [(ngModel)]="newSubjectCode" placeholder="ex. 205100">
           </div>
           <div class="form-group">
             <label>Subject Name:</label>

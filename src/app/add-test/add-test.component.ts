@@ -66,6 +66,8 @@ export class AddTestComponent implements OnInit {
   isDisplayQuestion: boolean = true;
   question_objDisplay = [];
   createTestBnt: boolean = true;
+  subjectAddcheck: boolean = true;
+  subjectCheck = [];
 
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
     console.log(this.file + "file");
@@ -74,6 +76,13 @@ export class AddTestComponent implements OnInit {
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
     this.subjectList = subjectRef.valueChanges()
     this.subCollection = afs.collection<Subject>('/subjects')
+
+    this.subjectList.subscribe(sub => {
+      console.log(sub);
+      sub.forEach(data => {
+        this.subjectCheck.push(data)
+      })
+    })
   }
 
   ngOnInit() {
@@ -112,6 +121,7 @@ export class AddTestComponent implements OnInit {
       }
     })
   }
+
   DefaultModal() {
     console.log("DefaultModal")
     this.newSubjectName = "";
@@ -120,28 +130,41 @@ export class AddTestComponent implements OnInit {
 
   addNewSubject(data: NgForm) {
     if (this.newSubjectCode == "" || this.newSubjectName == "") {
-      alert("Please enter all fields.");
+      alert("Unsuccessful : Please enter all fields.");
     } else {
       console.log(this.newSubjectName);
       console.log(this.newSubjectCode);
-      this.subjectAdd = {
-        code: this.newSubjectCode,
-        name: this.newSubjectName
+      //
+      this.subjectCheck.forEach(data => {
+        console.log(data.code);
+        if (data.code == this.newSubjectCode) {
+          alert("Unsuccessful : This code already exists.");
+        } else {
+          this.subjectAddcheck = false;
+        }
+        //
+      })
+
+      if (this.subjectAddcheck == false) {
+        this.subjectAdd = {
+          code: this.newSubjectCode,
+          name: this.newSubjectName
+        }
+        console.log(this.subjectAdd);
+
+        //----Add subject detail in subject
+        const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
+        subjectRef2.set(this.subjectAdd);
       }
-      //----Add subject detail in subject
-      const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
-      subjectRef2.set(this.subjectAdd);
-
     }
-
-
   }
+
   //---get json data from excel file
   incomingfile(event) {
 
     this.file = event.target.files[0];
     console.log(this.file);
-    console.log(this.file.name);
+    // console.log(this.file.name);
 
   }
   //--- Upload ecel and display
@@ -149,10 +172,9 @@ export class AddTestComponent implements OnInit {
     this.question_objDisplay = [];
     console.log("display question");
     if (this.file == undefined) {
-      alert("ไม่ได้เลือกไฟล์");
+      alert("Please select file");
     }
     else {
-      alert("ครบ");
       this.isDisplayQuestion = false;
       this.createTestBnt = false;
 
@@ -207,10 +229,9 @@ export class AddTestComponent implements OnInit {
   createNewTest() {
 
     if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "") {
-      alert("ไม่ครบ");
+      alert("Please enter all fields. ");
     }
     else {
-      alert("ครบ");
       console.log(this.question_obj);
       //make type string to number
       let type_num = +this.type;

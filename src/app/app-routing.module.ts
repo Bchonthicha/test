@@ -16,7 +16,7 @@ import { TestStep3Component } from './test-step3/test-step3.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { SignupComponent } from './signup/signup.component';
 import { ReportsComponent} from './reports/reports.component';
-import { StudentCheckComponent } from './student-check/student-check.component';
+
 // Service
 import { AuthService } from './services/auth.service';
 // Guard
@@ -24,8 +24,6 @@ import { AuthGuard } from './guards/auth.guard';
 //upload
 import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 const i=0;
-//test table
-import { TablePaginationComponent } from './table-pagination/table-pagination.component';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AddTestComponent } from './add-test/add-test.component';
@@ -37,10 +35,6 @@ const routes: Routes = [
   { 
     path: '',      //เดิมเป็น path: ' '
     component: LoginComponent
-  },
-  {
-    path:"table",
-    component:TablePaginationComponent
   },
   {
     path: 'signup',
@@ -129,10 +123,6 @@ const routes: Routes = [
         //     component: ReportOfStudentComponent,
         //   }
         // ]
-      },
-      {
-        path: 'student-check',
-        component: StudentCheckComponent
       }
     ]
   }

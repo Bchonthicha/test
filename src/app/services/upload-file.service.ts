@@ -15,8 +15,8 @@ export class UploadFileService {
   constructor(private afs: AngularFirestore) {}
 
   private basePath = '/students';
-
-  pushFileToStorage(fileUpload: FileUpload, progress: {percentage: number}, studentCode:string) {
+  // pushFileToStorage(fileUpload: FileUpload, progress: {percentage: number}, studentCode:string) {
+  pushFileToStorage(fileUpload: FileUpload, studentCode:string) {
     const storageRef = firebase.storage().ref();
     const uploadTask = storageRef.child(`${this.basePath}/${studentCode}`).put(fileUpload.file);
 
@@ -24,7 +24,7 @@ export class UploadFileService {
       (snapshot) => {
         // in progress
         const snap = snapshot as firebase.storage.UploadTaskSnapshot
-        progress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
+        // progress.percentage = Math.round((snap.bytesTransferred / snap.totalBytes) * 100)
       },
       (error) => {
         // fail

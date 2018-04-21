@@ -79,7 +79,6 @@ import { AuthService } from './services/auth.service';
 
 // Guard
 import { AuthGuard } from './guards/auth.guard';
-import { StudentCheckComponent } from './student-check/student-check.component';
 
 //Upload file to firebass
 import { UploadComponent } from './upload/upload.component';
@@ -99,7 +98,6 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 // semantic
 import { NgSemanticModule } from 'ng-semantic';
 import { ReportsComponent } from './reports/reports.component';
-import { TablePaginationComponent } from './table-pagination/table-pagination.component';
 import { AddTestComponent } from './add-test/add-test.component';
 import { DeleteTestComponent } from './delete-test/delete-test.component';
 import { EditTestComponent } from './edit-test/edit-test.component';
@@ -129,12 +127,10 @@ import { NumberOnlyDirective } from './number.directive';
     TestStep2Component,
     TestStep3Component,
     SignupComponent,
-    StudentCheckComponent,
     UploadComponent,
     FormUploadComponent,
     GroupDetailComponent,
     ReportsComponent,
-    TablePaginationComponent,
     AddTestComponent,
     DeleteTestComponent,
     EditTestComponent,

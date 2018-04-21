@@ -14,6 +14,8 @@ export class BlankComponent implements OnInit {
   examPause = [];
   ExamList: Observable<Exam[]>;
 
+  isDisplayPause: boolean = true;
+
   constructor(private afs: AngularFirestore, private router: Router, private firebaseService: FirebaseService) {
     this.examPause = [];
     //Exam
@@ -30,8 +32,11 @@ export class BlankComponent implements OnInit {
           this.examPause.push(d);
         }
       })
-      // console.log(data.status);
 
+      console.log(this.examPause.length);
+      if (this.examPause.length == 0) {
+        this.isDisplayPause = false;
+      }
     })
   }
 
