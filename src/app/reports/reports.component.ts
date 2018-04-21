@@ -66,7 +66,10 @@ export class ReportsComponent implements OnInit {
   //number of question doing
   doing: number;
 
+  studentExportObj = [];
+
   constructor(private afs: AngularFirestore, private excelService: ExcelService) {
+    this.studentExportObj=[];
     //สำหรับใช้ export excel
     this.excelService = excelService;
     //Exam
@@ -90,7 +93,9 @@ export class ReportsComponent implements OnInit {
 
   ngOnInit() {
   }
+
   onChange(dataExam) {
+    this.studentExportObj=[];
     this.doing = 0;
     console.log("change");
     console.log(dataExam);
@@ -161,6 +166,7 @@ export class ReportsComponent implements OnInit {
           // มากไปน้อย
           return obj2.score - obj1.score
         });
+
         console.log(this.scoreGraph);
         console.log("คำนวณ");
         //คำนวน MAX, MIN
@@ -247,6 +253,22 @@ export class ReportsComponent implements OnInit {
 
   //-------function export เป็น excel file
   exportToExcel(event) {
-    this.excelService.exportAsExcelFile(this.studentShow, this.exam_code);
+    console.log(event);
+    console.log(this.studentExportObj);
+    //to data export
+    this.studentShow.forEach((data, indax) => {
+      console.log(data);
+      console.log(data.code);
+
+      let studentExport = {
+        student_id: data.code,
+        student_name: data.name,
+        score: data.score
+      }
+      this.studentExportObj.push(studentExport)
+      console.log(this.studentExportObj);
+    })
+    //
+    this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
   }
 }

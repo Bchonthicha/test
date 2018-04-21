@@ -63,8 +63,10 @@ export class ScoresComponent implements OnInit {
 
       //number of question doing
   doing: number;
+  studentExportObj=[];
   constructor(private afs: AngularFirestore,private router: Router, private excelService: ExcelService, private firebaseService: FirebaseService) {
     //สำหรับใช้ export excel
+    this.studentExportObj=[];
     this.doing = 0;
     this.excelService = excelService;
     this.testID = this.firebaseService.Test_id_new;
@@ -224,7 +226,23 @@ export class ScoresComponent implements OnInit {
 
   //-------function export เป็น excel file
   exportToExcel(event) {
-    this.excelService.exportAsExcelFile(this.studentShow, this.testID);
+    console.log(event);
+    console.log(this.studentExportObj);
+    //to data export
+    this.studentShow.forEach((data, indax) => {
+      console.log(data);
+      console.log(data.code);
+
+      let studentExport = {
+        student_id: data.code,
+        student_name: data.name,
+        score: data.score
+      }
+      this.studentExportObj.push(studentExport)
+      console.log(this.studentExportObj);
+    })
+    //
+    this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
   }
   exitTest(){
     this.router.navigate(['dashboard', 'test'])
