@@ -16,7 +16,7 @@
       <!-- {{SelectThisCategory}} -->
       <!-- Select Topic -->
       <div class="form-group">
-        <label for="exampleSelect1">Topic select</label>
+        <label for="exampleSelect1">Chapter select</label>
         <select class="form-control" id="SelectTopic" name="SelectTopic" (ngModelChange)="numQuestion($event)" [(ngModel)]="SelectTopic">
           <option value="" [selected]="isSelected" [disabled]="true"> ----Please choose one---- </option>
           <option *ngFor="let chapter of chapterList | async " [ngValue]= chapter [selected]="isSelected">

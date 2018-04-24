@@ -10,6 +10,10 @@ import { ExcelService } from '../services/excel.service';
 import { FirebaseService } from '../services/firebase.service';
 import { QuestionExam } from '../inteterfaces/questionExam';
 import { Router } from '@angular/router';
+import * as html2canvas from 'html2canvas';
+// import * as jsPDF from 'jspdf';
+
+declare let jsPDF;
 
 @Component({
   selector: 'app-scores',
@@ -64,7 +68,22 @@ export class ScoresComponent implements OnInit {
       //number of question doing
   doing: number;
   studentExportObj=[];
+  options:any;
+
   constructor(private afs: AngularFirestore,private router: Router, private excelService: ExcelService, private firebaseService: FirebaseService) {
+    this.options = {
+      scales:{
+        yAxes:[
+          {
+            ticks:{
+              stepSize:1,
+              beginAtZero:true
+            }
+          }
+        ]
+      }
+    }
+    
     //สำหรับใช้ export excel
     this.studentExportObj=[];
     this.doing = 0;
@@ -115,8 +134,7 @@ export class ScoresComponent implements OnInit {
     
     this.questions.subscribe(ques => {
       console.log(ques);
-      ques.forEach(data => {
-          
+      ques.forEach(data => {        
         console.log(data.status);
         if (data.status == true) {
           this.doing = this.doing + 1;
@@ -252,4 +270,18 @@ export class ScoresComponent implements OnInit {
   ngOnInit() {
   }
 
+  generatePDF(){
+    console.log(this.exam_code);
+    let temp = this.exam_code+'.pdf';
+    console.log(temp);
+    
+    html2canvas(document.getElementById('content')).then(function(canvas){
+      document.body.appendChild(canvas);
+      var pdf = new jsPDF('p','pt','a4');
+
+      pdf.addHTML(canvas,function(){
+        pdf.save(temp);
+      });
+    });
+  }
 }

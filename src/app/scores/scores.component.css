@@ -44,6 +44,20 @@
     margin-top: 40px;
   }
   .bntAdd{
+    width: 85%;
+    margin: 5px;
+    /* background-color: #FF8460;
+    color: whitesmoke */
+  }
+  .bntAdd1{
     width: 40%;
     margin: 5px;
+    background-color: #008000;
+    color: whitesmoke
+  }
+  .bntAdd2{
+    width: 40%;
+    margin: 5px;
+    background-color: #BD2819;
+    color: white
   }

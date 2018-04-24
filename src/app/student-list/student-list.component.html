@@ -115,23 +115,16 @@
             </div>
             <!-- ////// -->
             <div class="modal-body">
-              <form (ngSubmit)="setModalData(studentLocal)">
+              <form >
                 <div class="form-group">
                   <label>Student ID:</label>
-                  <input class="form-control " type="text" name="studentCode" ngModel [(ngModel)]="studentLocal.code" disabled>
+                  <input class="form-control " type="text" name="studentCode"  [(ngModel)]="studentCodeLocal" disabled>
                 </div>
                 <div class="form-group">
                   <label>Student Name:</label>
-                  <input class="form-control " type="text" name="studentName" ngModel [(ngModel)]="studentLocal.name">
+                  <input class="form-control " type="text" name="studentName"  [(ngModel)]="studentNameLocal">
                 </div>
               </form>
-              <!-- upload file -->
-              <!--  <div *ngIf="currentFileUpload" class="progress" style="width:400px">
-               <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{progress.percentage}}"
-                  aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-                  {{progress.percentage}}%
-                </div> 
-              </div>-->
 
               <label class="btn btn-default">
                 <input type="file" (change)="selectFile($event)" style="width:1000px">

@@ -16,7 +16,10 @@ export class EditTestComponent implements OnInit {
   chapterList: Observable<Chapter[]>;
   SubjectName: any;
   SubjectCode: any;
-  subjectLocal: Subject = { code: null, name: null };
+
+  subjectNameLocal: any;
+  subjectCodeLocal: any;
+
   constructor(private afs: AngularFirestore, private router: Router) {
     //subject
     this.Refresh();
@@ -28,7 +31,7 @@ export class EditTestComponent implements OnInit {
     this.subjectList.forEach(subject => {
       // console.log(subject);
       subject.forEach(sub => {
-        // console.log(sub.code);
+        console.log(sub.code);
         const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${sub.code}/chapters/`);
         this.chapterList = chapterRef.valueChanges()
 
@@ -42,6 +45,8 @@ export class EditTestComponent implements OnInit {
           // console.log(objSubDisplay);
 
           this.arrSubDisplay.push(objSubDisplay);
+          // console.log(this.arrSubDisplay);
+          
         })
 
         // this.chapterList.forEach(chap => {
@@ -53,7 +58,11 @@ export class EditTestComponent implements OnInit {
     })
   }
   setSubjectEdit(subject: Subject) {
-    this.subjectLocal = subject;
+console.log(subject);
+
+
+    this.subjectNameLocal = subject.name;
+    this.subjectCodeLocal = subject.code;
   }
 
 
@@ -72,17 +81,18 @@ export class EditTestComponent implements OnInit {
 
   }
   UpdateSubject() {
-    // console.log(this.subjectLocal.name)
-    if (this.subjectLocal.name == "") {
+
+
+    if (this.subjectNameLocal == "") {
       alert("Unsuccessful : Please enter subject name.");
     } else {
       console.log("UpdateSubject");
 
       const subjectUpdate = {
-        name: this.subjectLocal.name
+        name: this.subjectNameLocal
       };
       //path to update
-      const subjectRef = this.afs.doc<Subject>(`subjects/${this.subjectLocal.code}`);
+      const subjectRef = this.afs.doc<Subject>(`subjects/${this.subjectCodeLocal}`);
       //update data : student_name
       subjectRef.update(subjectUpdate).then(() => {
         console.log("update Subject");

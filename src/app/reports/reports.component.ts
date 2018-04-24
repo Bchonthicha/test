@@ -10,6 +10,10 @@ import { AccordionModule } from "primeng/accordion";
 import { ExcelService } from '../services/excel.service';
 import { Chapter } from '../inteterfaces/chapter';
 import { Subject } from '../inteterfaces/subject';
+import * as html2canvas from 'html2canvas';
+// import * as jsPDF from 'jspdf';
+
+declare let jsPDF;
 
 @Component({
   selector: 'app-reports',
@@ -67,6 +71,7 @@ export class ReportsComponent implements OnInit {
   doing: number;
 
   studentExportObj = [];
+  options:any;
 
   constructor(private afs: AngularFirestore, private excelService: ExcelService) {
     this.studentExportObj=[];
@@ -89,6 +94,18 @@ export class ReportsComponent implements OnInit {
       // console.log(data.status);
 
     })
+    this.options = {
+      scales:{
+        yAxes:[
+          {
+            ticks:{
+              stepSize:1,
+              beginAtZero:true
+            }
+          }
+        ]
+      }
+    }
   }
 
   ngOnInit() {
@@ -271,4 +288,20 @@ export class ReportsComponent implements OnInit {
     //
     this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
   }
+
+  generatePDF(){
+    console.log(this.exam_code);
+    let temp = this.exam_code+'.pdf';
+    console.log(temp);
+    
+    html2canvas(document.getElementById('content')).then(function(canvas){
+      document.body.appendChild(canvas);
+      var pdf = new jsPDF('p','pt','a4');
+
+      pdf.addHTML(canvas,function(){
+        pdf.save(temp);
+      });
+    });
+  }
+
 }

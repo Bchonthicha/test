@@ -192,7 +192,7 @@ export class TestStep1Component implements OnInit {
     // });
   }
 
-  //-------function เมื่อเลือกTopic select แล้วแสดงส่วนของ Number of items
+  //-------function เมื่อเลือก Chapter select แล้วแสดงส่วนของ Number of items
   numQuestion(chCode) {
     // console.log(chCode);
     // console.log(chCode.code);

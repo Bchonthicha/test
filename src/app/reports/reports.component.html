@@ -1,6 +1,6 @@
 <div class="reports">
   <div class="box box-info">
-    <div class="content">
+    <div class="content" id = "content">
       <br>
 
       <form #SelectManageTest="ngForm">
@@ -59,10 +59,10 @@
                   <td colspan='5' align="center">
 
                     <ng-container *ngIf="isbar">
-                      <p-chart type="bar" [data]="data1"></p-chart>
+                      <p-chart type="bar" [data]="data1"  [options]="options" ></p-chart>
                     </ng-container>
                     <ng-container *ngIf="isline">
-                      <p-chart type="line" [data]="data2"></p-chart>
+                      <p-chart type="line" [data]="data2"  [options]="options" ></p-chart>
                     </ng-container>
                     <div class="btn-group btn-group-justified ">
                       <a class="btn  addTestBtn bg-info" (click)="barBtn()"> Bar</a>
@@ -108,10 +108,11 @@
                 </tr>
                 <tr>
                   <td colspan='4' align="center">
-                    <button (click)="exportToExcel()" class="btn btn-primary bntAdd">
+                    <button (click)="exportToExcel()" class="btn bntAdd1">
                         <span class="glyphicon glyphicon-export"></span>&nbsp;Export to excel</button>
+                    <button (click)="generatePDF()" class="btn bntAdd2">
+                        <span class="glyphicon glyphicon-export"></span>&nbsp;Export to PDF</button>
                   </td>
-
                 </tr>
               </tbody>
             </table>
