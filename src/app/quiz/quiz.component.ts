@@ -125,7 +125,7 @@ export class QuizComponent implements OnInit {
       } else {
         this.examDataDetail((studentList) => {
           this.afs.doc(`/answers/${this.testID}`).valueChanges().forEach(element => {
-            console.log(element);
+            // console.log(element);
             this.answerProcessList(element)
             this.scoreProcess(element)
           });
@@ -147,6 +147,8 @@ export class QuizComponent implements OnInit {
 
     //list answer
     this.ansObservable.subscribe(ans => {
+      console.log(ans);
+      
       this.AnsObservableResult = ans;
       console.log(this.AnsObservableResult);
 
@@ -157,23 +159,23 @@ export class QuizComponent implements OnInit {
   }
 
   answerProcessList(ans) {
-    console.log(this.Q_no);
+    // console.log(this.Q_no);
     const array_testList = [];
-    console.log("ans in answerProcessList=", ans);
+    // console.log("ans in answerProcessList=", ans);
     let pack_array_testList = {};
     this.student_temp.forEach(stu => {
 
-      console.log(stu);
-      console.log(stu.code);
-      console.log(this.Q_no);
-      console.log(ans[stu.code][this.Q_no]);
+      // console.log(stu);
+      // console.log(stu.code);
+      // console.log(this.Q_no);
+      // console.log(ans[stu.code][this.Q_no]);
 
       this.answer = ans[stu.code][this.Q_no];
-      console.log(this.answer);
+      // console.log(this.answer);
 
       if (this.answer != undefined) {
 
-        console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
+        // console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
@@ -185,14 +187,14 @@ export class QuizComponent implements OnInit {
         //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
         //this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
         array_testList.push(pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
-        console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
+        // console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
       }
     })
     this.array_testList = array_testList;
   }
 
   scoreProcess(ans) {
-    console.log("ans in scoreProcess=", ans);
+    // console.log("ans in scoreProcess=", ans);
 
     //ค่าผลเฉลยตามชนิดของแบบทดสอบ
     if (this.examType == 1) {
@@ -201,30 +203,30 @@ export class QuizComponent implements OnInit {
       this.answerCheck = this.Q_answer_index;
     }
 
-    console.log("ansObservable");
+    // console.log("ansObservable");
     let new_score;
 
     const array_testListProcess = [];
     this.student_temp.forEach(stu => {
 
-      console.log(stu);
-      console.log(stu.code);
+      // console.log(stu);
+      // console.log(stu.code);
       // console.log("นี่ฉันเองงงงงงงงงงงงงงงงง   " + stu.score);
-      console.log(this.Q_no);
+      // console.log(this.Q_no);
       // this.array_testList = [];
       this.answer = ans[stu.code][this.Q_no];
-      console.log(this.answer);
+      // console.log(this.answer);
 
       let pack_array_testList = {};
       //ตรวจคำตอบ
       if (this.answer != undefined) {             //ได้รับคำตอบมา
-        console.log("input=" + this.answer + "ans= " + this.answerCheck);
+        // console.log("input=" + this.answer + "ans= " + this.answerCheck);
 
         if (this.answer == this.answerCheck) { //คำตอบถูก
           new_score = stu.score + 1;         //บวกคะแนนเพิ่ม
-          console.log(new_score);
+          // console.log(new_score);
           // stu.score = stu.score + 1;
-          console.log(stu.code + "in" + this.Q_no + "==" + this.answer + "===" + this.answerCheck);
+          // console.log(stu.code + "in" + this.Q_no + "==" + this.answer + "===" + this.answerCheck);
           this.answerCheckImg = "assets/dist/img/corract.png";
           //update ค่า score ใน database
           // let newScoreUp = {
@@ -245,7 +247,7 @@ export class QuizComponent implements OnInit {
           url: stu.url,
           answer: this.answerCheckImg
         }
-        console.log(pack_array_testList);
+        // console.log(pack_array_testList);
 
       } else {                                   //ไม่ได้รับคำตอบมา ไม่มีคะแนนบวกเพิ่ม
         new_score = stu.score;
@@ -257,16 +259,16 @@ export class QuizComponent implements OnInit {
           url: stu.url,
           answer: "assets/dist/img/question.png"
         }
-        console.log(pack_array_testList);
+        // console.log(pack_array_testList);
       }
 
       //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
       array_testListProcess.push(pack_array_testList);  //เพิ่มเข้าข้างหลัง
-      console.log(array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
+      //console.log(array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
       // this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
     })
     this.array_testListProcess = array_testListProcess;
-    console.log(this.array_testListProcess);
+    // console.log(this.array_testListProcess);
   }
 
   examDataDetail(callback) {
@@ -306,11 +308,11 @@ export class QuizComponent implements OnInit {
     this.students = this.studentExamCollection.valueChanges()
 
     this.students.forEach(stu => {
-      console.log(stu);
+      // console.log(stu);
 
       if (!this.isExamDataDetailLoaded) {
         stu.forEach(data1 => {
-          console.log(data1.code);
+          // console.log(data1.code);
           this.student_temp.push(data1);
         })
         callback(this.student_temp)
@@ -326,7 +328,9 @@ export class QuizComponent implements OnInit {
       console.log(_.filter(ques, ['indax', this.current_question]));
       this.questionObj = _.filter(ques, ['indax', this.current_question]);
       this.question_show = this.questionObj[0].question;
-      this.Q_no = this.questionObj[0].code;
+      this.Q_no = this.questionObj[0].indax;
+      // console.log(this.questionObj[0]);
+      
       this.updateAllInfo()
       console.log("Q_no===="+ this.Q_no);
       
@@ -334,13 +338,13 @@ export class QuizComponent implements OnInit {
         this.choice_show = null;
         this.Q_answer_index = this.questionObj[0].answer;
         this.answerType1 = this.questionObj[0].choice[this.Q_answer_index];
-        console.log("ans= " + this.answerType1);
+        // console.log("ans= " + this.answerType1);
       } else {
         this.choice_show = this.questionObj[0].choice;
-        console.log(this.choice_show);
+        // console.log(this.choice_show);
         
         this.Q_answer_index = this.questionObj[0].answer;
-        console.log("ans= " + this.Q_answer_index);
+        // console.log("ans= " + this.Q_answer_index);
 
       }
     })
@@ -362,8 +366,8 @@ export class QuizComponent implements OnInit {
   inputAnswer() {
     this.isprocess = false;
     console.log("inputAnswer");
-    console.log(this.ansObservable);
-    console.log(this.students);
+    // console.log(this.ansObservable);
+    // console.log(this.students);
   }
 
   ProcessAnswer() {
@@ -376,8 +380,9 @@ export class QuizComponent implements OnInit {
     console.log("process answer");
     // const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
     // this.ansObservable = answerRefLocal.valueChanges()
-    console.log(this.ansObservable);
-    console.log(this.students);
+
+    // console.log(this.ansObservable);
+    // console.log(this.students);
 
 
 

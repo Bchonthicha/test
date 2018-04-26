@@ -75,6 +75,7 @@ export class TestStep3Component implements OnInit {
   questionExam: QuestionExam;
 
   isdataStudent: boolean = false;
+  student_ans={};
 
   constructor(private router: Router, private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService) {
    this.isdataStudent =false;
@@ -203,7 +204,12 @@ export class TestStep3Component implements OnInit {
           const StudentExamRef: AngularFirestoreDocument<StudentExam> = this.afs.doc<StudentExam>(`/exam/${this.exam_code}/students/${student.code}`)
           StudentExamRef.set(this.studentExam);
           arrayTest3pack.push(this.studentExam);
-
+          
+          //---add students code in answers
+          // this.question_obj[student.code] = null;
+          this.student_ans[student.code] = {};
+          const AnswersRef: AngularFirestoreDocument<object> = this.afs.doc<object>(`/answers/${this.exam_code}/`)
+          AnswersRef.set(this.student_ans);
         })
         console.log(arrayTest3pack);
 
