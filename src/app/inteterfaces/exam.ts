@@ -9,5 +9,9 @@ export interface Exam {
     status: string,
     subject_code: string,
     subject_name: string,
-    type: number
+    type: number,
+    max:any,
+    min:any,
+    sd:any,
+    average:any
 }

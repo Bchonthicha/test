@@ -142,7 +142,7 @@ export class AddTestComponent implements OnInit {
       //ไม่มีวิชาในระบบ
       if (this.subjectCheck.length == 0) {
         console.log("ไม่มี");
-        count=0;
+        count = 0;
         this.subjectAddcheck = false;
 
         //----Add subject detail in subject
@@ -152,7 +152,7 @@ export class AddTestComponent implements OnInit {
         this.subjectCheck.forEach(data => {
           console.log(data.code);
           if (data.code == this.newSubjectCode) {
-            count=1;
+            count = 1;
             console.log("ซ้ำ");
             alert("Unsuccessful : This code already exists.");
           } else {
@@ -162,8 +162,7 @@ export class AddTestComponent implements OnInit {
         })
       }
 
-
-      if (this.subjectAddcheck == false&&count!=1) {
+      if (this.subjectAddcheck == false && count != 1) {
         console.log("โอเค");
         this.subjectAdd = {
           code: this.newSubjectCode,
@@ -247,7 +246,7 @@ export class AddTestComponent implements OnInit {
   //---create new Test
   createNewTest() {
 
-    if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == ""||this.type == "" ||this.chapter_Name == "" ) {
+    if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "" || this.type == "" || this.chapter_Name == "") {
       alert("Please enter all fields. ");
     }
     else {
@@ -284,7 +283,7 @@ export class AddTestComponent implements OnInit {
         this.isDisplayQuestion = true;
         this.createTestBnt = true;
         this.question_objDisplay = [];
-  
+
         this.SelectSubject = "";
         this.Subject_Code = null;
         this.Subject_Name = null;

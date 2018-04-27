@@ -61,36 +61,36 @@ export class ScoresComponent implements OnInit {
   date: any;
   exam_code: string;
 
-    //questions
-    questions: Observable<QuestionExam[]>;
-    questionExamCollection: AngularFirestoreCollection<QuestionExam>;
+  //questions
+  questions: Observable<QuestionExam[]>;
+  questionExamCollection: AngularFirestoreCollection<QuestionExam>;
 
-      //number of question doing
+  //number of question doing
   doing: number;
-  studentExportObj=[];
-  options:any;
+  studentExportObj = [];
+  options: any;
 
-  constructor(private afs: AngularFirestore,private router: Router, private excelService: ExcelService, private firebaseService: FirebaseService) {
+  constructor(private afs: AngularFirestore, private router: Router, private excelService: ExcelService, private firebaseService: FirebaseService) {
     this.options = {
-      scales:{
-        yAxes:[
+      scales: {
+        yAxes: [
           {
-            ticks:{
-              stepSize:1,
-              beginAtZero:true
+            ticks: {
+              stepSize: 1,
+              beginAtZero: true
             }
           }
         ]
       }
     }
-    
+
     //สำหรับใช้ export excel
-    this.studentExportObj=[];
+    this.studentExportObj = [];
     this.doing = 0;
     this.excelService = excelService;
     this.testID = this.firebaseService.Test_id_new;
     //this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
-// this.testID="205100_0_1523986758534";
+    // this.testID="205100_0_1523986758534";
     //---data in exam
     this.ExamDoc = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.dataExam = this.ExamDoc.valueChanges()
@@ -124,17 +124,17 @@ export class ScoresComponent implements OnInit {
           break;
         }
       }
-     
+
       this.date = data.date;
       this.exam_code = data.exam_code;
     })
     //---question in exam
     this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.testID}/questions`)
     this.questions = this.questionExamCollection.valueChanges()
-    
+
     this.questions.subscribe(ques => {
       console.log(ques);
-      ques.forEach(data => {        
+      ques.forEach(data => {
         console.log(data.status);
         if (data.status == true) {
           this.doing = this.doing + 1;
@@ -177,6 +177,15 @@ export class ScoresComponent implements OnInit {
         console.log("AVG = " + this.avg);
         this.std = this.standardDeviation().toFixed(2)
         console.log("STD = " + this.std);
+        ///add to DB
+        let cal = {
+          max: this.max,
+          min: this.min,
+          sd: this.std,
+          average: this.avg
+        }
+        const ExamRef = this.afs.doc<Exam>(`/exam/${this.testID}`);
+        ExamRef.update(cal);
 
         console.log(index, this.std.length - 1);
         //bar
@@ -264,22 +273,22 @@ export class ScoresComponent implements OnInit {
     //
     this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
   }
-  exitTest(){
+  exitTest() {
     this.router.navigate(['dashboard', 'test'])
   }
   ngOnInit() {
   }
 
-  generatePDF(){
+  generatePDF() {
     console.log(this.exam_code);
-    let temp = this.exam_code+'.pdf';
+    let temp = this.exam_code + '.pdf';
     console.log(temp);
-    
-    html2canvas(document.getElementById('content')).then(function(canvas){
-      document.body.appendChild(canvas);
-      var pdf = new jsPDF('p','pt','a4');
 
-      pdf.addHTML(canvas,function(){
+    html2canvas(document.getElementById('content')).then(function (canvas) {
+      document.body.appendChild(canvas);
+      var pdf = new jsPDF('p', 'pt', 'a4');
+
+      pdf.addHTML(canvas, function () {
         pdf.save(temp);
       });
     });

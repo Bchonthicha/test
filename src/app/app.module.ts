@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 //import { AngularFireAuth } from 'angularfire2/auth';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -102,11 +102,14 @@ import { EditTestComponent } from './edit-test/edit-test.component';
 import { EditDetailComponent } from './edit-detail/edit-detail.component';
 import { ScoresComponent } from './scores/scores.component';
 //
-import {ChartModule} from 'primeng/chart';
-import {AccordionModule} from 'primeng/accordion';
+import { ChartModule } from 'primeng/chart';
+import { AccordionModule } from 'primeng/accordion';
 
 ///
 import { NumberOnlyDirective } from './number.directive';
+//
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -135,6 +138,8 @@ import { NumberOnlyDirective } from './number.directive';
     NumberOnlyDirective
   ],
   imports: [
+    //=> Basic usage
+    SweetAlert2Module.forRoot(),
     FeatureToggleModule,
     ChartsModule,
     AppRoutingModule,
@@ -182,13 +187,13 @@ import { NumberOnlyDirective } from './number.directive';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFirestoreModule,
-    NgSemanticModule ,
+    NgSemanticModule,
     ChartModule,
     AccordionModule,
-    
+    SweetAlert2Module
   ],
   // providers: [AuthService, AuthGuard],
-  providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService,ExcelService,CookieService ],
+  providers: [FirebaseService, AuthService, AngularFireDatabase, AuthGuard, UploadFileService, ExcelService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

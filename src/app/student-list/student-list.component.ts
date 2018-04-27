@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import { UploadFileService } from '../services/upload-file.service';
 import { FileUpload } from './fileupload';
 
+import swal from 'sweetalert2'
+
 @Component({
   selector: 'app-student-list',
   templateUrl: './student-list.component.html',
@@ -72,7 +74,14 @@ export class StudentListComponent implements OnInit {
     let count;
 
     if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
-      alert("Unsuccessful : Please enter all fields.");
+      // alert("Unsuccessful : Please enter all fields.");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter all fields.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
       //Add item with Custom IDs In Firebase
       console.log(this.newStudentCode);
@@ -80,7 +89,6 @@ export class StudentListComponent implements OnInit {
       console.log(this.studentsCheck.length);
 
       if (this.studentsCheck.length == 0) {
-        console.log("ไม่มี");
         this.studentAddcheck == false;
         indexCheck = 0;
         count = 0;
@@ -90,11 +98,17 @@ export class StudentListComponent implements OnInit {
           console.log(index);
           indexCheck = index;
           if (data.code == this.newStudentCode) {
-            alert("Unsuccessful : This code already exists.");
+            // alert("Unsuccessful : This code already exists.");
+            swal({
+              type: 'error',
+              title: 'Unsuccessful',
+              text: 'This code already exists.',
+              showConfirmButton: false,
+              timer: 1500
+            })
             this.studentAddcheck = true;
             count = 1;
           } else {
-            console.log("ไม่ซ้ำ");
             this.studentAddcheck = false;
           }
         })
@@ -102,8 +116,6 @@ export class StudentListComponent implements OnInit {
       console.log(indexCheck + "  " + (this.studentsCheck.length - 1));
 
       if (this.studentAddcheck == false && indexCheck == (this.studentsCheck.length - 1) && count != 1) {
-        console.log("เพิ่มได้");
-
         const id = this.newStudentCode;
         const student: Student = {
           code: this.newStudentCode,
@@ -124,6 +136,12 @@ export class StudentListComponent implements OnInit {
           this.uploadService.pushFileToStorage(this.currentFileUpload, id)
           this.selectedFiles = null;
         }
+        swal({
+          type: 'success',
+          title: 'Successful',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
 
     }
@@ -146,15 +164,18 @@ export class StudentListComponent implements OnInit {
   // Update student name or picture file this key
   UpdateStudent() {
     if (this.studentNameLocal == "") {
-      alert("Unsuccessful : Please enter subject name.");
+      // alert("Unsuccessful : Please enter subject name.");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter subject name.',
+        showConfirmButton: false,
+        timer: 1500
+      })
     } else {
-      console.log("UpdateSubject");
       const studentUpdate = {
         name: this.studentNameLocal
       };
-
-      // console.log(studentUpdate); //obj student name (ex. {name: "มาลี ดีใจ"})
-      // console.log(this.studentLocal.code);   //this student code (ex. 570510100)
 
       //path to update
       const studentRef = this.afs.doc<Student>(`students/${this.studentCodeLocal}`);
@@ -168,6 +189,12 @@ export class StudentListComponent implements OnInit {
         this.uploadService.pushFileToStorage(this.currentFileUpload, this.studentCodeLocal);
         this.selectedFiles = null;
       }
+      swal({
+        type: 'success',
+        title: 'Updated',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
   }
   //----Delete
@@ -182,6 +209,33 @@ export class StudentListComponent implements OnInit {
     this.studentCollection.doc(this.removeCode).delete()
     //Delete picture
     this.uploadService.delteUserImage(this.removeCode);
+    swal({
+      type: 'success',
+      title: 'Removed',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 
+  test() {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        console.log(result.value);
+
+        swal(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
 }

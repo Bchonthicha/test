@@ -180,7 +180,11 @@ export class TestStep3Component implements OnInit {
           status: "active",
           subject_code: this.receiveTest1[0].code,
           subject_name: this.receiveTest1[0].name,
-          type: this.receiveTest1[5]
+          type: this.receiveTest1[5],
+          max: null,
+          min: null,
+          sd: null,
+          average: null
         }
 
         console.log(this.examData);

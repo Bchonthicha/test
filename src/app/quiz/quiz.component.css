@@ -43,8 +43,13 @@
 
  .picture_show:hover {
    cursor: pointer;
-   width: 100px;
+   position: absolute;
+   width: 150px;
+   transition: width 1s;
+   border-radius: 10px;
+   box-shadow: -2px -2px 15px #888888;
  }
+
 
  /* .TableList{
   font-size: 12px;
@@ -110,10 +115,16 @@
    background-color: #ffe6e6;
  }
 
- .SkipBtn :hover{
+ /* .SkipBtn :hover{
    background-color: #FFCA8B;
  }
 
  .PauseBtn :hover {
    background-color: #FFBEBE;
- }
+ } */
+.StopBtn{
+  background-color: #FFC8C8;
+}
+/* .StopBtn:hover {
+  background-color: #FFBEBE;
+} */

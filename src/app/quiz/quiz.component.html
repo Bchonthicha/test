@@ -15,6 +15,8 @@
           <div class="btn-group btn-group-justified ">
               <a  (click)="pauseTest()" class="btn PauseBtn">
                 <span class="glyphicon glyphicon-pause"></span> Pause</a>
+                <a (click)="stopTest()" class="btn StopBtn">
+                    <span class="glyphicon glyphicon-stop"></span> Stop</a>
               <a (click)="SkipQuestion()" class="btn SkipBtn">
                 <span class="	glyphicon glyphicon-step-forward"></span> Skip</a>
             </div>
@@ -86,7 +88,7 @@
               <tr *ngFor="let data of array_testList ; let i=index">
                 <th scope="row">{{i+1}}</th>
                 <td>
-                  <img src=  {{data.url}} width="40" class="picture_show">
+                  <img src=  {{data.url}} width="40" class="picture_show img-circle">
                 </td>
                 <td>{{data.student_name}}</td>
                 <td>{{data.score}}/{{total_num_cal}}</td>
@@ -97,11 +99,11 @@
                 <tr *ngFor="let data of array_testListProcess ; let i=index">
                   <th scope="row">{{i+1}}</th>
                   <td>
-                    <img src= {{data.url}} width="40" class="picture_show">
+                    <img src= {{data.url}} width="40" class="picture_show img-circle">
                   </td>
                   <td>{{data.student_name}}</td>
                   <td>{{data.score}}/{{total_num_cal}}</td>
-                  <td> <img src= {{data.answer}} width="30"></td>
+                  <td> <img src= {{data.answer}} width="30" ></td>
                 </tr>
               </ng-container>
           </tbody>

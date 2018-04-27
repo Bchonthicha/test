@@ -24,16 +24,16 @@ export class BlankComponent implements OnInit {
     this.ExamList = ExamRef.valueChanges()
 
     this.ExamList.subscribe(data => {
-      console.log(data);
+      // console.log(data);
       data.forEach(d => {
-        console.log(d.status);
+        // console.log(d.status);
         if (d.status == "pause") {
-          console.log(d);
+          // console.log(d);
           this.examPause.push(d);
         }
       })
 
-      console.log(this.examPause.length);
+      // console.log(this.examPause.length);
       if (this.examPause.length == 0) {
         this.isDisplayPause = false;
       }
