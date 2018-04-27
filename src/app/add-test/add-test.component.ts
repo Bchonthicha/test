@@ -130,6 +130,8 @@ export class AddTestComponent implements OnInit {
   }
 
   addNewSubject(data: NgForm) {
+    let count;
+
     if (this.newSubjectCode == "" || this.newSubjectName == "") {
       alert("Unsuccessful : Please enter all fields.");
     } else {
@@ -138,14 +140,10 @@ export class AddTestComponent implements OnInit {
       //
       console.log(this.subjectCheck);
       //ไม่มีวิชาในระบบ
-      if (this.subjectCheck.length==0) {
+      if (this.subjectCheck.length == 0) {
         console.log("ไม่มี");
-        
-        this.subjectAdd = {
-          code: this.newSubjectCode,
-          name: this.newSubjectName
-        }
-        console.log(this.subjectAdd);
+        count=0;
+        this.subjectAddcheck = false;
 
         //----Add subject detail in subject
         const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
@@ -154,6 +152,7 @@ export class AddTestComponent implements OnInit {
         this.subjectCheck.forEach(data => {
           console.log(data.code);
           if (data.code == this.newSubjectCode) {
+            count=1;
             console.log("ซ้ำ");
             alert("Unsuccessful : This code already exists.");
           } else {
@@ -164,7 +163,7 @@ export class AddTestComponent implements OnInit {
       }
 
 
-      if (this.subjectAddcheck == false) {
+      if (this.subjectAddcheck == false&&count!=1) {
         console.log("โอเค");
         this.subjectAdd = {
           code: this.newSubjectCode,
@@ -254,7 +253,7 @@ export class AddTestComponent implements OnInit {
     else {
       console.log(this.question_obj);
       //make type string to number
-      let type_num = +this.type;
+      let type_num = + this.type;
       console.log(type_num);
 
       this.questionAdd = {

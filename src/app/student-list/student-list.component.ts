@@ -48,7 +48,7 @@ export class StudentListComponent implements OnInit {
       //console.log(data);
       data.forEach(data1 => {
         // console.log(data1.code);
-        // this.studentsCheck.push(data1);
+        this.studentsCheck.push(data1);
       })
     })
   }
@@ -68,43 +68,65 @@ export class StudentListComponent implements OnInit {
   }
 
   addNewStudent() {
+    let indexCheck;
+    let count;
 
     if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
       alert("Unsuccessful : Please enter all fields.");
     } else {
       //Add item with Custom IDs In Firebase
-      // console.log(this.newStudentCode);
-      // this.studentsCheck.forEach(data => {
-      //   if (data.code == this.newStudentCode) {
-      //     alert("Unsuccessful : This code already exists.");
-      //   } else {
-      //     this.studentAddcheck = false;
-      //   }
-      // })
-      // if (this.studentAddcheck == false) {
-      const id = this.newStudentCode;
-      const student: Student = {
-        code: this.newStudentCode,
-        name: this.newStudentName,
-        url: null
-      }
-      console.log(student);
-      console.log(this.selectedFiles);
+      console.log(this.newStudentCode);
+      //ไม่มีวิชาในระบบ
+      console.log(this.studentsCheck.length);
 
-      const studentCollection = this.afs.collection<Student>('students');
-      studentCollection.doc(id).set(student);
+      if (this.studentsCheck.length == 0) {
+        console.log("ไม่มี");
+        this.studentAddcheck == false;
+        indexCheck = 0;
+        count = 0;
 
-      //upload picture file
-      if (this.selectedFiles) {
-        const file = this.selectedFiles.item(0)
-        this.currentFileUpload = new FileUpload(file)
-        // this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
-        this.uploadService.pushFileToStorage(this.currentFileUpload, id)
-        this.selectedFiles = null;
+      } else {
+        this.studentsCheck.forEach((data, index) => {
+          console.log(index);
+          indexCheck = index;
+          if (data.code == this.newStudentCode) {
+            alert("Unsuccessful : This code already exists.");
+            this.studentAddcheck = true;
+            count = 1;
+          } else {
+            console.log("ไม่ซ้ำ");
+            this.studentAddcheck = false;
+          }
+        })
       }
+      console.log(indexCheck + "  " + (this.studentsCheck.length - 1));
+
+      if (this.studentAddcheck == false && indexCheck == (this.studentsCheck.length - 1) && count != 1) {
+        console.log("เพิ่มได้");
+
+        const id = this.newStudentCode;
+        const student: Student = {
+          code: this.newStudentCode,
+          name: this.newStudentName,
+          url: null
+        }
+        console.log(student);
+        console.log(this.selectedFiles);
+
+        const studentCollection = this.afs.collection<Student>('students');
+        studentCollection.doc(id).set(student);
+
+        //upload picture file
+        if (this.selectedFiles) {
+          const file = this.selectedFiles.item(0)
+          this.currentFileUpload = new FileUpload(file)
+          // this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
+          this.uploadService.pushFileToStorage(this.currentFileUpload, id)
+          this.selectedFiles = null;
+        }
+      }
+
     }
-
-    // }
 
   }
 
@@ -113,11 +135,11 @@ export class StudentListComponent implements OnInit {
   //Set data Edit to modal
   setModalData(student: Student) {
     //console.log(student);   //this student display ex. {code: "570510100", name: "มาลี ดีใจ", url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=e086515b-7369-4c47-a791-7b64ee5f35d3"}
-console.log(student);
+    console.log(student);
 
     this.studentNameLocal = student.name;
     console.log(this.studentNameLocal);
-    
+
     this.studentCodeLocal = student.code;
   }
 
