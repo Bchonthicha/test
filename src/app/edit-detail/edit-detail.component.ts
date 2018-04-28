@@ -14,6 +14,7 @@ import { subQuestion } from '../inteterfaces/questionObjAdd';
 import { ViewChild } from '@angular/core';
 import { DocumentReference } from '@firebase/firestore-types';
 import { log } from 'util';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-edit-detail',

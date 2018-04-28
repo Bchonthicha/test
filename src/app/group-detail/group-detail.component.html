@@ -41,7 +41,7 @@
                   <tr *ngFor="let studentObservable of members; let i=index">
                     <ng-container *ngIf="studentObservable | async as student">
                       <td>{{i+1}}</td>
-                      <img src= {{student.url}} width="60 px" class="picture_show ">
+                      <img src= {{student.url}} width="60 px" class="picture_show img-circle">
                       <td>{{student.code}}</td>
                       <td>{{student.name}}</td>
                       <td class="thisTextCenter">

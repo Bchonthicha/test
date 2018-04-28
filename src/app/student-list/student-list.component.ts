@@ -42,7 +42,7 @@ export class StudentListComponent implements OnInit {
   studentAddcheck: boolean = true;
 
   constructor(private afs: AngularFirestore, private firebaseService: FirebaseService, private uploadService: UploadFileService) {
-
+    this.studentsCheck = [];
     this.studentCollection = afs.collection<Student>('/students', ref => ref.orderBy('code'))
     this.students = this.studentCollection.valueChanges()
 
@@ -70,7 +70,6 @@ export class StudentListComponent implements OnInit {
   }
 
   addNewStudent() {
-    let indexCheck;
     let count;
 
     if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
@@ -90,20 +89,19 @@ export class StudentListComponent implements OnInit {
 
       if (this.studentsCheck.length == 0) {
         this.studentAddcheck == false;
-        indexCheck = 0;
         count = 0;
 
       } else {
-        this.studentsCheck.forEach((data, index) => {
-          console.log(index);
-          indexCheck = index;
+        this.studentsCheck.forEach(data => {
+
+
           if (data.code == this.newStudentCode) {
             // alert("Unsuccessful : This code already exists.");
             swal({
               type: 'error',
               title: 'Unsuccessful',
               text: 'This code already exists.',
-              showConfirmButton: false,
+              // showConfirmButton: false,
               timer: 1500
             })
             this.studentAddcheck = true;
@@ -113,9 +111,8 @@ export class StudentListComponent implements OnInit {
           }
         })
       }
-      console.log(indexCheck + "  " + (this.studentsCheck.length - 1));
 
-      if (this.studentAddcheck == false && indexCheck == (this.studentsCheck.length - 1) && count != 1) {
+      if (this.studentAddcheck == false && count != 1) {
         const id = this.newStudentCode;
         const student: Student = {
           code: this.newStudentCode,

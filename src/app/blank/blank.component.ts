@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Exam } from '../inteterfaces/exam';
 import { Observable } from 'rxjs/Observable';
 import { FirebaseService } from '../services/firebase.service';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-blank',
@@ -17,14 +18,15 @@ export class BlankComponent implements OnInit {
   isDisplayPause: boolean = true;
 
   constructor(private afs: AngularFirestore, private router: Router, private firebaseService: FirebaseService) {
-    this.examPause = [];
+
     //Exam
 
     const ExamRef: AngularFirestoreCollection<Exam> = this.afs.collection<Exam>(`/exam`);
     this.ExamList = ExamRef.valueChanges()
 
     this.ExamList.subscribe(data => {
-      // console.log(data);
+      // console.log(data);  
+      this.examPause = [];
       data.forEach(d => {
         // console.log(d.status);
         if (d.status == "pause") {
@@ -49,22 +51,33 @@ export class BlankComponent implements OnInit {
   }
   goToQuiz(exam_code) {
 
-    console.log("goToQuiz");
-    console.log(exam_code);
-    let examCode;
-    examCode = exam_code
-    this.firebaseService.Test_id_new = examCode;
-    this.examPause = [];
-    //update examStatus
-    const statusUpdate = {
-      status: "active"
-    };
+    swal({
+      title: 'Are you sure?',
+      text: "take this Quiz!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, take it!'
+    }).then((result) => {
+      if (result.value) {
+        console.log(exam_code);
+        let examCode;
+        examCode = exam_code
+        this.firebaseService.Test_id_new = examCode;
+        this.examPause = [];
+        //update examStatus
+        const statusUpdate = {
+          status: "active"
+        };
 
-    const examRef = this.afs.doc<Exam>(`exam/${examCode}`);
-    examRef.update(statusUpdate).then(() => {
-      //go to display scores page  
-      this.examPause = [];
-      this.router.navigate(['dashboard', 'test', 'quiz'])
-    });
+        const examRef = this.afs.doc<Exam>(`exam/${examCode}`);
+        examRef.update(statusUpdate).then(() => {
+          //go to display scores page  
+          this.examPause = [];
+          this.router.navigate(['dashboard', 'test', 'quiz'])
+        });
+      }
+    })
   }
 }

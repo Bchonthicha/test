@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as _ from 'lodash';
-
+import swal from 'sweetalert2'
 
 
 @Component({
@@ -120,6 +120,12 @@ export class GroupDetailComponent implements OnInit {
     this.sectionRef.update(section).then(() => {
       this.Refresh()
     })
+    swal({
+      type: 'success',
+      title: 'Successful',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 
   preRemoveStudent(studentCode) {
@@ -141,11 +147,23 @@ export class GroupDetailComponent implements OnInit {
         this.Refresh()
       })
     }
+    swal({
+      type: 'success',
+      title: 'Removed',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 
   deleteGroup() {
     this.sectionRef.delete()
     this.backGroupListPage();
+    swal({
+      type: 'success',
+      title: 'Removed',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 
   ngOnDestroy() {

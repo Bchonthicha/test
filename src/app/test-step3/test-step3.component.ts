@@ -18,6 +18,7 @@ import { StudentExam } from '../inteterfaces/studentExam';
 import { QuestionExam } from '../inteterfaces/questionExam';
 import { DocumentReference } from '@firebase/firestore-types';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2'
 
 // import { Router } from '@angular/router';
 @Component({
@@ -226,7 +227,7 @@ export class TestStep3Component implements OnInit {
             code: question.code,
             indax: index,
             question: question.question,
-            status: true
+            status: false
           }
           console.log(this.questionExam);
           //---add questions in exam

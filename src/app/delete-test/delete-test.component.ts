@@ -4,6 +4,7 @@ import { Subject } from '../inteterfaces/subject';
 import { Observable } from 'rxjs/Observable';
 import { Chapter } from '../inteterfaces/chapter';
 import { Question } from '../inteterfaces/question';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-delete-test',

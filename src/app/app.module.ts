@@ -61,8 +61,6 @@ import { ManageTestComponent } from './manage-test/manage-test.component';
 import { ManageStdGroupComponent } from './manage-std-group/manage-std-group.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { TestComponent } from './test/test.component';
-import { ReportOfTestComponent } from './report-of-test/report-of-test.component';
-import { ReportOfStudentComponent } from './report-of-student/report-of-student.component';
 import { TestStep1Component } from './test-step1/test-step1.component';
 import { TestStep2Component } from './test-step2/test-step2.component';
 import { TestStep3Component } from './test-step3/test-step3.component';
@@ -122,8 +120,6 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     ManageStdGroupComponent,
     QuizComponent,
     TestComponent,
-    ReportOfTestComponent,
-    ReportOfStudentComponent,
     TestStep1Component,
     TestStep2Component,
     TestStep3Component,

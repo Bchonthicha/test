@@ -52,8 +52,12 @@
   padding: 5px;
 }
 .picture_show:hover{
+  position: absolute;
   cursor: pointer;
   width: 250px;
+  transition: width 1s;
+  border-radius: 10px;
+  box-shadow: -3px -3px 20px #888888;
 }
 .thisTextCenter{
   text-align: center;

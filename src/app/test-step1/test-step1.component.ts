@@ -16,6 +16,7 @@ import { Question } from '../inteterfaces/question';
 import * as _ from "lodash";
 import { DocumentReference } from '@firebase/firestore-types';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-test-step1',

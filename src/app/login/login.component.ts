@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
   passwordSignup: string;
   constructor(private auth: AuthService, private firebaseService: FirebaseService, private router: Router, private cookieService: CookieService) {
     let user = this.firebaseService.userLogin;
-    console.log(user);
+    // console.log(user);
     let cookieValue_email = this.cookieService.get('email');
     let cookieValue_pass = this.cookieService.get('password');
-    console.log(cookieValue_email);
+    // console.log(cookieValue_email);
 
     if (cookieValue_email != "UNKNOWN") {
 

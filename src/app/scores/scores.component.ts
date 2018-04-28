@@ -11,7 +11,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { QuestionExam } from '../inteterfaces/questionExam';
 import { Router } from '@angular/router';
 import * as html2canvas from 'html2canvas';
-// import * as jsPDF from 'jspdf';
+import swal from 'sweetalert2'
 
 declare let jsPDF;
 
@@ -94,7 +94,7 @@ export class ScoresComponent implements OnInit {
     //---data in exam
     this.ExamDoc = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.dataExam = this.ExamDoc.valueChanges()
-    this.dataExam.subscribe(data => {
+    this.dataExam.take(1).subscribe(data => {
       //รายละเอียดส่วนหัวของรายงาน
       console.log(data);
       this.amount = data.amount;
@@ -132,12 +132,15 @@ export class ScoresComponent implements OnInit {
     this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.testID}/questions`)
     this.questions = this.questionExamCollection.valueChanges()
 
-    this.questions.subscribe(ques => {
+    this.questions.take(1).subscribe(ques => {
+      this.doing=0;
       console.log(ques);
       ques.forEach(data => {
         console.log(data.status);
         if (data.status == true) {
           this.doing = this.doing + 1;
+          console.log("doing"+this.doing);
+          
         }
       })
     });
@@ -145,7 +148,7 @@ export class ScoresComponent implements OnInit {
     this.studentExamCollection = this.afs.collection<StudentExam>(`/exam/${this.testID}/students`, ref => ref.orderBy('score'))
     this.students = this.studentExamCollection.valueChanges()
 
-    this.students.subscribe(stu => {
+    this.students.take(1).subscribe(stu => {
       console.log(stu);
       stu.forEach((data, index) => {
         console.log(data);

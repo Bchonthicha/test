@@ -4,6 +4,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { AngularFireDatabase, AngularFireList, snapshotChanges } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-test-step2',

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { Chapter } from '../inteterfaces/chapter';
 import { Question } from '../inteterfaces/question';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2'
+
 @Component({
   selector: 'app-edit-test',
   templateUrl: './edit-test.component.html',

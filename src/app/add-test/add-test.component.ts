@@ -15,6 +15,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { DocumentReference } from '@firebase/firestore-types';
 import { log } from 'util';
 import { Observable } from 'rxjs/Observable';
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-add-test',

@@ -116,7 +116,7 @@ export class QuizComponent implements OnInit {
     const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
     this.ansObservable = answerRefLocal.valueChanges()
 
-    this.examObservable.forEach(exam => {
+    this.examObservable.subscribe(exam => {
       console.log(exam.status);
       this.examStatus = exam.status;
       //exam data detail
@@ -124,15 +124,19 @@ export class QuizComponent implements OnInit {
         swal({
           type: 'success',
           title: 'Quiz Paused!'
+        }).then(() => {
+          this.router.navigate(['dashboard'])
         })
-        this.router.navigate(['dashboard'])
-      } else if(this.examStatus == "finish"){
+
+      } else if (this.examStatus == "finish") {
         swal({
           type: 'success',
-          title: 'Quiz Stopped!'
+          title: 'Quiz finished!'
+        }).then(() => {
+          this.router.navigate(['dashboard', 'test', 'scores'])
         })
-        this.router.navigate(['dashboard', 'test', 'scores'])
-      } else{
+
+      } else {
         this.examDataDetail((studentList) => {
           this.afs.doc(`/answers/${this.testID}`).valueChanges().forEach(element => {
             // console.log(element);
@@ -200,7 +204,6 @@ export class QuizComponent implements OnInit {
       this.answerCheck = this.Q_answer_index;
     }
 
-    // console.log("ansObservable");
     let new_score;
 
     const array_testListProcess = [];
@@ -351,6 +354,14 @@ export class QuizComponent implements OnInit {
       title: 'processed',
       showConfirmButton: false,
       timer: 1500
+    }).then(() => {
+      //update status
+      console.log(this.Q_no);
+      let question_status = {
+        status: true
+      }
+      const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${this.Q_no}`);
+      examRef.update(question_status)
     })
 
   }
@@ -397,8 +408,6 @@ export class QuizComponent implements OnInit {
 
     } else {
       this.current_question = this.current_question + 1;
-      console.log(this.current_question);
-      console.log("finish");
       this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
 
       //update examStatus
@@ -450,59 +459,18 @@ export class QuizComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         console.log("stop");
-        // swal({
-        //   type: 'success',
-        //   title: 'Stopped',
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // }).then(() => {
-
-          //update examStatus
-          console.log(this.current_question);
-          let count = this.current_question;
-          // processed
-          if (this.isprocess == true) {
-            count += 1;
-          }
-          console.log("count= "+ count);
-          
-          console.log((this.total_num - 1));
-          console.log(this.Q_no);
-          this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.testID}/questions`, ref => ref.orderBy('indax'))
-          let questionsS = this.questionExamCollection.valueChanges()
-          console.log(this.questions);
-
-          questionsS.take(1).subscribe(ques => {
-            console.log(ques);
-            ques.forEach(q => {
-              console.log(q.indax);
-              if (count <= q.indax) {
-                console.log(q.code);
-                let question_status = {
-                  status: false
-                }
-                const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${q.code}`);
-                examRef.update(question_status)
-              }
-            })
-
-          })
-
-          const statusUpdate = {
-            status: "finish"
-          };
-          const examRef = this.afs.doc<Exam>(`exam/${this.testID}`);
-          examRef.update(statusUpdate).then(() => {
-            //go to display scores page
-            console.log("stopedddddddddddddddddd");
-            this.router.navigate(['dashboard', 'test', 'scores'])
-          });
-
-        // });
+        const statusUpdate = {
+          status: "finish"
+        };
+        const examRef = this.afs.doc<Exam>(`exam/${this.testID}`);
+        examRef.update(statusUpdate).then(() => {
+          //go to dashboard page
+          this.router.navigate(['dashboard', 'test', 'scores'])
+        })
       }
     })
-
   }
+
   SkipQuestion() {
     swal({
       title: 'Are you sure?',
@@ -528,11 +496,11 @@ export class QuizComponent implements OnInit {
         console.log("skip");
         console.log("old " + this.current_question);
         //update question status
-        let question_status = {
-          status: false
-        }
-        const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${this.Q_no}`);
-        examRef.update(question_status)
+        // let question_status = {
+        //   status: false
+        // }
+        // const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${this.Q_no}`);
+        // examRef.update(question_status)
 
         if (this.current_question < this.total_num - 1) {
           console.log("new " + this.current_question);
@@ -573,4 +541,5 @@ export class QuizComponent implements OnInit {
     this.answerProcessList(this.AnsObservableResult)
     this.scoreProcess(this.AnsObservableResult)
   }
+
 }
