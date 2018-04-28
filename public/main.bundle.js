@@ -52,6 +52,8 @@ module.exports = "<div class=\"add-test\">\n  <div class=\"box box-success\">\n 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ts_xlsx__ = __webpack_require__("../../../../ts-xlsx/lib/main.browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ts_xlsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_ts_xlsx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -61,6 +63,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -137,8 +140,13 @@ var AddTestComponent = (function () {
     };
     AddTestComponent.prototype.addNewSubject = function (data) {
         var _this = this;
+        var count;
         if (this.newSubjectCode == "" || this.newSubjectName == "") {
-            alert("Unsuccessful : Please enter all fields.");
+            __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter all fields.',
+            });
         }
         else {
             console.log(this.newSubjectName);
@@ -148,11 +156,8 @@ var AddTestComponent = (function () {
             //ไม่มีวิชาในระบบ
             if (this.subjectCheck.length == 0) {
                 console.log("ไม่มี");
-                this.subjectAdd = {
-                    code: this.newSubjectCode,
-                    name: this.newSubjectName
-                };
-                console.log(this.subjectAdd);
+                count = 0;
+                this.subjectAddcheck = false;
                 //----Add subject detail in subject
                 var subjectRef2 = this.afs.doc("/subjects/" + this.newSubjectCode);
                 subjectRef2.set(this.subjectAdd);
@@ -161,8 +166,13 @@ var AddTestComponent = (function () {
                 this.subjectCheck.forEach(function (data) {
                     console.log(data.code);
                     if (data.code == _this.newSubjectCode) {
+                        count = 1;
                         console.log("ซ้ำ");
-                        alert("Unsuccessful : This code already exists.");
+                        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+                            type: 'error',
+                            title: 'Unsuccessful',
+                            text: 'This code already exists.',
+                        });
                     }
                     else {
                         _this.subjectAddcheck = false;
@@ -170,7 +180,7 @@ var AddTestComponent = (function () {
                     //
                 });
             }
-            if (this.subjectAddcheck == false) {
+            if (this.subjectAddcheck == false && count != 1) {
                 console.log("โอเค");
                 this.subjectAdd = {
                     code: this.newSubjectCode,
@@ -196,7 +206,11 @@ var AddTestComponent = (function () {
         this.question_objDisplay = [];
         console.log("display question");
         if (this.file == undefined) {
-            alert("Please select file");
+            __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+                type: 'warning',
+                title: 'Unsuccessful',
+                text: 'Please select file.',
+            });
         }
         else {
             this.isDisplayQuestion = false;
@@ -247,7 +261,11 @@ var AddTestComponent = (function () {
     AddTestComponent.prototype.createNewTest = function () {
         var _this = this;
         if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "" || this.type == "" || this.chapter_Name == "") {
-            alert("Please enter all fields. ");
+            __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter all fields.',
+            });
         }
         else {
             console.log(this.question_obj);
@@ -288,26 +306,42 @@ var AddTestComponent = (function () {
                 console.log(_this.file);
                 _this.selectedFiles = null;
             });
+            __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+                type: 'success',
+                title: 'Successful',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
         // 
     };
     //---clear Manage Test page
     AddTestComponent.prototype.clearAddTest = function () {
-        var c = confirm("confirm to clear this form");
-        if (c == true) {
-            this.isDisplayQuestion = true;
-            this.createTestBnt = true;
-            this.question_objDisplay = [];
-            this.SelectSubject = "";
-            this.Subject_Code = null;
-            this.Subject_Name = null;
-            this.chapter_Name = null;
-            this.type = "";
-            console.log(this.file);
-            this.file = undefined;
-            console.log(this.file);
-            this.selectedFiles = null;
-        }
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "clear this form!",
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, clear it!'
+        }).then(function (result) {
+            if (result.value) {
+                _this.isDisplayQuestion = true;
+                _this.createTestBnt = true;
+                _this.question_objDisplay = [];
+                _this.SelectSubject = "";
+                _this.Subject_Code = null;
+                _this.Subject_Name = null;
+                _this.chapter_Name = null;
+                _this.type = "";
+                console.log(_this.file);
+                _this.file = undefined;
+                console.log(_this.file);
+                _this.selectedFiles = null;
+            }
+        });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('uploadExcel'),
@@ -572,38 +606,37 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__manage_std_group_manage_std_group_component__ = __webpack_require__("../../../../../src/app/manage-std-group/manage-std-group.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__quiz_quiz_component__ = __webpack_require__("../../../../../src/app/quiz/quiz.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__test_test_component__ = __webpack_require__("../../../../../src/app/test/test.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__report_of_test_report_of_test_component__ = __webpack_require__("../../../../../src/app/report-of-test/report-of-test.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__report_of_student_report_of_student_component__ = __webpack_require__("../../../../../src/app/report-of-student/report-of-student.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__test_step1_test_step1_component__ = __webpack_require__("../../../../../src/app/test-step1/test-step1.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__test_step2_test_step2_component__ = __webpack_require__("../../../../../src/app/test-step2/test-step2.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__test_step3_test_step3_component__ = __webpack_require__("../../../../../src/app/test-step3/test-step3.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__signup_signup_component__ = __webpack_require__("../../../../../src/app/signup/signup.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__guards_auth_guard__ = __webpack_require__("../../../../../src/app/guards/auth.guard.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__services_upload_file_service__ = __webpack_require__("../../../../../src/app/services/upload-file.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_34_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35_ngx_feature_toggle__ = __webpack_require__("../../../../ngx-feature-toggle/dist/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35_ngx_feature_toggle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_35_ngx_feature_toggle__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__services_excel_service__ = __webpack_require__("../../../../../src/app/services/excel.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__group_detail_group_detail_component__ = __webpack_require__("../../../../../src/app/group-detail/group-detail.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38_ng_semantic__ = __webpack_require__("../../../../ng-semantic/ng-semantic.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38_ng_semantic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_38_ng_semantic__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__reports_reports_component__ = __webpack_require__("../../../../../src/app/reports/reports.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__add_test_add_test_component__ = __webpack_require__("../../../../../src/app/add-test/add-test.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__delete_test_delete_test_component__ = __webpack_require__("../../../../../src/app/delete-test/delete-test.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__edit_test_edit_test_component__ = __webpack_require__("../../../../../src/app/edit-test/edit-test.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__edit_detail_edit_detail_component__ = __webpack_require__("../../../../../src/app/edit-detail/edit-detail.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__scores_scores_component__ = __webpack_require__("../../../../../src/app/scores/scores.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45_primeng_chart__ = __webpack_require__("../../../../primeng/chart.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45_primeng_chart___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_45_primeng_chart__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46_primeng_accordion__ = __webpack_require__("../../../../primeng/accordion.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46_primeng_accordion___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_46_primeng_accordion__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__number_directive__ = __webpack_require__("../../../../../src/app/number.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__test_step1_test_step1_component__ = __webpack_require__("../../../../../src/app/test-step1/test-step1.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__test_step2_test_step2_component__ = __webpack_require__("../../../../../src/app/test-step2/test-step2.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__test_step3_test_step3_component__ = __webpack_require__("../../../../../src/app/test-step3/test-step3.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__signup_signup_component__ = __webpack_require__("../../../../../src/app/signup/signup.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__guards_auth_guard__ = __webpack_require__("../../../../../src/app/guards/auth.guard.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__services_upload_file_service__ = __webpack_require__("../../../../../src/app/services/upload-file.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_charts__ = __webpack_require__("../../../../ng2-charts/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_ngx_feature_toggle__ = __webpack_require__("../../../../ngx-feature-toggle/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_ngx_feature_toggle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_33_ngx_feature_toggle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__services_excel_service__ = __webpack_require__("../../../../../src/app/services/excel.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__group_detail_group_detail_component__ = __webpack_require__("../../../../../src/app/group-detail/group-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36_ng_semantic__ = __webpack_require__("../../../../ng-semantic/ng-semantic.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36_ng_semantic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_36_ng_semantic__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__reports_reports_component__ = __webpack_require__("../../../../../src/app/reports/reports.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__add_test_add_test_component__ = __webpack_require__("../../../../../src/app/add-test/add-test.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__delete_test_delete_test_component__ = __webpack_require__("../../../../../src/app/delete-test/delete-test.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__edit_test_edit_test_component__ = __webpack_require__("../../../../../src/app/edit-test/edit-test.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__edit_detail_edit_detail_component__ = __webpack_require__("../../../../../src/app/edit-detail/edit-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__scores_scores_component__ = __webpack_require__("../../../../../src/app/scores/scores.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43_primeng_chart__ = __webpack_require__("../../../../primeng/chart.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43_primeng_chart___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_43_primeng_chart__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44_primeng_accordion__ = __webpack_require__("../../../../primeng/accordion.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44_primeng_accordion___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_44_primeng_accordion__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__number_directive__ = __webpack_require__("../../../../../src/app/number.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__toverux_ngx_sweetalert2__ = __webpack_require__("../../../../@toverux/ngx-sweetalert2/esm5/toverux-ngx-sweetalert2.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -627,8 +660,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 //component
-
-
 
 
 
@@ -674,6 +705,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 ///
 
+//
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -690,29 +723,29 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_18__manage_std_group_manage_std_group_component__["a" /* ManageStdGroupComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__quiz_quiz_component__["a" /* QuizComponent */],
                 __WEBPACK_IMPORTED_MODULE_20__test_test_component__["a" /* TestComponent */],
-                __WEBPACK_IMPORTED_MODULE_21__report_of_test_report_of_test_component__["a" /* ReportOfTestComponent */],
-                __WEBPACK_IMPORTED_MODULE_22__report_of_student_report_of_student_component__["a" /* ReportOfStudentComponent */],
-                __WEBPACK_IMPORTED_MODULE_23__test_step1_test_step1_component__["a" /* TestStep1Component */],
-                __WEBPACK_IMPORTED_MODULE_24__test_step2_test_step2_component__["a" /* TestStep2Component */],
-                __WEBPACK_IMPORTED_MODULE_25__test_step3_test_step3_component__["a" /* TestStep3Component */],
-                __WEBPACK_IMPORTED_MODULE_26__signup_signup_component__["a" /* SignupComponent */],
-                __WEBPACK_IMPORTED_MODULE_37__group_detail_group_detail_component__["a" /* GroupDetailComponent */],
-                __WEBPACK_IMPORTED_MODULE_39__reports_reports_component__["a" /* ReportsComponent */],
-                __WEBPACK_IMPORTED_MODULE_40__add_test_add_test_component__["a" /* AddTestComponent */],
-                __WEBPACK_IMPORTED_MODULE_41__delete_test_delete_test_component__["a" /* DeleteTestComponent */],
-                __WEBPACK_IMPORTED_MODULE_42__edit_test_edit_test_component__["a" /* EditTestComponent */],
-                __WEBPACK_IMPORTED_MODULE_43__edit_detail_edit_detail_component__["a" /* EditDetailComponent */],
-                __WEBPACK_IMPORTED_MODULE_44__scores_scores_component__["a" /* ScoresComponent */],
-                __WEBPACK_IMPORTED_MODULE_47__number_directive__["a" /* NumberOnlyDirective */]
+                __WEBPACK_IMPORTED_MODULE_21__test_step1_test_step1_component__["a" /* TestStep1Component */],
+                __WEBPACK_IMPORTED_MODULE_22__test_step2_test_step2_component__["a" /* TestStep2Component */],
+                __WEBPACK_IMPORTED_MODULE_23__test_step3_test_step3_component__["a" /* TestStep3Component */],
+                __WEBPACK_IMPORTED_MODULE_24__signup_signup_component__["a" /* SignupComponent */],
+                __WEBPACK_IMPORTED_MODULE_35__group_detail_group_detail_component__["a" /* GroupDetailComponent */],
+                __WEBPACK_IMPORTED_MODULE_37__reports_reports_component__["a" /* ReportsComponent */],
+                __WEBPACK_IMPORTED_MODULE_38__add_test_add_test_component__["a" /* AddTestComponent */],
+                __WEBPACK_IMPORTED_MODULE_39__delete_test_delete_test_component__["a" /* DeleteTestComponent */],
+                __WEBPACK_IMPORTED_MODULE_40__edit_test_edit_test_component__["a" /* EditTestComponent */],
+                __WEBPACK_IMPORTED_MODULE_41__edit_detail_edit_detail_component__["a" /* EditDetailComponent */],
+                __WEBPACK_IMPORTED_MODULE_42__scores_scores_component__["a" /* ScoresComponent */],
+                __WEBPACK_IMPORTED_MODULE_45__number_directive__["a" /* NumberOnlyDirective */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_35_ngx_feature_toggle__["FeatureToggleModule"],
-                __WEBPACK_IMPORTED_MODULE_34_ng2_charts__["ChartsModule"],
+                //=> Basic usage
+                __WEBPACK_IMPORTED_MODULE_46__toverux_ngx_sweetalert2__["a" /* SweetAlert2Module */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_33_ngx_feature_toggle__["FeatureToggleModule"],
+                __WEBPACK_IMPORTED_MODULE_32_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_12__app_routing_module__["a" /* AppRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_28__angular_forms__["ReactiveFormsModule"],
-                __WEBPACK_IMPORTED_MODULE_29__angular_http__["b" /* HttpModule */],
-                __WEBPACK_IMPORTED_MODULE_30__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_26__angular_forms__["ReactiveFormsModule"],
+                __WEBPACK_IMPORTED_MODULE_27__angular_http__["b" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_28__angular_common_http__["b" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__["b" /* AngularFireAuthModule */],
                 //materail
                 __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
@@ -748,16 +781,17 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_4__angular_material__["F" /* MatTooltipModule */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_material__["B" /* MatStepperModule */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_material__["j" /* MatFormFieldModule */],
-                __WEBPACK_IMPORTED_MODULE_28__angular_forms__["FormsModule"],
+                __WEBPACK_IMPORTED_MODULE_26__angular_forms__["FormsModule"],
                 __WEBPACK_IMPORTED_MODULE_6_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_7__environments_firebase_config__["a" /* firebaseConfig */]),
                 __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__["b" /* AngularFireDatabaseModule */],
                 __WEBPACK_IMPORTED_MODULE_10_angularfire2_firestore__["b" /* AngularFirestoreModule */],
-                __WEBPACK_IMPORTED_MODULE_38_ng_semantic__["NgSemanticModule"],
-                __WEBPACK_IMPORTED_MODULE_45_primeng_chart__["ChartModule"],
-                __WEBPACK_IMPORTED_MODULE_46_primeng_accordion__["AccordionModule"],
+                __WEBPACK_IMPORTED_MODULE_36_ng_semantic__["NgSemanticModule"],
+                __WEBPACK_IMPORTED_MODULE_43_primeng_chart__["ChartModule"],
+                __WEBPACK_IMPORTED_MODULE_44_primeng_accordion__["AccordionModule"],
+                __WEBPACK_IMPORTED_MODULE_46__toverux_ngx_sweetalert2__["a" /* SweetAlert2Module */]
             ],
             // providers: [AuthService, AuthGuard],
-            providers: [__WEBPACK_IMPORTED_MODULE_27__services_firebase_service__["a" /* FirebaseService */], __WEBPACK_IMPORTED_MODULE_31__services_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_32__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_33__services_upload_file_service__["a" /* UploadFileService */], __WEBPACK_IMPORTED_MODULE_36__services_excel_service__["a" /* ExcelService */], __WEBPACK_IMPORTED_MODULE_2_ngx_cookie_service__["a" /* CookieService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_25__services_firebase_service__["a" /* FirebaseService */], __WEBPACK_IMPORTED_MODULE_29__services_auth_service__["a" /* AuthService */], __WEBPACK_IMPORTED_MODULE_8_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_30__guards_auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_31__services_upload_file_service__["a" /* UploadFileService */], __WEBPACK_IMPORTED_MODULE_34__services_excel_service__["a" /* ExcelService */], __WEBPACK_IMPORTED_MODULE_2_ngx_cookie_service__["a" /* CookieService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
@@ -789,7 +823,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/blank/blank.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"test\">\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"content\">\r\n              <!-- display when no data question to be add -->\r\n              <br>\r\n              <br>\r\n              <ng-container *ngIf=\"!isDisplayPause\">\r\n              <div class=\"row\">\r\n                  <div class=\"col-md-12 tableShow\">\r\n                    <p style=\"text-align: center\">\r\n                      <br>\r\n                     --- No quiz paused. ---    \r\n            \r\n                    </p>\r\n                  </div>\r\n                </div>\r\n              </ng-container>\r\n              <!--  -->\r\n     <!-- <label style=\"background-color: wheat\"><h4>The quiz was paused</h4></label> \r\n      <br> -->\r\n      <!-- Trigger the modal with a button -->\r\n\r\n      <button type=\"button\" class=\"btn btn-primary createTest\" (click)=\"createTest()\">\r\n        <h4>\r\n          <i class=\"fa fa-plus\"></i>\r\n        </h4>\r\n      </button>\r\n\r\n      <ng-container *ngIf=\"isDisplayPause\">\r\n          <div class=\"row\" style=\"background-color: white\">\r\n              <div class=\"col-md-12 tableShow\">\r\n                <p style=\"text-align: center\">\r\n                 --- Quiz paused. ---         \r\n                </p>\r\n                <br>\r\n              </div>\r\n            </div>\r\n\r\n      <div class=\"row\">\r\n        <div class=\"col-md-3\" *ngFor=\"let exam of examPause\">\r\n\r\n          <div class=\"item_group\" (click)=\"goToQuiz(exam.exam_code)\">\r\n            <div class=\"row rowPic\" style=\"text-align: center\">\r\n              <img src=\"assets/dist/img/picP.png\" class=\"pause-image\">\r\n            </div>\r\n\r\n            <div class=\"row rowContent\" style=\"text-align: center\">\r\n              <h5>\r\n                {{exam.exam_code}}\r\n                <br>\r\n                <b> Date: </b>{{exam.date | date :'short'}}\r\n              </h5>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>          \r\n    </ng-container>\r\n    </div>\r\n  </div>"
+module.exports = "<div class=\"test\">\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"content\">\r\n              <!-- display when no data question to be add -->\r\n              <br>\r\n              <br>\r\n              <ng-container *ngIf=\"!isDisplayPause\">\r\n              <div class=\"row\">\r\n                  <div class=\"col-md-12 tableShow\">\r\n                    <p style=\"text-align: center\">\r\n                      <br>\r\n                     --- No quiz paused. ---    \r\n            \r\n                    </p>\r\n                  </div>\r\n                </div>\r\n              </ng-container>\r\n              <!--  -->\r\n     <!-- <label style=\"background-color: wheat\"><h4>The quiz was paused</h4></label> \r\n      <br> -->\r\n      <!-- Trigger the modal with a button -->\r\n\r\n      <button type=\"button\" class=\"btn btn-primary createTest\" (click)=\"createTest()\">\r\n        <h4>\r\n          <i class=\"fa fa-plus\"></i>\r\n        </h4>\r\n      </button>\r\n\r\n      <ng-container *ngIf=\"isDisplayPause\">\r\n          <div class=\"row\" style=\"background-color: white\">\r\n              <div class=\"col-md-12 tableShow\">\r\n                <p style=\"text-align: center\">\r\n                 --- Quiz paused. ---         \r\n                </p>\r\n                <br>\r\n              </div>\r\n            </div>\r\n\r\n      <div class=\"row\">\r\n        <div class=\"col-md-3\" *ngFor=\"let exam of examPause\">\r\n\r\n          <div class=\"item_group\" (click)=\"goToQuiz(exam.exam_code)\">\r\n            <div class=\"row rowPic\" style=\"text-align: center\">\r\n              <img src=\"assets/dist/img/picP3.PNG\" class=\"pause-image\">\r\n            </div>\r\n\r\n            <div class=\"row rowContent\" style=\"text-align: center\">\r\n              <h5>\r\n                {{exam.exam_code}}\r\n                <br>\r\n                <b> Date: </b>{{exam.date | date :'short'}}\r\n              </h5>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>          \r\n    </ng-container>\r\n    </div>\r\n  </div>"
 
 /***/ }),
 
@@ -802,6 +836,8 @@ module.exports = "<div class=\"test\">\r\n\r\n  <div class=\"box box-info\">\r\n
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -815,28 +851,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var BlankComponent = (function () {
     function BlankComponent(afs, router, firebaseService) {
+        //Exam
         var _this = this;
         this.afs = afs;
         this.router = router;
         this.firebaseService = firebaseService;
         this.examPause = [];
         this.isDisplayPause = true;
-        this.examPause = [];
-        //Exam
         var ExamRef = this.afs.collection("/exam");
         this.ExamList = ExamRef.valueChanges();
         this.ExamList.subscribe(function (data) {
-            console.log(data);
+            // console.log(data);  
+            _this.examPause = [];
             data.forEach(function (d) {
-                console.log(d.status);
+                // console.log(d.status);
                 if (d.status == "pause") {
-                    console.log(d);
+                    // console.log(d);
                     _this.examPause.push(d);
                 }
             });
-            console.log(_this.examPause.length);
+            // console.log(this.examPause.length);
             if (_this.examPause.length == 0) {
                 _this.isDisplayPause = false;
             }
@@ -850,21 +887,32 @@ var BlankComponent = (function () {
     };
     BlankComponent.prototype.goToQuiz = function (exam_code) {
         var _this = this;
-        console.log("goToQuiz");
-        console.log(exam_code);
-        var examCode;
-        examCode = exam_code;
-        this.firebaseService.Test_id_new = examCode;
-        this.examPause = [];
-        //update examStatus
-        var statusUpdate = {
-            status: "active"
-        };
-        var examRef = this.afs.doc("exam/" + examCode);
-        examRef.update(statusUpdate).then(function () {
-            //go to display scores page  
-            _this.examPause = [];
-            _this.router.navigate(['dashboard', 'test', 'quiz']);
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "take this Quiz!",
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, take it!'
+        }).then(function (result) {
+            if (result.value) {
+                console.log(exam_code);
+                var examCode = void 0;
+                examCode = exam_code;
+                _this.firebaseService.Test_id_new = examCode;
+                _this.examPause = [];
+                //update examStatus
+                var statusUpdate = {
+                    status: "active"
+                };
+                var examRef = _this.afs.doc("exam/" + examCode);
+                examRef.update(statusUpdate).then(function () {
+                    //go to display scores page  
+                    _this.examPause = [];
+                    _this.router.navigate(['dashboard', 'test', 'quiz']);
+                });
+            }
         });
     };
     BlankComponent = __decorate([
@@ -1028,6 +1076,8 @@ module.exports = "<div class=\"delete-test\">\n\n  <div class=\"box box-danger\"
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DeleteTestComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1037,6 +1087,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 var DeleteTestComponent = (function () {
@@ -1076,8 +1127,6 @@ var DeleteTestComponent = (function () {
     DeleteTestComponent.prototype.ngOnInit = function () {
     };
     DeleteTestComponent.prototype.setRemoveSubjectCode = function (subCode, chapList) {
-        console.log(chapList);
-        console.log(subCode);
         this.chapInSubCode_del = chapList;
         this.subCode_del = subCode;
     };
@@ -1098,6 +1147,12 @@ var DeleteTestComponent = (function () {
             console.log("RemoveSubject");
             _this.Refresh();
         });
+        __WEBPACK_IMPORTED_MODULE_2_sweetalert2___default()({
+            type: 'success',
+            title: 'Removed',
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
     DeleteTestComponent.prototype.setRemoveChapterCode = function (subCode, ChapCode) {
         console.log(subCode + "====" + ChapCode);
@@ -1116,6 +1171,12 @@ var DeleteTestComponent = (function () {
         console.log(SubChapCode);
         var questionRef = this.afs.doc("/questions/" + SubChapCode);
         questionRef.delete();
+        __WEBPACK_IMPORTED_MODULE_2_sweetalert2___default()({
+            type: 'success',
+            title: 'Removed',
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
     DeleteTestComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1168,6 +1229,8 @@ module.exports = "<div class=\"editDetail\">\n\n  <div class=\"box box-warning\"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_excel_service__ = __webpack_require__("../../../../../src/app/services/excel.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ts_xlsx__ = __webpack_require__("../../../../ts-xlsx/lib/main.browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ts_xlsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_ts_xlsx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1177,6 +1240,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1227,7 +1291,11 @@ var EditDetailComponent = (function () {
         this.question_objDisplay = [];
         console.log("display question");
         if (this.file == undefined) {
-            alert("Please select file");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'warning',
+                title: 'Unsuccessful',
+                text: 'Please select file.',
+            });
         }
         else {
             this.isDisplayQuestion = false;
@@ -1275,7 +1343,11 @@ var EditDetailComponent = (function () {
     };
     EditDetailComponent.prototype.updateTest = function () {
         if (this.chapter_Name == "") {
-            alert("Please enter chapter name. ");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter chapter name.',
+            });
         }
         else {
             console.log("UpdateSubject");
@@ -1310,6 +1382,12 @@ var EditDetailComponent = (function () {
                 var questionRef = this.afs.doc("questions/" + this.questionCode);
                 questionRef.update(questionUpdate);
             }
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'success',
+                title: 'Successful',
+                showConfirmButton: false,
+                timer: 1500
+            });
             this.goBackEditTeste();
         }
     };
@@ -1366,6 +1444,8 @@ module.exports = "<div class=\"edit-test\">\n\n    <div class=\"box box-warning\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1375,6 +1455,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1433,7 +1514,11 @@ var EditTestComponent = (function () {
     EditTestComponent.prototype.UpdateSubject = function () {
         var _this = this;
         if (this.subjectNameLocal == "") {
-            alert("Unsuccessful : Please enter subject name.");
+            __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter subject name.',
+            });
         }
         else {
             console.log("UpdateSubject");
@@ -1446,6 +1531,12 @@ var EditTestComponent = (function () {
             subjectRef.update(subjectUpdate).then(function () {
                 console.log("update Subject");
                 _this.Refresh();
+            });
+            __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
+                type: 'success',
+                title: 'Successful',
+                showConfirmButton: false,
+                timer: 1500
             });
         }
     };
@@ -1474,7 +1565,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".manage-std-group{\r\n    margin: 30px;  \r\n  }\r\n  .row{\r\n    /* height: 50px; */\r\n    margin-top: 20px;\r\n    margin-right: 40px;\r\n    margin-left: 80px;\r\n    \r\n  }\r\n  .item_group{\r\n    padding: 10px;\r\n    margin: 10px;\r\n    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);\r\n    background-color:white;\r\n   height: 50px;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n  }\r\n.item_group_text{\r\n  text-align: center;\r\n  margin-left: 10px;\r\n \r\n}\r\n.item_group:hover {\r\n  background-color: #f2f2f2;\r\n  cursor: pointer;\r\n}\r\n.group_option1{\r\n  float:left;\r\n  border: 2px solid white;\r\n  padding: 2px;\r\n}\r\n.group_option2{\r\n  float:left;\r\n  border: 2px solid  #d9d9d9;\r\n  padding: 2px;\r\n  margin-left: 20px;\r\n}\r\n.button_group{\r\n\r\n  background-color:white;\r\n  margin: 20px;\r\n}\r\n.student-list{\r\n  margin: 30px;  \r\n}\r\n\r\n.container{\r\n  margin-top: 40px;  \r\n}\r\n.picture_show{\r\n  padding: 5px;\r\n}\r\n.picture_show:hover{\r\n  cursor: pointer;\r\n  width: 250px;\r\n}\r\n.thisTextCenter{\r\n  text-align: center;\r\n}", ""]);
+exports.push([module.i, ".manage-std-group{\r\n    margin: 30px;  \r\n  }\r\n  .row{\r\n    /* height: 50px; */\r\n    margin-top: 20px;\r\n    margin-right: 40px;\r\n    margin-left: 80px;\r\n    \r\n  }\r\n  .item_group{\r\n    padding: 10px;\r\n    margin: 10px;\r\n    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);\r\n    background-color:white;\r\n   height: 50px;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n  }\r\n.item_group_text{\r\n  text-align: center;\r\n  margin-left: 10px;\r\n \r\n}\r\n.item_group:hover {\r\n  background-color: #f2f2f2;\r\n  cursor: pointer;\r\n}\r\n.group_option1{\r\n  float:left;\r\n  border: 2px solid white;\r\n  padding: 2px;\r\n}\r\n.group_option2{\r\n  float:left;\r\n  border: 2px solid  #d9d9d9;\r\n  padding: 2px;\r\n  margin-left: 20px;\r\n}\r\n.button_group{\r\n\r\n  background-color:white;\r\n  margin: 20px;\r\n}\r\n.student-list{\r\n  margin: 30px;  \r\n}\r\n\r\n.container{\r\n  margin-top: 40px;  \r\n}\r\n.picture_show{\r\n  padding: 5px;\r\n}\r\n.picture_show:hover{\r\n  position: absolute;\r\n  cursor: pointer;\r\n  width: 250px;\r\n  transition: width 1s;\r\n  border-radius: 10px;\r\n  box-shadow: -3px -3px 20px #888888;\r\n}\r\n.thisTextCenter{\r\n  text-align: center;\r\n}", ""]);
 
 // exports
 
@@ -1487,7 +1578,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/group-detail/group-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"manage-std-group\">\r\n    <div class=\"box box-info\"> \r\n      <div class=\"button_group\" style=\"float:left\">\r\n          <div class=\"group_option1\">\r\n            <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"backGroupListPage()\">\r\n              <i class=\"fa fa-chevron-circle-left\"></i> Back</button>\r\n          </div>\r\n          <div class=\"group_option2\">\r\n            &nbsp;\r\n            <button type=\"button\" class=\"btn btn-danger btn-sm\" data-toggle=\"modal\" data-target=\"#deleteGroup\">\r\n              <span class=\"glyphicon glyphicon-trash\"></span> Delete Group</button>\r\n            &nbsp; &nbsp;\r\n            <button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#AddStd\" (click)=\"preAddStudentDialog()\">\r\n              <i class=\"fa fa-user-plus\"></i> Add new student to Group</button>\r\n            &nbsp;\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n        <!-- Display student list -->\r\n        <!-- table -->\r\n        <div class=\"row\">\r\n          <div class=\"col-md-10\">\r\n            <div class=\"table-responsive\">\r\n              <!-- table std list -->\r\n              <table class=\"table table-striped\">\r\n                <thead>\r\n                  <tr>\r\n                    <th>\r\n                      #\r\n                      <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                      <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                    </th>\r\n                    <th scope=\"col\">Picture </th>\r\n                    <th scope=\"col\">Student ID</th>\r\n                    <th scope=\"col\">Student Name</th>\r\n                    <th class=\"thisTextCenter\">Delete</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let studentObservable of members; let i=index\">\r\n                    <ng-container *ngIf=\"studentObservable | async as student\">\r\n                      <td>{{i+1}}</td>\r\n                      <img src= {{student.url}} width=\"60 px\" class=\"picture_show \">\r\n                      <td>{{student.code}}</td>\r\n                      <td>{{student.name}}</td>\r\n                      <td class=\"thisTextCenter\">\r\n                        <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                          <button class=\"btn btn-danger btn-xs\" style=\"font-size: 16px\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" (click)=\"preRemoveStudent(student.code)\">\r\n                            <span class=\"glyphicon glyphicon-trash\"></span>\r\n                          </button>\r\n                        </p>\r\n                      </td>\r\n                    </ng-container>\r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </div>\r\n          </div>\r\n        </div>\r\n</div>\r\n</div>\r\n</div>\r\n  \r\n  <!-- Add new student to this group -->\r\n  <div class=\"modal fade\" id=\"AddStd\" role=\"dialog\">\r\n    <div class=\"modal-dialog  modal-md\">\r\n      <!-- Modal size sm,md-->\r\n  \r\n      <!-- Modal content-->\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n          <h4 class=\"modal-title\">Add new student to this group</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <!-- table -->\r\n          <div class=\"row\">\r\n            <div class=\"col-md-11\">\r\n              <div class=\"table-responsive\">\r\n                <table class=\"table table-striped\">\r\n                  <thead>\r\n                    <tr>\r\n  \r\n                      <th>\r\n                        <input type=\"checkbox\" class=\"checkthis\" [(ngModel)]=\"isSelect\" (change)=\"addSelectAll();\" />\r\n                        <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                        <th scope=\"col\">Student ID</th>\r\n                        <th scope=\"col\">Student Name</th>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n  \r\n                    <tr *ngFor=\"let student of newStudentList\">\r\n                      <td>\r\n                        <input type=\"checkbox\" class=\"checkthis\" [(ngModel)]=\"student.selected\"/>\r\n                      </td>\r\n                      <td>{{student.code}}</td>\r\n                      <td>{{student.name}}</td>\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <!-- end table -->\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n          <button type=\"button\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addStudentGroup()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  \r\n    <!-- respond tab -->\r\n  </div>\r\n  \r\n  <!-- delete Group modal -->\r\n  <div class=\"modal fade\" id=\"deleteGroup\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n            <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n          </button>\r\n          <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this Group</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <div class=\"alert alert-danger\">\r\n            <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Group?</div>\r\n        </div>\r\n        <div class=\"modal-footer \">\r\n          <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"deleteGroup()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n        </div>\r\n      </div>\r\n      <!-- /.modal-content -->\r\n    </div>\r\n  </div>\r\n  \r\n  <!-- delete student in group modal -->\r\n  <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n            <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n          </button>\r\n          <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this student</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <div class=\"alert alert-danger\">\r\n            <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this student?</div>\r\n        </div>\r\n        <div class=\"modal-footer \">\r\n          <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span>Yes</button>\r\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n        </div>\r\n      </div>\r\n      <!-- /.modal-content -->\r\n    </div>\r\n  </div>"
+module.exports = "<div class=\"manage-std-group\">\r\n    <div class=\"box box-info\"> \r\n      <div class=\"button_group\" style=\"float:left\">\r\n          <div class=\"group_option1\">\r\n            <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"backGroupListPage()\">\r\n              <i class=\"fa fa-chevron-circle-left\"></i> Back</button>\r\n          </div>\r\n          <div class=\"group_option2\">\r\n            &nbsp;\r\n            <button type=\"button\" class=\"btn btn-danger btn-sm\" data-toggle=\"modal\" data-target=\"#deleteGroup\">\r\n              <span class=\"glyphicon glyphicon-trash\"></span> Delete Group</button>\r\n            &nbsp; &nbsp;\r\n            <button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#AddStd\" (click)=\"preAddStudentDialog()\">\r\n              <i class=\"fa fa-user-plus\"></i> Add new student to Group</button>\r\n            &nbsp;\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"container\">\r\n        <!-- Display student list -->\r\n        <!-- table -->\r\n        <div class=\"row\">\r\n          <div class=\"col-md-10\">\r\n            <div class=\"table-responsive\">\r\n              <!-- table std list -->\r\n              <table class=\"table table-striped\">\r\n                <thead>\r\n                  <tr>\r\n                    <th>\r\n                      #\r\n                      <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                      <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                    </th>\r\n                    <th scope=\"col\">Picture </th>\r\n                    <th scope=\"col\">Student ID</th>\r\n                    <th scope=\"col\">Student Name</th>\r\n                    <th class=\"thisTextCenter\">Delete</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let studentObservable of members; let i=index\">\r\n                    <ng-container *ngIf=\"studentObservable | async as student\">\r\n                      <td>{{i+1}}</td>\r\n                      <img src= {{student.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                      <td>{{student.code}}</td>\r\n                      <td>{{student.name}}</td>\r\n                      <td class=\"thisTextCenter\">\r\n                        <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                          <button class=\"btn btn-danger btn-xs\" style=\"font-size: 16px\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#delete\" (click)=\"preRemoveStudent(student.code)\">\r\n                            <span class=\"glyphicon glyphicon-trash\"></span>\r\n                          </button>\r\n                        </p>\r\n                      </td>\r\n                    </ng-container>\r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </div>\r\n          </div>\r\n        </div>\r\n</div>\r\n</div>\r\n</div>\r\n  \r\n  <!-- Add new student to this group -->\r\n  <div class=\"modal fade\" id=\"AddStd\" role=\"dialog\">\r\n    <div class=\"modal-dialog  modal-md\">\r\n      <!-- Modal size sm,md-->\r\n  \r\n      <!-- Modal content-->\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n          <h4 class=\"modal-title\">Add new student to this group</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <!-- table -->\r\n          <div class=\"row\">\r\n            <div class=\"col-md-11\">\r\n              <div class=\"table-responsive\">\r\n                <table class=\"table table-striped\">\r\n                  <thead>\r\n                    <tr>\r\n  \r\n                      <th>\r\n                        <input type=\"checkbox\" class=\"checkthis\" [(ngModel)]=\"isSelect\" (change)=\"addSelectAll();\" />\r\n                        <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                        <th scope=\"col\">Student ID</th>\r\n                        <th scope=\"col\">Student Name</th>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n  \r\n                    <tr *ngFor=\"let student of newStudentList\">\r\n                      <td>\r\n                        <input type=\"checkbox\" class=\"checkthis\" [(ngModel)]=\"student.selected\"/>\r\n                      </td>\r\n                      <td>{{student.code}}</td>\r\n                      <td>{{student.name}}</td>\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <!-- end table -->\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n          <button type=\"button\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addStudentGroup()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  \r\n    <!-- respond tab -->\r\n  </div>\r\n  \r\n  <!-- delete Group modal -->\r\n  <div class=\"modal fade\" id=\"deleteGroup\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n            <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n          </button>\r\n          <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this Group</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <div class=\"alert alert-danger\">\r\n            <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Group?</div>\r\n        </div>\r\n        <div class=\"modal-footer \">\r\n          <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"deleteGroup()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n        </div>\r\n      </div>\r\n      <!-- /.modal-content -->\r\n    </div>\r\n  </div>\r\n  \r\n  <!-- delete student in group modal -->\r\n  <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n    <div class=\"modal-dialog\">\r\n      <div class=\"modal-content\">\r\n        <div class=\"modal-header\">\r\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n            <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n          </button>\r\n          <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this student</h4>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n          <div class=\"alert alert-danger\">\r\n            <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this student?</div>\r\n        </div>\r\n        <div class=\"modal-footer \">\r\n          <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-ok-sign\"></span>Yes</button>\r\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n            <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n        </div>\r\n      </div>\r\n      <!-- /.modal-content -->\r\n    </div>\r\n  </div>"
 
 /***/ }),
 
@@ -1501,6 +1592,8 @@ module.exports = "<div class=\"manage-std-group\">\r\n    <div class=\"box box-i
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1510,6 +1603,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1598,6 +1692,12 @@ var GroupDetailComponent = (function () {
         this.sectionRef.update(section).then(function () {
             _this.Refresh();
         });
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'Successful',
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
     GroupDetailComponent.prototype.preRemoveStudent = function (studentCode) {
         this.currentStudent = studentCode;
@@ -1618,10 +1718,22 @@ var GroupDetailComponent = (function () {
                 _this.Refresh();
             });
         }
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'Removed',
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
     GroupDetailComponent.prototype.deleteGroup = function () {
         this.sectionRef.delete();
         this.backGroupListPage();
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'Removed',
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
     GroupDetailComponent.prototype.ngOnDestroy = function () {
         this.routeSubscribe.unsubscribe();
@@ -1754,10 +1866,10 @@ var LoginComponent = (function () {
         this.cookieService = cookieService;
         this.hide = true;
         var user = this.firebaseService.userLogin;
-        console.log(user);
+        // console.log(user);
         var cookieValue_email = this.cookieService.get('email');
         var cookieValue_pass = this.cookieService.get('password');
-        console.log(cookieValue_email);
+        // console.log(cookieValue_email);
         if (cookieValue_email != "UNKNOWN") {
             this.auth.emailLogin(cookieValue_email, cookieValue_pass);
         }
@@ -1819,11 +1931,12 @@ module.exports = "<div class=\"manage-std-group\">\r\n    <div class=\"box box-i
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ManageStdGroupComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1840,24 +1953,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ManageStdGroupComponent = (function () {
-    function ManageStdGroupComponent(afs, db, firebaseService, router) {
+    function ManageStdGroupComponent(afs, firebaseService, router) {
+        var _this = this;
         this.afs = afs;
-        this.db = db;
         this.firebaseService = firebaseService;
         this.router = router;
+        this.qroupsCheck = [];
+        this.qroupsCheckAdd = true;
+        this.qroupsCheck = [];
         this.studentCollection = afs.collection('/students', function (ref) { return ref.orderBy('code'); });
         this.studentsObservable = this.studentCollection.valueChanges();
         this.RefreshStudentList();
         var sectionRef = this.afs.collection("/sections");
         this.groupList = sectionRef.valueChanges();
         this.groupList.forEach(function (data) {
-            //console.log(data);
-            /* data.forEach(data1 => {
-               console.log(data1.members);
-               data1.members.forEach(data2=>{
-                 console.log(data2);
-               })
-             })*/
+            data.forEach(function (data1) {
+                console.log(data1);
+                _this.qroupsCheck.push(data1);
+            });
         });
     }
     ManageStdGroupComponent.prototype.ngOnInit = function () {
@@ -1873,14 +1986,14 @@ var ManageStdGroupComponent = (function () {
     ManageStdGroupComponent.prototype.StartAddGroupModal = function () {
         this.groupName = "";
         this.isSelect = false;
-        this.studentList = __WEBPACK_IMPORTED_MODULE_4_lodash__["map"](this.studentList, function (student) {
+        this.studentList = __WEBPACK_IMPORTED_MODULE_3_lodash__["map"](this.studentList, function (student) {
             student.selected = false;
             return student;
         });
     };
     ManageStdGroupComponent.prototype.createSelectAll = function () {
         var _this = this;
-        this.studentList = __WEBPACK_IMPORTED_MODULE_4_lodash__["map"](this.studentList, function (student) {
+        this.studentList = __WEBPACK_IMPORTED_MODULE_3_lodash__["map"](this.studentList, function (student) {
             student.selected = _this.isSelect;
             // console.log(student.code);
             return student;
@@ -1888,27 +2001,59 @@ var ManageStdGroupComponent = (function () {
     };
     ManageStdGroupComponent.prototype.createGroup = function () {
         var _this = this;
+        //  console.log(this.qroupsCheck.length)
+        var count;
         this.members = [];
-        var selectStudent = __WEBPACK_IMPORTED_MODULE_4_lodash__["filter"](this.studentList, function (student) {
+        var selectStudent = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](this.studentList, function (student) {
             return student.selected;
         });
         console.log(selectStudent.length);
         if (this.groupName == "" || selectStudent.length == 0) {
-            alert("Unsuccessful : Please enter all fields or select student.");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter all fields or select student.',
+            });
         }
         else {
-            __WEBPACK_IMPORTED_MODULE_4_lodash__["forEach"](selectStudent, function (student) {
-                var studentDoc = _this.afs.doc("/students/" + student.code);
-                console.log(studentDoc.ref);
-                _this.members.push(studentDoc.ref);
-            });
-            var section = {
-                name: this.groupName,
-                members: this.members
-            };
-            console.log(section);
-            var sectionRef = this.afs.doc("/sections/" + this.groupName);
-            sectionRef.set(section);
+            if (this.qroupsCheck.length == 0) {
+                this.qroupsCheckAdd == false;
+                count = 0;
+            }
+            else {
+                this.qroupsCheck.forEach(function (data) {
+                    if (data.name == _this.groupName) {
+                        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                            type: 'error',
+                            title: 'Unsuccessful',
+                            text: 'This name already exists.',
+                        });
+                        _this.qroupsCheckAdd = true;
+                        count = 1;
+                    }
+                    else {
+                        _this.qroupsCheckAdd = false;
+                    }
+                });
+            }
+            if (this.qroupsCheckAdd == false && count != 1) {
+                __WEBPACK_IMPORTED_MODULE_3_lodash__["forEach"](selectStudent, function (student) {
+                    var studentDoc = _this.afs.doc("/students/" + student.code);
+                    _this.members.push(studentDoc.ref);
+                });
+                var section = {
+                    name: this.groupName,
+                    members: this.members
+                };
+                var sectionRef = this.afs.doc("/sections/" + this.groupName);
+                sectionRef.set(section);
+                __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Successful',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         }
     };
     ManageStdGroupComponent.prototype.goGroupDetail = function (name) {
@@ -1921,8 +2066,7 @@ var ManageStdGroupComponent = (function () {
             template: __webpack_require__("../../../../../src/app/manage-std-group/manage-std-group.component.html"),
             styles: [__webpack_require__("../../../../../src/app/manage-std-group/manage-std-group.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_3__services_firebase_service__["a" /* FirebaseService */],
-            __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_2__services_firebase_service__["a" /* FirebaseService */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* Router */]])
     ], ManageStdGroupComponent);
     return ManageStdGroupComponent;
 }());
@@ -2093,7 +2237,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, " .quiz {\r\n   margin: 5px;\r\n }\r\n\r\n .display_list_right {\r\n   padding: 10px;\r\n   background-color: #e6ffee;\r\n   height: 599px;\r\n }\r\n\r\n .header_test_left {\r\n   background: #ffc2b3;\r\n   padding: 10px;\r\n   height: 130px;\r\n }\r\n\r\n .body_test_left {\r\n   padding: 10px;\r\n   background-color: #F1F1F1;\r\n }\r\n\r\n .content-body {\r\n   height: 395px;\r\n   padding: 20px;\r\n }\r\n\r\n .header_numOfTest_right {\r\n   background-color: #FFF4F4;\r\n   height: 110px;\r\n }\r\n\r\n .btnn-header {\r\n   margin: 20px;\r\n }\r\n\r\n .btn {\r\n   margin-right: 4.5%;\r\n }\r\n\r\n #h3 {\r\n   margin: 30px;\r\n }\r\n\r\n .picture_show:hover {\r\n   cursor: pointer;\r\n   width: 100px;\r\n }\r\n\r\n /* .TableList{\r\n  font-size: 12px;\r\n  max-height: 350px;\r\n}\r\n.tableAllList2{\r\n  max-height: 350px;\r\n  table-layout: fixed;\r\n}\r\n.test{\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-height: 200px;\r\n  min-width: 300px;\r\n}\r\n.test2{\r\n  overflow: auto;\r\n  max-height: 500px;\r\n} */\r\n\r\n #table-wrapper {\r\n   position: relative;\r\n }\r\n\r\n #table-scroll {\r\n   height: 590px;\r\n   overflow: auto;\r\n   margin-top: 20px;\r\n }\r\n\r\n #table-wrapper table {\r\n   width: 100%;\r\n }\r\n\r\n /* #table-wrapper table * {\r\n  background:yellow;\r\n  color:black;\r\n} */\r\n\r\n #table-wrapper table thead th .text {\r\n   position: absolute;\r\n   top: -20px;\r\n   z-index: 2;\r\n   height: 20px;\r\n   width: 35%;\r\n   border: 1px solid red;\r\n }\r\n\r\n .buttonForm {\r\n   text-align: center\r\n }\r\n\r\n .bntAdd {\r\n   width: 25%;\r\n   margin: 5px;\r\n }\r\n\r\n .SkipBtn {\r\n   background-color: bisque;\r\n }\r\n\r\n .PauseBtn {\r\n   background-color: #ffe6e6;\r\n }\r\n\r\n .SkipBtn :hover{\r\n   background-color: #FFCA8B;\r\n }\r\n\r\n .PauseBtn :hover {\r\n   background-color: #FFBEBE;\r\n }\r\n", ""]);
+exports.push([module.i, " .quiz {\r\n   margin: 5px;\r\n }\r\n\r\n .display_list_right {\r\n   padding: 10px;\r\n   background-color: #e6ffee;\r\n   height: 599px;\r\n }\r\n\r\n .header_test_left {\r\n   background: #ffc2b3;\r\n   padding: 10px;\r\n   height: 130px;\r\n }\r\n\r\n .body_test_left {\r\n   padding: 10px;\r\n   background-color: #F1F1F1;\r\n }\r\n\r\n .content-body {\r\n   height: 395px;\r\n   padding: 20px;\r\n }\r\n\r\n .header_numOfTest_right {\r\n   background-color: #FFF4F4;\r\n   height: 110px;\r\n }\r\n\r\n .btnn-header {\r\n   margin: 20px;\r\n }\r\n\r\n .btn {\r\n   margin-right: 4.5%;\r\n }\r\n\r\n #h3 {\r\n   margin: 30px;\r\n }\r\n\r\n .picture_show:hover {\r\n   cursor: pointer;\r\n   position: absolute;\r\n   width: 150px;\r\n   transition: width 1s;\r\n   border-radius: 10px;\r\n   box-shadow: -2px -2px 15px #888888;\r\n }\r\n\r\n\r\n /* .TableList{\r\n  font-size: 12px;\r\n  max-height: 350px;\r\n}\r\n.tableAllList2{\r\n  max-height: 350px;\r\n  table-layout: fixed;\r\n}\r\n.test{\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-height: 200px;\r\n  min-width: 300px;\r\n}\r\n.test2{\r\n  overflow: auto;\r\n  max-height: 500px;\r\n} */\r\n\r\n #table-wrapper {\r\n   position: relative;\r\n }\r\n\r\n #table-scroll {\r\n   height: 590px;\r\n   overflow: auto;\r\n   margin-top: 20px;\r\n }\r\n\r\n #table-wrapper table {\r\n   width: 100%;\r\n }\r\n\r\n /* #table-wrapper table * {\r\n  background:yellow;\r\n  color:black;\r\n} */\r\n\r\n #table-wrapper table thead th .text {\r\n   position: absolute;\r\n   top: -20px;\r\n   z-index: 2;\r\n   height: 20px;\r\n   width: 35%;\r\n   border: 1px solid red;\r\n }\r\n\r\n .buttonForm {\r\n   text-align: center\r\n }\r\n\r\n .bntAdd {\r\n   width: 25%;\r\n   margin: 5px;\r\n }\r\n\r\n .SkipBtn {\r\n   background-color: bisque;\r\n }\r\n\r\n .PauseBtn {\r\n   background-color: #ffe6e6;\r\n }\r\n\r\n /* .SkipBtn :hover{\r\n   background-color: #FFCA8B;\r\n }\r\n\r\n .PauseBtn :hover {\r\n   background-color: #FFBEBE;\r\n } */\r\n.StopBtn{\r\n  background-color: #FFC8C8;\r\n}\r\n/* .StopBtn:hover {\r\n  background-color: #FFBEBE;\r\n} */", ""]);
 
 // exports
 
@@ -2106,7 +2250,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/quiz/quiz.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"quiz\">\r\n  <div class=\"row\">\r\n\r\n    <div class=\"col-md-8\">\r\n      <div class=\"row header_test_left\">\r\n\r\n        <div class=\"col-md-10\">\r\n          <h4>\r\n            <b> Subject:</b> &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp;\r\n            <b> Chapter:</b> &nbsp; &nbsp; {{examChapDisplay}}\r\n          </h4>\r\n          <h4>\r\n            <b> Description:</b> &nbsp; &nbsp; {{examDesDisplay}}\r\n          </h4>\r\n          <div class=\"btn-group btn-group-justified \">\r\n              <a  (click)=\"pauseTest()\" class=\"btn PauseBtn\">\r\n                <span class=\"glyphicon glyphicon-pause\"></span> Pause</a>\r\n              <a (click)=\"SkipQuestion()\" class=\"btn SkipBtn\">\r\n                <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</a>\r\n            </div>\r\n          <!-- <div class=\"btnn-header\">\r\n            <button type=\"submit\" class=\"btn btn-warning btn-md\" style=\"width: 45%;\" (click)=\"pauseTest()\">\r\n              <span class=\"glyphicon glyphicon-pause\"></span> Pause</button>\r\n            <button type=\"submit\" class=\"btn btn-danger btn-md\" style=\"width: 45%;\" (click)=\"SkipQuestion()\">\r\n              <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</button>\r\n          </div> -->\r\n\r\n        </div>\r\n        <div class=\"col-md-2 header_numOfTest_right\">\r\n          <h1>\r\n            {{doing_percent}}%\r\n          </h1>\r\n          <h4>\r\n            {{current_question}}/{{total_num_cal}} ข้อ\r\n          </h4>\r\n\r\n        </div>\r\n      </div>\r\n      <div class=\"row body_test_left\">\r\n        <div class=\"content-body \">\r\n          <h3> <b> ข้อที่ {{current_question+1}}:</b> {{question_show}} </h3>\r\n          <p *ngFor=\"let data of choice_show ; let i=index\">\r\n            <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>\r\n          </p>\r\n          <!-- test -->\r\n          <br>\r\n          <!--    <div>\r\n          รหัส:<input type=\"text\" name=\"testttname1\" id=\"testttname1\"[(ngModel)]=\"tesssttext1\">\r\n          คำตอบ:<input type=\"text\" name=\"testttname2\" id=\"testttname2\"[(ngModel)]=\"tesssttext2\">\r\n        <button type=\"submit\" class=\"btn-warning btn-md\" style=\"width: 25%;\"(click)=\"TestStuList()\">\r\n         TestStuList </button>\r\n        </div>\r\n     test end -->\r\n        </div>\r\n       <!-- button -->\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 \">\r\n    <p class=\"buttonForm\">\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary btn-md bntAdd\" (click)=\"ProcessAnswer()\">\r\n        <span class=\"\tglyphicon glyphicon glyphicon-refresh\"></span> Process Answer </button>\r\n      <button type=\"submit\" class=\"btn btn-success btn-md bntAdd\"(click)=\"NextQuestion()\" [disabled]=isValidNext>\r\n        <span class=\"\tglyphicon glyphicon-forward\"></span> Next </button>\r\n    </p>\r\n  </div>\r\n</div>\r\n<!--  -->\r\n          \r\n\r\n      </div>\r\n    </div>\r\n    <div class=\"col-md-4 display_list_right \" id=\"table-wrapper\">\r\n      <div class=\"tableAllList tests\" id=\"table-scroll\">\r\n        <table class=\"table table-striped test2 \">\r\n          <thead>\r\n            <tr>\r\n              <th scope=\"col\">#</th>\r\n              <th scope=\"col\">Pic.</th>\r\n              <th scope=\"col\">Name</th>\r\n              <th scope=\"col\">Score</th>\r\n              <th scope=\"col\">Ans.</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"TableList\">\r\n            <ng-container *ngIf=\"!isprocess\">\r\n              <tr *ngFor=\"let data of array_testList ; let i=index\">\r\n                <th scope=\"row\">{{i+1}}</th>\r\n                <td>\r\n                  <img src=  {{data.url}} width=\"40\" class=\"picture_show\">\r\n                </td>\r\n                <td>{{data.student_name}}</td>\r\n                <td>{{data.score}}/{{total_num_cal}}</td>\r\n                <td>{{data.answer}}</td>\r\n              </tr>\r\n            </ng-container>\r\n            <ng-container *ngIf=\"isprocess\">\r\n                <tr *ngFor=\"let data of array_testListProcess ; let i=index\">\r\n                  <th scope=\"row\">{{i+1}}</th>\r\n                  <td>\r\n                    <img src= {{data.url}} width=\"40\" class=\"picture_show\">\r\n                  </td>\r\n                  <td>{{data.student_name}}</td>\r\n                  <td>{{data.score}}/{{total_num_cal}}</td>\r\n                  <td> <img src= {{data.answer}} width=\"30\"></td>\r\n                </tr>\r\n              </ng-container>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"quiz\">\r\n  <div class=\"row\">\r\n\r\n    <div class=\"col-md-8\">\r\n      <div class=\"row header_test_left\">\r\n\r\n        <div class=\"col-md-10\">\r\n          <h4>\r\n            <b> Subject:</b> &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp;\r\n            <b> Chapter:</b> &nbsp; &nbsp; {{examChapDisplay}}\r\n          </h4>\r\n          <h4>\r\n            <b> Description:</b> &nbsp; &nbsp; {{examDesDisplay}}\r\n          </h4>\r\n          <div class=\"btn-group btn-group-justified \">\r\n              <a  (click)=\"pauseTest()\" class=\"btn PauseBtn\">\r\n                <span class=\"glyphicon glyphicon-pause\"></span> Pause</a>\r\n                <a (click)=\"stopTest()\" class=\"btn StopBtn\">\r\n                    <span class=\"glyphicon glyphicon-stop\"></span> Stop</a>\r\n              <a (click)=\"SkipQuestion()\" class=\"btn SkipBtn\">\r\n                <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</a>\r\n            </div>\r\n          <!-- <div class=\"btnn-header\">\r\n            <button type=\"submit\" class=\"btn btn-warning btn-md\" style=\"width: 45%;\" (click)=\"pauseTest()\">\r\n              <span class=\"glyphicon glyphicon-pause\"></span> Pause</button>\r\n            <button type=\"submit\" class=\"btn btn-danger btn-md\" style=\"width: 45%;\" (click)=\"SkipQuestion()\">\r\n              <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</button>\r\n          </div> -->\r\n\r\n        </div>\r\n        <div class=\"col-md-2 header_numOfTest_right\">\r\n          <h1>\r\n            {{doing_percent}}%\r\n          </h1>\r\n          <h4>\r\n            {{current_question}}/{{total_num_cal}} ข้อ\r\n          </h4>\r\n\r\n        </div>\r\n      </div>\r\n      <div class=\"row body_test_left\">\r\n        <div class=\"content-body \">\r\n          <h3> <b> ข้อที่ {{current_question+1}}:</b> {{question_show}} </h3>\r\n          <p *ngFor=\"let data of choice_show ; let i=index\">\r\n            <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>\r\n          </p>\r\n          <!-- test -->\r\n          <br>\r\n          <!--    <div>\r\n          รหัส:<input type=\"text\" name=\"testttname1\" id=\"testttname1\"[(ngModel)]=\"tesssttext1\">\r\n          คำตอบ:<input type=\"text\" name=\"testttname2\" id=\"testttname2\"[(ngModel)]=\"tesssttext2\">\r\n        <button type=\"submit\" class=\"btn-warning btn-md\" style=\"width: 25%;\"(click)=\"TestStuList()\">\r\n         TestStuList </button>\r\n        </div>\r\n     test end -->\r\n        </div>\r\n       <!-- button -->\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 \">\r\n    <p class=\"buttonForm\">\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary btn-md bntAdd\" (click)=\"ProcessAnswer()\">\r\n        <span class=\"\tglyphicon glyphicon glyphicon-refresh\"></span> Process Answer </button>\r\n      <button type=\"submit\" class=\"btn btn-success btn-md bntAdd\"(click)=\"NextQuestion()\" [disabled]=isValidNext>\r\n        <span class=\"\tglyphicon glyphicon-forward\"></span> Next </button>\r\n    </p>\r\n  </div>\r\n</div>\r\n<!--  -->\r\n          \r\n\r\n      </div>\r\n    </div>\r\n    <div class=\"col-md-4 display_list_right \" id=\"table-wrapper\">\r\n      <div class=\"tableAllList tests\" id=\"table-scroll\">\r\n        <table class=\"table table-striped test2 \">\r\n          <thead>\r\n            <tr>\r\n              <th scope=\"col\">#</th>\r\n              <th scope=\"col\">Pic.</th>\r\n              <th scope=\"col\">Name</th>\r\n              <th scope=\"col\">Score</th>\r\n              <th scope=\"col\">Ans.</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"TableList\">\r\n            <ng-container *ngIf=\"!isprocess\">\r\n              <tr *ngFor=\"let data of array_testList ; let i=index\">\r\n                <th scope=\"row\">{{i+1}}</th>\r\n                <td>\r\n                  <img src=  {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                </td>\r\n                <td>{{data.student_name}}</td>\r\n                <td>{{data.score}}/{{total_num_cal}}</td>\r\n                <td>{{data.answer}}</td>\r\n              </tr>\r\n            </ng-container>\r\n            <ng-container *ngIf=\"isprocess\">\r\n                <tr *ngFor=\"let data of array_testListProcess ; let i=index\">\r\n                  <th scope=\"row\">{{i+1}}</th>\r\n                  <td>\r\n                    <img src= {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{data.student_name}}</td>\r\n                  <td>{{data.score}}/{{total_num_cal}}</td>\r\n                  <td> <img src= {{data.answer}} width=\"30\" ></td>\r\n                </tr>\r\n              </ng-container>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -2122,6 +2266,8 @@ module.exports = "<div class=\"quiz\">\r\n  <div class=\"row\">\r\n\r\n    <div 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2131,6 +2277,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -2168,18 +2315,30 @@ var QuizComponent = (function () {
         this.examObservable = examRefLocal.valueChanges();
         var answerRefLocal = this.afs.doc("/answers/" + this.testID);
         this.ansObservable = answerRefLocal.valueChanges();
-        this.examObservable.forEach(function (exam) {
+        this.examObservable.subscribe(function (exam) {
             console.log(exam.status);
             _this.examStatus = exam.status;
             //exam data detail
             if (_this.examStatus == "pause") {
-                alert("Quiz paused! ");
-                _this.router.navigate(['dashboard']);
+                __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Quiz Paused!'
+                }).then(function () {
+                    _this.router.navigate(['dashboard']);
+                });
+            }
+            else if (_this.examStatus == "finish") {
+                __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Quiz finished!'
+                }).then(function () {
+                    _this.router.navigate(['dashboard', 'test', 'scores']);
+                });
             }
             else {
                 _this.examDataDetail(function (studentList) {
                     _this.afs.doc("/answers/" + _this.testID).valueChanges().forEach(function (element) {
-                        console.log(element);
+                        // console.log(element);
                         _this.answerProcessList(element);
                         _this.scoreProcess(element);
                     });
@@ -2189,13 +2348,8 @@ var QuizComponent = (function () {
         //---
         this.isValidProcess = false;
         this.isValidNext = true;
-        //call inputAnswer
-        // setInterval(() => {
-        //   this.inputAnswer();
-        // }, 5000);
-        // this.inputAnswer();
-        //list answer
         this.ansObservable.subscribe(function (ans) {
+            console.log(ans);
             _this.AnsObservableResult = ans;
             console.log(_this.AnsObservableResult);
             _this.answerProcessList(_this.AnsObservableResult);
@@ -2204,19 +2358,15 @@ var QuizComponent = (function () {
     }
     QuizComponent.prototype.answerProcessList = function (ans) {
         var _this = this;
-        console.log(this.Q_no);
+        // console.log(this.Q_no);
         var array_testList = [];
-        console.log("ans in answerProcessList=", ans);
+        // console.log("ans in answerProcessList=", ans);
         var pack_array_testList = {};
         this.student_temp.forEach(function (stu) {
-            console.log(stu);
-            console.log(stu.code);
-            console.log(_this.Q_no);
-            console.log(ans[stu.code][_this.Q_no]);
-            _this.answer = ans[stu.code][_this.Q_no];
-            console.log(_this.answer);
+            _this.answer = ans[stu.code][_this.Q_index];
+            // console.log(this.answer);
             if (_this.answer != undefined) {
-                console.log(stu.code + "in" + _this.Q_no + "==" + _this.answer);
+                // console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
                 //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
                 pack_array_testList = {
                     student_id: stu.code,
@@ -2228,14 +2378,14 @@ var QuizComponent = (function () {
                 //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
                 //this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
                 array_testList.push(pack_array_testList); //unshift เพิ่มเข้าข้างหน้า
-                console.log(array_testList); //ที่ตรงกับที่กำลังทำ     
+                // console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
             }
         });
         this.array_testList = array_testList;
     };
     QuizComponent.prototype.scoreProcess = function (ans) {
+        // console.log("ans in scoreProcess=", ans);
         var _this = this;
-        console.log("ans in scoreProcess=", ans);
         //ค่าผลเฉลยตามชนิดของแบบทดสอบ
         if (this.examType == 1) {
             this.answerCheck = this.answerType1;
@@ -2243,33 +2393,18 @@ var QuizComponent = (function () {
         else {
             this.answerCheck = this.Q_answer_index;
         }
-        console.log("ansObservable");
         var new_score;
         var array_testListProcess = [];
         this.student_temp.forEach(function (stu) {
-            console.log(stu);
-            console.log(stu.code);
-            // console.log("นี่ฉันเองงงงงงงงงงงงงงงงง   " + stu.score);
-            console.log(_this.Q_no);
-            // this.array_testList = [];
-            _this.answer = ans[stu.code][_this.Q_no];
-            console.log(_this.answer);
+            _this.answer = ans[stu.code][_this.Q_index];
+            // console.log(this.answer);
             var pack_array_testList = {};
             //ตรวจคำตอบ
             if (_this.answer != undefined) {
-                console.log("input=" + _this.answer + "ans= " + _this.answerCheck);
+                // console.log("input=" + this.answer + "ans= " + this.answerCheck);
                 if (_this.answer == _this.answerCheck) {
                     new_score = stu.score + 1; //บวกคะแนนเพิ่ม
-                    console.log(new_score);
-                    // stu.score = stu.score + 1;
-                    console.log(stu.code + "in" + _this.Q_no + "==" + _this.answer + "===" + _this.answerCheck);
                     _this.answerCheckImg = "assets/dist/img/corract.png";
-                    //update ค่า score ใน database
-                    // let newScoreUp = {
-                    //   score: stu.score + 1
-                    // }
-                    // const examRef = this.afs.doc<StudentExam>(`exam/${this.testID}/students/${stu.code}`);
-                    // examRef.update(newScoreUp)
                 }
                 else {
                     _this.answerCheckImg = "assets/dist/img/incorract.png";
@@ -2284,7 +2419,7 @@ var QuizComponent = (function () {
                     url: stu.url,
                     answer: _this.answerCheckImg
                 };
-                console.log(pack_array_testList);
+                // console.log(pack_array_testList);
             }
             else {
                 new_score = stu.score;
@@ -2296,15 +2431,15 @@ var QuizComponent = (function () {
                     url: stu.url,
                     answer: "assets/dist/img/question.png"
                 };
-                console.log(pack_array_testList);
+                // console.log(pack_array_testList);
             }
             //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
             array_testListProcess.push(pack_array_testList); //เพิ่มเข้าข้างหลัง
-            console.log(array_testListProcess); //ที่ตรงกับที่กำลังทำ     
+            //console.log(array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
             // this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
         });
         this.array_testListProcess = array_testListProcess;
-        console.log(this.array_testListProcess);
+        // console.log(this.array_testListProcess);
     };
     QuizComponent.prototype.examDataDetail = function (callback) {
         var _this = this;
@@ -2338,10 +2473,10 @@ var QuizComponent = (function () {
         this.studentExamCollection = this.afs.collection("/exam/" + this.testID + "/students", function (ref) { return ref.orderBy('code'); });
         this.students = this.studentExamCollection.valueChanges();
         this.students.forEach(function (stu) {
-            console.log(stu);
+            // console.log(stu);
             if (!_this.isExamDataDetailLoaded) {
                 stu.forEach(function (data1) {
-                    console.log(data1.code);
+                    // console.log(data1.code);
                     _this.student_temp.push(data1);
                 });
                 callback(_this.student_temp);
@@ -2357,44 +2492,46 @@ var QuizComponent = (function () {
             _this.questionObj = __WEBPACK_IMPORTED_MODULE_5_lodash__["filter"](ques, ['indax', _this.current_question]);
             _this.question_show = _this.questionObj[0].question;
             _this.Q_no = _this.questionObj[0].code;
+            _this.Q_index = _this.questionObj[0].indax;
+            // console.log(this.questionObj[0]);
             _this.updateAllInfo();
             console.log("Q_no====" + _this.Q_no);
+            console.log("Q_index====" + _this.Q_index);
             if (_this.examType == 1) {
                 _this.choice_show = null;
                 _this.Q_answer_index = _this.questionObj[0].answer;
                 _this.answerType1 = _this.questionObj[0].choice[_this.Q_answer_index];
-                console.log("ans= " + _this.answerType1);
+                // console.log("ans= " + this.answerType1);
             }
             else {
                 _this.choice_show = _this.questionObj[0].choice;
-                console.log(_this.choice_show);
+                // console.log(this.choice_show);
                 _this.Q_answer_index = _this.questionObj[0].answer;
-                console.log("ans= " + _this.Q_answer_index);
+                // console.log("ans= " + this.Q_answer_index);
             }
         });
     };
     QuizComponent.prototype.ngOnInit = function () {
     };
-    QuizComponent.prototype.TestStuList = function () {
-        //รับแล้วเอาไปเก็บในDB
-        console.log(this.tesssttext1);
-        console.log(this.tesssttext2);
-    };
-    QuizComponent.prototype.inputAnswer = function () {
-        this.isprocess = false;
-        console.log("inputAnswer");
-        console.log(this.ansObservable);
-        console.log(this.students);
-    };
     QuizComponent.prototype.ProcessAnswer = function () {
+        var _this = this;
         this.isValidNext = false;
         this.isValidProcess = true;
         this.isprocess = true;
-        console.log("process answer");
-        // const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
-        // this.ansObservable = answerRefLocal.valueChanges()
-        console.log(this.ansObservable);
-        console.log(this.students);
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+            type: 'success',
+            title: 'processed',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function () {
+            //update status
+            console.log(_this.Q_no);
+            var question_status = {
+                status: true
+            };
+            var examRef = _this.afs.doc("exam/" + _this.testID + "/questions/" + _this.Q_no);
+            examRef.update(question_status);
+        });
     };
     QuizComponent.prototype.NextQuestion = function () {
         var _this = this;
@@ -2428,13 +2565,9 @@ var QuizComponent = (function () {
             };
             var examRef = this.afs.doc("exam/" + this.testID + "/");
             examRef.update(newCrrent_question);
-            //call examDataDetail
-            //this.examDataDetail();
         }
         else {
             this.current_question = this.current_question + 1;
-            console.log(this.current_question);
-            console.log("finish");
             this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
             //update examStatus
             var statusUpdate = {
@@ -2449,64 +2582,112 @@ var QuizComponent = (function () {
     };
     QuizComponent.prototype.pauseTest = function () {
         var _this = this;
-        var c = confirm("confirm to pause this Quiz");
-        if (c == true) {
-            console.log("pause");
-            //update examStatus
-            var statusUpdate = {
-                status: "pause"
-            };
-            var examRef = this.afs.doc("exam/" + this.testID);
-            examRef.update(statusUpdate).then(function () {
-                //go to dashboard page
-                _this.router.navigate(['dashboard']);
-            });
-        }
-    };
-    QuizComponent.prototype.SkipQuestion = function () {
-        var _this = this;
-        var c = confirm("confirm to skip this question");
-        if (c == true) {
-            this.isValidNext = true;
-            this.isValidProcess = false;
-            this.isprocess = false;
-            console.log("skip");
-            console.log("old " + this.current_question);
-            //update question status
-            var question_status = {
-                status: false
-            };
-            var examRef = this.afs.doc("exam/" + this.testID + "/questions/" + this.Q_no);
-            examRef.update(question_status);
-            if (this.current_question < this.total_num - 1) {
-                console.log("new " + this.current_question);
-                this.current_question = this.current_question + 1;
-                console.log(this.current_question);
-                // //update current_question
-                var newCrrent_question = {
-                    current_question: this.current_question
-                };
-                var examRef_1 = this.afs.doc("exam/" + this.testID + "/");
-                examRef_1.update(newCrrent_question);
-                //call examDataDetail
-                // this.examDataDetail();
-            }
-            else {
-                this.current_question = this.current_question + 1;
-                console.log(this.current_question);
-                console.log("finish");
-                this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "pause this Quiz!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, pause it!'
+        }).then(function (result) {
+            if (result.value) {
                 //update examStatus
+                var statusUpdate = {
+                    status: "pause"
+                };
+                var examRef = _this.afs.doc("exam/" + _this.testID);
+                examRef.update(statusUpdate).then(function () {
+                    //go to dashboard page
+                    _this.router.navigate(['dashboard']);
+                });
+            }
+        });
+    };
+    QuizComponent.prototype.stopTest = function () {
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "stop this Quiz!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, stop it!'
+        }).then(function (result) {
+            if (result.value) {
+                console.log("stop");
                 var statusUpdate = {
                     status: "finish"
                 };
-                var examRef_2 = this.afs.doc("exam/" + this.testID);
-                examRef_2.update(statusUpdate).then(function () {
-                    //go to display scores page
+                var examRef = _this.afs.doc("exam/" + _this.testID);
+                examRef.update(statusUpdate).then(function () {
+                    //go to dashboard page
                     _this.router.navigate(['dashboard', 'test', 'scores']);
                 });
             }
-        }
+        });
+    };
+    QuizComponent.prototype.SkipQuestion = function () {
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "skip this question!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, skip it!'
+        }).then(function (result) {
+            console.log(result);
+            if (result.value) {
+                __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Skipped',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                _this.isValidNext = true;
+                _this.isValidProcess = false;
+                _this.isprocess = false;
+                console.log("skip");
+                console.log("old " + _this.current_question);
+                //update question status
+                // let question_status = {
+                //   status: false
+                // }
+                // const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${this.Q_no}`);
+                // examRef.update(question_status)
+                if (_this.current_question < _this.total_num - 1) {
+                    console.log("new " + _this.current_question);
+                    _this.current_question = _this.current_question + 1;
+                    console.log(_this.current_question);
+                    // //update current_question
+                    var newCrrent_question = {
+                        current_question: _this.current_question
+                    };
+                    var examRef = _this.afs.doc("exam/" + _this.testID + "/");
+                    examRef.update(newCrrent_question);
+                    //call examDataDetail
+                    // this.examDataDetail();
+                }
+                else {
+                    _this.current_question = _this.current_question + 1;
+                    console.log(_this.current_question);
+                    console.log("finish");
+                    _this.doing_percent = ((_this.current_question / _this.total_num_cal) * 100).toFixed(1);
+                    //update examStatus
+                    var statusUpdate = {
+                        status: "finish"
+                    };
+                    var examRef = _this.afs.doc("exam/" + _this.testID);
+                    examRef.update(statusUpdate).then(function () {
+                        //go to display scores page
+                        _this.router.navigate(['dashboard', 'test', 'scores']);
+                    });
+                }
+            }
+        });
     };
     QuizComponent.prototype.updateAllInfo = function () {
         this.answerProcessList(this.AnsObservableResult);
@@ -2521,197 +2702,6 @@ var QuizComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* Router */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["a" /* AngularFirestore */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_database__["a" /* AngularFireDatabase */], __WEBPACK_IMPORTED_MODULE_1__services_firebase_service__["a" /* FirebaseService */]])
     ], QuizComponent);
     return QuizComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-student/model.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export Person */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PERSONS; });
-var Person = (function () {
-    function Person() {
-    }
-    return Person;
-}());
-
-var PERSONS = [
-    {
-        id: 1,
-        name: 'Thomas',
-        surname: 'Novicky',
-        age: 21
-    },
-    {
-        id: 2,
-        name: 'Adam',
-        surname: 'Tracz',
-        age: 12
-    },
-    {
-        id: 3,
-        name: 'Steve',
-        surname: 'Laski',
-        age: 38
-    }
-];
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-student/report-of-student.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".report-std{\r\n    margin: 30px;  \r\n  }\r\n  .content{\r\n    margin-top: 20px;\r\n    background-color:white;\r\n  }\r\n  .report-head{\r\n  background-color:  #e6f2ff;\r\n  padding: 20px;\r\n  }", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-student/report-of-student.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\" style=\"margin-top: 20px;\">\r\n    <div class=\"panel panel-default\">\r\n      <div class=\"panel-heading\">All persons data</div>\r\n      <table class=\"table\" *ngIf=\"persons\">\r\n        <thead>\r\n          <tr>\r\n            <th>Id</th>\r\n            <th>Name</th>\r\n            <th>Surname</th>\r\n            <th>Age</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let person of persons\">\r\n            <td>{{person.id}}</td>\r\n            <td>{{person.name}}</td>\r\n            <td>{{person.surname}}</td>\r\n            <td>{{person.age}}</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n    <button (click)=\"exportToExcel()\" class=\"btn btn-primary\">Export to excel</button>\r\n  </div>"
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-student/report-of-student.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReportOfStudentComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_excel_service__ = __webpack_require__("../../../../../src/app/services/excel.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model__ = __webpack_require__("../../../../../src/app/report-of-student/model.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var ReportOfStudentComponent = (function () {
-    function ReportOfStudentComponent(excelService) {
-        this.excelService = excelService;
-        this.excelService = excelService;
-        this.persons = __WEBPACK_IMPORTED_MODULE_2__model__["a" /* PERSONS */];
-    }
-    ReportOfStudentComponent.prototype.exportToExcel = function (event) {
-        this.excelService.exportAsExcelFile(__WEBPACK_IMPORTED_MODULE_2__model__["a" /* PERSONS */], 'persons');
-    };
-    ReportOfStudentComponent.prototype.ngOnInit = function () {
-    };
-    ReportOfStudentComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'app-report-of-student',
-            template: __webpack_require__("../../../../../src/app/report-of-student/report-of-student.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/report-of-student/report-of-student.component.css")]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_excel_service__["a" /* ExcelService */]])
-    ], ReportOfStudentComponent);
-    return ReportOfStudentComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-test/report-of-test.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".report-test{\r\n    margin: 30px;  \r\n  }\r\n  .content{\r\n    margin-top: 20px;\r\n    background-color:white;\r\n  }\r\n  .report-head{\r\n  background-color:  #e6f2ff;\r\n  padding: 20px;\r\n  }", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-test/report-of-test.component.html":
-/***/ (function(module, exports) {
-
-module.exports = " <div class=\"report-test\"> \r\n  <select class=\"form-control form-control-lg\" data-live-search=\"true\">\r\n    <option>เทคโนโลยเพื่อการสื่อสาร</option>\r\n    <option>โลกและอวกาศ</option>\r\n    <option>จิตวิทยาชุมชน</option>\r\n  </select>\r\n  <div class=\"content\">\r\n\r\n    <div class=\"report-head\">\r\n      <p>\r\n        <b>Topic Name: </b>\r\n        <span>เทคโนโลยเพื่อการสื่อสาร</span>\r\n      </p>\r\n      <p>\r\n        <b>Max Score: </b>\r\n        <span>50</span>\r\n      </p>\r\n      <p>\r\n        <b>Average Score: </b>\r\n        <span>45</span>\r\n      </p>\r\n    </div>\r\n\r\n    <div class=\"report-body\">\r\n        <table class=\"table table-hover\">\r\n            <thead>\r\n                <tr>\r\n                    <td colspan='5' align=\"center\">\r\n                        <div style=\"display: block\">\r\n                            <canvas baseChart\r\n                            [data]=\"lineChartData\"\r\n                            [labels]=\"lineChartLabels\"\r\n                            [options]=\"lineChartOptions\"\r\n                            [chartType]=\"lineChartType\"\r\n                            (chartHover)=\"chartHovered($event)\"\r\n                            (chartClick)=\"chartClicked($event)\"></canvas>\r\n                            <button (click)=\"randomizeType()\" style=\"display: inline-block\">Toggle</button>\r\n                          </div>\r\n                    </td>\r\n                  </tr>\r\n              <tr>\r\n                <th> #\r\n                </th>\r\n                <th scope=\"col\">Student ID</th>\r\n                <th scope=\"col\">Student Name</th>\r\n                <th scope=\"col\">Score</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n\r\n              <tr>\r\n                <td>\r\n                1\r\n                </td>\r\n                <td>570510637</td>\r\n                <td>ชลธิชา บัวตูม</td>\r\n                <td>50</td>\r\n              </tr>\r\n              <tr>\r\n                <td>\r\n           2\r\n                </td>\r\n                <td>570510638</td>\r\n                <td> มารี แมวเหมี้ยว</td>\r\n                <td>45</td>\r\n              </tr>\r\n              <tr>\r\n                <td>\r\n             3\r\n                </td>\r\n                <td>570510639</td>\r\n                <td>นัทชา ใจดี</td>\r\n                <td>40</td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n    </div>\r\n    <button type=\"button\" class=\"btn btn-primary btn-md\" style=\"width: 100%;\">\r\n        <span class=\"\tglyphicon glyphicon-print\"></span> Print</button>\r\n  </div>\r\n</div>\r\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/report-of-test/report-of-test.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReportOfTestComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var ReportOfTestComponent = (function () {
-    function ReportOfTestComponent() {
-        // lineChart
-        //ข้อมูหลายชุด แต่ละชุดมีหลายค่า
-        this.lineChartData = [
-            [65, 59, 80, 81, 56, 55, 40],
-            [58, 28, 40, 69, 16, 22, 60],
-            [28, 48, 40, 19, 86, 27, 90]
-        ];
-        //ใส่รหัสนักศึกษา
-        this.lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-        this.lineChartType = 'line';
-    }
-    // Pie
-    // public pieChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-    // public pieChartData:number[] = [300, 500, 100];
-    //-------function สลับการแสดงผลรหว่างกราฟ
-    ReportOfTestComponent.prototype.randomizeType = function () {
-        this.lineChartType = this.lineChartType === 'line' ? 'bar' : 'line';
-    };
-    ReportOfTestComponent.prototype.chartClicked = function (e) {
-        console.log(e);
-    };
-    ReportOfTestComponent.prototype.chartHovered = function (e) {
-        console.log(e);
-    };
-    ReportOfTestComponent.prototype.ngOnInit = function () {
-    };
-    ReportOfTestComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'app-report-of-test',
-            template: __webpack_require__("../../../../../src/app/report-of-test/report-of-test.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/report-of-test/report-of-test.component.css")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], ReportOfTestComponent);
-    return ReportOfTestComponent;
 }());
 
 
@@ -2791,11 +2781,11 @@ var ReportsComponent = (function () {
         this.ExamList = ExamRef.valueChanges();
         this.ExamListShow = [];
         this.ExamList.subscribe(function (data) {
-            console.log(data);
+            // console.log(data);
             data.forEach(function (d) {
-                console.log(d.status);
+                // console.log(d.status);
                 if (d.status == "finish") {
-                    console.log(d);
+                    // console.log(d);
                     _this.ExamListShow.push(d);
                 }
             });
@@ -2820,8 +2810,8 @@ var ReportsComponent = (function () {
         var _this = this;
         this.studentExportObj = [];
         this.doing = 0;
-        console.log("change");
-        console.log(dataExam);
+        // console.log("change");
+        // console.log(dataExam);
         this.isdataExam = true;
         this.studentShow = [];
         this.scoreGraph = [];
@@ -2831,7 +2821,7 @@ var ReportsComponent = (function () {
         this.subject_name = dataExam.subject_name;
         this.chapter_name = dataExam.chapter_name;
         this.description = dataExam.description;
-        console.log(dataExam.type);
+        // console.log(dataExam.type);
         switch (dataExam.type) {
             case 1: {
                 //statements; 
@@ -2860,9 +2850,9 @@ var ReportsComponent = (function () {
         this.questionExamCollection = this.afs.collection("/exam/" + this.exam_code + "/questions");
         this.questions = this.questionExamCollection.valueChanges();
         this.questions.subscribe(function (ques) {
-            console.log(ques);
+            // console.log(ques);
             ques.forEach(function (data) {
-                console.log(data.status);
+                // console.log(data.status);
                 if (data.status == true) {
                     _this.doing = _this.doing + 1;
                 }
@@ -2872,11 +2862,11 @@ var ReportsComponent = (function () {
         this.studentExamCollection = this.afs.collection("/exam/" + this.exam_code + "/students", function (ref) { return ref.orderBy('score'); });
         this.students = this.studentExamCollection.valueChanges();
         this.students.subscribe(function (stu) {
-            console.log(stu);
+            // console.log(stu);
             stu.forEach(function (data, index) {
-                console.log(data);
+                // console.log(data);
                 _this.studentShow.push(data);
-                console.log(data.score);
+                // console.log(data.score);
                 _this.sum = 0;
                 _this.scoreGraph.push(data.score);
                 _this.codeGraph.push(data.code);
@@ -2885,22 +2875,26 @@ var ReportsComponent = (function () {
                     // มากไปน้อย
                     return obj2.score - obj1.score;
                 });
-                console.log(_this.scoreGraph);
-                console.log("คำนวณ");
+                // console.log(this.scoreGraph);
+                // console.log("คำนวณ");
                 //คำนวน MAX, MIN
-                console.log(_this.scoreGraph);
-                _this.max = Math.max.apply(null, _this.scoreGraph);
-                console.log("Max = " + _this.max);
-                _this.min = Math.min.apply(null, _this.scoreGraph);
-                console.log("Min = " + _this.min);
+                // console.log(this.scoreGraph);
+                _this.max = dataExam.max;
+                // this.max = Math.max.apply(null, this.scoreGraph);
+                // console.log("Max = " + this.max);
+                _this.min = dataExam.min;
+                // this.min = Math.min.apply(null, this.scoreGraph);
+                // console.log("Min = " + this.min);
                 // console.log(Math.sqrt(this.variance(hii)));
                 _this.sum = _this.scoreGraph.reduce(function (previous, current) { return current += previous; });
-                console.log("sum" + _this.sum);
-                _this.avg = (_this.sum / _this.scoreGraph.length).toFixed(2);
-                console.log("AVG = " + _this.avg);
-                _this.std = _this.standardDeviation().toFixed(2);
-                console.log("STD = " + _this.std);
-                console.log(index, _this.std.length - 1);
+                // console.log("sum" + this.sum);
+                // this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
+                _this.avg = dataExam.avg;
+                // console.log("AVG = " + this.avg);
+                _this.std = dataExam.sd;
+                // this.std = this.standardDeviation().toFixed(2)
+                // console.log("STD = " + this.std);
+                // console.log(index, this.std.length - 1);
                 //bar
                 _this.data1 = {
                     labels: _this.codeGraph,
@@ -2928,25 +2922,32 @@ var ReportsComponent = (function () {
             });
         });
     };
-    //-------function หาค่า SD
-    ReportsComponent.prototype.standardDeviation = function () {
+    /*
+      //-------function หาค่า SD
+      standardDeviation() {
         var avg = this.avg;
+    
         var squareDiffs = this.scoreGraph.map(function (value) {
-            var diff = value - avg;
-            var sqrDiff = diff * diff;
-            return sqrDiff;
+          var diff = value - avg;
+          var sqrDiff = diff * diff;
+          return sqrDiff;
         });
+    
         var avgSquareDiff = this.average(squareDiffs);
+    
         var stdDev = Math.sqrt(avgSquareDiff);
         return stdDev;
-    };
-    ReportsComponent.prototype.average = function (data) {
+      }
+    
+      average(data) {
         var sum = data.reduce(function (sum, value) {
-            return sum + value;
+          return sum + value;
         }, 0);
+    
         var avg = sum / data.length;
         return avg;
-    };
+      }
+    */
     //-------function สลับการแสดงผลรหว่างกราฟ
     ReportsComponent.prototype.barBtn = function () {
         this.isbar = true;
@@ -2959,27 +2960,27 @@ var ReportsComponent = (function () {
     //-------function export เป็น excel file
     ReportsComponent.prototype.exportToExcel = function (event) {
         var _this = this;
-        console.log(event);
-        console.log(this.studentExportObj);
+        // console.log(event);
+        // console.log(this.studentExportObj);
         //to data export
         this.studentShow.forEach(function (data, indax) {
-            console.log(data);
-            console.log(data.code);
+            // console.log(data);
+            // console.log(data.code);
             var studentExport = {
                 student_id: data.code,
                 student_name: data.name,
                 score: data.score
             };
             _this.studentExportObj.push(studentExport);
-            console.log(_this.studentExportObj);
+            // console.log(this.studentExportObj);
         });
         //
         this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
     };
     ReportsComponent.prototype.generatePDF = function () {
-        console.log(this.exam_code);
+        // console.log(this.exam_code);
         var temp = this.exam_code + '.pdf';
-        console.log(temp);
+        // console.log(temp);
         __WEBPACK_IMPORTED_MODULE_3_html2canvas__(document.getElementById('content')).then(function (canvas) {
             document.body.appendChild(canvas);
             var pdf = new jsPDF('p', 'pt', 'a4');
@@ -3092,7 +3093,7 @@ var ScoresComponent = (function () {
         //---data in exam
         this.ExamDoc = this.afs.doc("/exam/" + this.testID);
         this.dataExam = this.ExamDoc.valueChanges();
-        this.dataExam.subscribe(function (data) {
+        this.dataExam.take(1).subscribe(function (data) {
             //รายละเอียดส่วนหัวของรายงาน
             console.log(data);
             _this.amount = data.amount;
@@ -3128,19 +3129,21 @@ var ScoresComponent = (function () {
         //---question in exam
         this.questionExamCollection = this.afs.collection("/exam/" + this.testID + "/questions");
         this.questions = this.questionExamCollection.valueChanges();
-        this.questions.subscribe(function (ques) {
+        this.questions.take(1).subscribe(function (ques) {
+            _this.doing = 0;
             console.log(ques);
             ques.forEach(function (data) {
                 console.log(data.status);
                 if (data.status == true) {
                     _this.doing = _this.doing + 1;
+                    console.log("doing" + _this.doing);
                 }
             });
         });
         //---student in exam
         this.studentExamCollection = this.afs.collection("/exam/" + this.testID + "/students", function (ref) { return ref.orderBy('score'); });
         this.students = this.studentExamCollection.valueChanges();
-        this.students.subscribe(function (stu) {
+        this.students.take(1).subscribe(function (stu) {
             console.log(stu);
             stu.forEach(function (data, index) {
                 console.log(data);
@@ -3169,6 +3172,15 @@ var ScoresComponent = (function () {
                 console.log("AVG = " + _this.avg);
                 _this.std = _this.standardDeviation().toFixed(2);
                 console.log("STD = " + _this.std);
+                ///add to DB
+                var cal = {
+                    max: _this.max,
+                    min: _this.min,
+                    sd: _this.std,
+                    average: _this.avg
+                };
+                var ExamRef = _this.afs.doc("/exam/" + _this.testID);
+                ExamRef.update(cal);
                 console.log(index, _this.std.length - 1);
                 //bar
                 _this.data1 = {
@@ -3290,6 +3302,8 @@ var ScoresComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__ = __webpack_require__("../../../../angularfire2/firestore/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_cookie_service__ = __webpack_require__("../../../../ngx-cookie-service/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3299,6 +3313,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -3373,7 +3388,7 @@ var AuthService = (function () {
             // this.firebaseService.userLogin == email;
             _this.router.navigate(['dashboard']);
         })
-            .catch(function (error) { return alert(error); });
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_7_sweetalert2___default()({ type: 'error', text: error }); });
     };
     AuthService.prototype.emailLogin = function (email, password) {
         var _this = this;
@@ -3390,7 +3405,7 @@ var AuthService = (function () {
             _this.cookieValue = _this.cookieService.get('email');
             _this.router.navigate(['dashboard']);
         })
-            .catch(function (error) { return alert(error); });
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_7_sweetalert2___default()({ type: 'error', text: error }); });
     };
     AuthService.prototype.resetPassword = function (email) {
         var fbAuth = __WEBPACK_IMPORTED_MODULE_3_firebase_app__["auth"]();
@@ -3505,50 +3520,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var FirebaseService = (function () {
+    // public Test_id_new = "205100_1_1524330147111";
     // public TestScore_id_new:any;
     function FirebaseService(db, afs) {
         this.db = db;
         this.afs = afs;
         this.userLogin = "";
-        // public arrayTest2 = [
-        //   { answer: 2, choice: ["ผนังเซลล์", "แวคิวโอล", "คลอโรพลาสต์", "ไซโทพลาซึม"], code: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด" },
-        //   { answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], code: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม" },
-        //   { answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], code: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม" }
-        // ];
-        // public arrayTest3 :any;
-        this.arrayTest3 = [
-            {
-                code: "570510626",
-                name: "กัลยา ใจลูน",
-                score: 0,
-                url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=10efed90-af71-482d-86ce-727b8cb19e9e"
-            },
-            {
-                code: "570510633",
-                name: "จุฑารัตน์ นาคพิทักษ์",
-                score: 0,
-                url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=aa813e51-bab2-4db8-816c-cbb61827f5af"
-            },
-            {
-                code: "570510637",
-                name: "ชลธิชา บัวตูม",
-                score: 0,
-                url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=120c39e9-00b5-466f-b582-d77680523ff5"
-            },
-            {
-                code: "570510638",
-                name: "ชลธิชา พงษ์คำ",
-                score: 0,
-                url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=18f03834-0a44-41a1-bc05-430538c3c8a7"
-            }
-        ];
-        // public arrayTest3_2 =[
-        //   { answer: 2, choice: ["ผนังเซลล์", "แวคิวโอล", "คลอโรพลาสต์", "ไซโทพลาซึม"], code: "0", indax: 0,question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด" },
-        //   { answer: 1, choice: ["เยื่อด้านนอกของกาบใบ", "เยื่อด้านในของกาบใบ", "รากหอม", "ลำต้น"], code: "1", indax: 2,question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม" },
-        //   { answer: 3, choice: ["เซลล์เยื่อหอม", "เซลล์สาหร่ายหางกระรอก", "เซลล์ใบว่านกาบหอย", "เซลล์เยื่อบุข้างแก้ม"], code: "3",indax: 1, question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม" }
-        // ];
-        // public Test_id_new:any;
-        this.Test_id_new = "205100_1_1524330147111";
     }
     FirebaseService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -3737,7 +3714,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".student-list{\r\n  margin: 30px;  \r\n}\r\n\r\n.container{\r\n  margin: 20px;  \r\n}\r\n.row{\r\n  margin-top: 20px;\r\n  margin-right: 40px;\r\n  margin-left: 40px;\r\n}\r\n.picture_show:hover{\r\n  cursor: pointer;\r\n  width: 250px;\r\n}\r\n\r\n/* ตอนลองตาราง meterail */\r\n.example-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  min-width: 300px;\r\n}\r\n\r\n.mat-table {\r\n  overflow: auto;\r\n  max-height: 500px;\r\n}\r\n.thisTextCenter{\r\n  text-align: center;\r\n}", ""]);
+exports.push([module.i, ".student-list{\r\n  margin: 30px;  \r\n}\r\n\r\n.container{\r\n  margin: 20px;  \r\n}\r\n.row{\r\n  margin-top: 20px;\r\n  margin-right: 40px;\r\n  margin-left: 40px;\r\n}\r\n.picture_show:hover{\r\n  position: absolute;\r\n  cursor: pointer;\r\n  width: 250px;\r\n  transition: width 1s;\r\n  border-radius: 10px;\r\n  box-shadow: -3px -3px 20px #888888;\r\n}\r\n\r\n/* ตอนลองตาราง meterail */\r\n.example-container {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n      -ms-flex-direction: column;\r\n          flex-direction: column;\r\n  min-width: 300px;\r\n}\r\n\r\n.mat-table {\r\n  overflow: auto;\r\n  max-height: 500px;\r\n}\r\n.thisTextCenter{\r\n  text-align: center;\r\n}", ""]);
 
 // exports
 
@@ -3750,7 +3727,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/student-list/student-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"student-list\">\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly  name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\" required>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n                <!-- upload file -->\r\n                            <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th >Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src= {{student?.url}} width=\"60 px\" class=\"picture_show \">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.name}}</td>\r\n\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\" (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form >\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\"  [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\"  [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"student-list\">\r\n  <!-- <button type=\"button\" class=\"btn btn-primary btn-md\" (click)=\"test()\">\r\n    <i class=\"fa fa-user-plus\"></i> Test</button> -->\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly  name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\" required>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n                <!-- upload file -->\r\n                            <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th >Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src= {{student?.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.name}}</td>\r\n\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\" (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form >\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\"  [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\"  [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -3764,6 +3741,8 @@ module.exports = "<div class=\"student-list\">\r\n  <div class=\"box box-info\">
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_upload_file_service__ = __webpack_require__("../../../../../src/app/services/upload-file.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fileupload__ = __webpack_require__("../../../../../src/app/student-list/fileupload.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3779,21 +3758,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 //upload file
 
 
+
 var StudentListComponent = (function () {
     function StudentListComponent(afs, firebaseService, uploadService) {
+        var _this = this;
         this.afs = afs;
         this.firebaseService = firebaseService;
         this.uploadService = uploadService;
         // progress: { percentage: number } = { percentage: 0 }
         this.studentsCheck = [];
         this.studentAddcheck = true;
+        this.studentsCheck = [];
         this.studentCollection = afs.collection('/students', function (ref) { return ref.orderBy('code'); });
         this.students = this.studentCollection.valueChanges();
         this.students.forEach(function (data) {
             //console.log(data);
             data.forEach(function (data1) {
                 // console.log(data1.code);
-                // this.studentsCheck.push(data1);
+                _this.studentsCheck.push(data1);
             });
         });
     }
@@ -3810,40 +3792,67 @@ var StudentListComponent = (function () {
         this.selectedFiles = event.target.files;
     };
     StudentListComponent.prototype.addNewStudent = function () {
+        var _this = this;
+        var count;
         if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
-            alert("Unsuccessful : Please enter all fields.");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter all fields.',
+            });
         }
         else {
             //Add item with Custom IDs In Firebase
-            // console.log(this.newStudentCode);
-            // this.studentsCheck.forEach(data => {
-            //   if (data.code == this.newStudentCode) {
-            //     alert("Unsuccessful : This code already exists.");
-            //   } else {
-            //     this.studentAddcheck = false;
-            //   }
-            // })
-            // if (this.studentAddcheck == false) {
-            var id = this.newStudentCode;
-            var student = {
-                code: this.newStudentCode,
-                name: this.newStudentName,
-                url: null
-            };
-            console.log(student);
-            console.log(this.selectedFiles);
-            var studentCollection = this.afs.collection('students');
-            studentCollection.doc(id).set(student);
-            //upload picture file
-            if (this.selectedFiles) {
-                var file = this.selectedFiles.item(0);
-                this.currentFileUpload = new __WEBPACK_IMPORTED_MODULE_4__fileupload__["a" /* FileUpload */](file);
-                // this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
-                this.uploadService.pushFileToStorage(this.currentFileUpload, id);
-                this.selectedFiles = null;
+            console.log(this.newStudentCode);
+            //ไม่มีวิชาในระบบ
+            console.log(this.studentsCheck.length);
+            if (this.studentsCheck.length == 0) {
+                this.studentAddcheck == false;
+                count = 0;
+            }
+            else {
+                this.studentsCheck.forEach(function (data) {
+                    if (data.code == _this.newStudentCode) {
+                        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                            type: 'error',
+                            title: 'Unsuccessful',
+                            text: 'This code already exists.',
+                        });
+                        _this.studentAddcheck = true;
+                        count = 1;
+                    }
+                    else {
+                        _this.studentAddcheck = false;
+                    }
+                });
+            }
+            if (this.studentAddcheck == false && count != 1) {
+                var id = this.newStudentCode;
+                var student = {
+                    code: this.newStudentCode,
+                    name: this.newStudentName,
+                    url: null
+                };
+                console.log(student);
+                console.log(this.selectedFiles);
+                var studentCollection = this.afs.collection('students');
+                studentCollection.doc(id).set(student);
+                //upload picture file
+                if (this.selectedFiles) {
+                    var file = this.selectedFiles.item(0);
+                    this.currentFileUpload = new __WEBPACK_IMPORTED_MODULE_4__fileupload__["a" /* FileUpload */](file);
+                    // this.uploadService.pushFileToStorage(this.currentFileUpload, this.progress, id)
+                    this.uploadService.pushFileToStorage(this.currentFileUpload, id);
+                    this.selectedFiles = null;
+                }
+                __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                    type: 'success',
+                    title: 'Successful',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         }
-        // }
     };
     //----Update
     //Set data Edit to modal
@@ -3857,15 +3866,16 @@ var StudentListComponent = (function () {
     // Update student name or picture file this key
     StudentListComponent.prototype.UpdateStudent = function () {
         if (this.studentNameLocal == "") {
-            alert("Unsuccessful : Please enter subject name.");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter subject name.',
+            });
         }
         else {
-            console.log("UpdateSubject");
             var studentUpdate = {
                 name: this.studentNameLocal
             };
-            // console.log(studentUpdate); //obj student name (ex. {name: "มาลี ดีใจ"})
-            // console.log(this.studentLocal.code);   //this student code (ex. 570510100)
             //path to update
             var studentRef = this.afs.doc("students/" + this.studentCodeLocal);
             //update data : student_name
@@ -3877,6 +3887,12 @@ var StudentListComponent = (function () {
                 this.uploadService.pushFileToStorage(this.currentFileUpload, this.studentCodeLocal);
                 this.selectedFiles = null;
             }
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'success',
+                title: 'Updated',
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     };
     //----Delete
@@ -3890,6 +3906,28 @@ var StudentListComponent = (function () {
         this.studentCollection.doc(this.removeCode).delete();
         //Delete picture
         this.uploadService.delteUserImage(this.removeCode);
+        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+            type: 'success',
+            title: 'Removed',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    };
+    StudentListComponent.prototype.test = function () {
+        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function (result) {
+            if (result.value) {
+                console.log(result.value);
+                __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()('Deleted!', 'Your file has been deleted.', 'success');
+            }
+        });
     };
     StudentListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"])({
@@ -3941,6 +3979,8 @@ module.exports = "<div class=\"test-step1\">\r\n  <div class=\"content\">\r\n   
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3955,6 +3995,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // import { FirebaseService } from '../services/firebase.service';
 // import { Observable } from 'rxjs/Observable';
 //new
+
 
 
 
@@ -4116,82 +4157,107 @@ var TestStep1Component = (function () {
         });
     };
     TestStep1Component.prototype.StartSelectTest = function (data) {
+        var _this = this;
         if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined || this.InputDescription == "") {
-            alert("Please enter all fields.");
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please enter all fields.',
+            });
         }
         else {
-            var c = confirm("Are you sure to go to the next step?");
-            if (c == true) {
-                this.questionTmp = [];
-                console.log("is meeeee");
-                console.log(data.value);
-                console.log(this.questionAllList);
-                console.log(this.SelectNumofItem);
-                if (this.SelectNumofItem == "" || this.SelectNumofItem == undefined) {
-                    this.NumOfItemThis = 1;
-                }
-                else {
-                    this.NumOfItemThis = this.SelectNumofItem;
-                }
-                if (this.NumOfItemThis == this.amount) {
-                    this.questionTmp = this.questionAllList;
-                    console.log(this.questionTmp);
-                }
-                else {
-                    var rand = -1;
-                    console.log("rand");
-                    console.log(rand);
-                    var i = 0;
-                    this.questionTmp = [];
-                    while (i < this.NumOfItemThis) {
-                        // rand = Math.floor(Math.random() * this.numOfitem);
-                        while (this.questionAllList[rand] == 0 || this.questionAllList[rand] == undefined) {
-                            // Math.floor(Math.random() *  max);
-                            rand = Math.floor(Math.random() * this.amount);
-                            //  console.log("random: " + rand);
-                        }
-                        // console.log("this " + this.questionAllList[rand]);
-                        // console.log("rand " + rand);
-                        this.questionTmp.push(this.questionAllList[rand]);
-                        console.log(this.questionTmp);
-                        this.questionAllList[rand] = 0;
-                        i++;
+            __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                title: 'Are you sure?',
+                text: "go to the next step",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, to go!'
+            }).then(function (result) {
+                if (result.value) {
+                    _this.questionTmp = [];
+                    console.log(_this.SelectNumofItem);
+                    if (_this.SelectNumofItem == "" || _this.SelectNumofItem == undefined) {
+                        _this.NumOfItemThis = 1;
                     }
+                    else {
+                        _this.NumOfItemThis = _this.SelectNumofItem;
+                    }
+                    if (_this.NumOfItemThis == _this.amount) {
+                        _this.questionTmp = _this.questionAllList;
+                        console.log(_this.questionTmp);
+                    }
+                    else {
+                        var rand = -1;
+                        var i = 0;
+                        _this.questionTmp = [];
+                        while (i < _this.NumOfItemThis) {
+                            // rand = Math.floor(Math.random() * this.numOfitem);
+                            while (_this.questionAllList[rand] == 0 || _this.questionAllList[rand] == undefined) {
+                                // Math.floor(Math.random() *  max);
+                                rand = Math.floor(Math.random() * _this.amount);
+                                //  console.log("random: " + rand);
+                            }
+                            // console.log("this " + this.questionAllList[rand]);
+                            // console.log("rand " + rand);
+                            _this.questionTmp.push(_this.questionAllList[rand]);
+                            console.log(_this.questionTmp);
+                            _this.questionAllList[rand] = 0;
+                            i++;
+                        }
+                    }
+                    //make type string to number
+                    var numOfItemThis_num = +_this.NumOfItemThis;
+                    //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
+                    var arrayTest1pack = [];
+                    arrayTest1pack.push(_this.SelectCategory, _this.SelectTopic, numOfItemThis_num, _this.InputDescription, _this.questionTmp, _this.question_type);
+                    console.log(arrayTest1pack);
+                    _this.firebaseService.arrayTest1 = arrayTest1pack; //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
+                    //clear
+                    _this.chapterList = null;
+                    _this.questionTmp = [];
+                    _this.array_numOfitem = [];
+                    _this.SelectThisCategory = [];
+                    _this.SelectCategory = "";
+                    _this.SelectTopic = undefined;
+                    _this.SelectNumofItem = "";
+                    _this.InputDescription = "";
+                    // /dashboard/test/test-step2
+                    _this.router.navigate(['dashboard', 'test', 'test-step2']);
                 }
-                //make type string to number
-                var numOfItemThis_num = +this.NumOfItemThis;
-                //ต้องการ pack เพื่อส่งในใช้ใน test stap อื่นได้
-                var arrayTest1pack = [];
-                arrayTest1pack.push(this.SelectCategory, this.SelectTopic, numOfItemThis_num, this.InputDescription, this.questionTmp, this.question_type);
-                console.log(arrayTest1pack);
-                this.firebaseService.arrayTest1 = arrayTest1pack; //โดยขึ้นไปใน service เพื่อให้ใช้ได้ทุก component
-                //clear
-                this.chapterList = null;
-                this.questionTmp = [];
-                this.array_numOfitem = [];
-                this.SelectThisCategory = [];
-                this.SelectCategory = "";
-                this.SelectTopic = undefined;
-                this.SelectNumofItem = "";
-                this.InputDescription = "";
-                // /dashboard/test/test-step2
-                this.router.navigate(['dashboard', 'test', 'test-step2']);
-            }
+            });
         }
     };
     TestStep1Component.prototype.clearTest1 = function () {
+        var _this = this;
         // alert("clear");
-        var c = confirm("confirm to clear this form");
-        if (c == true) {
-            this.chapterList = null;
-            this.questionTmp = [];
-            this.array_numOfitem = [];
-            this.SelectThisCategory = [];
-            this.SelectCategory = "";
-            this.SelectTopic = undefined;
-            this.SelectNumofItem = "";
-            this.InputDescription = "";
-        }
+        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "clear this form!",
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, clear it!'
+        }).then(function (result) {
+            if (result.value) {
+                _this.chapterList = null;
+                _this.questionTmp = [];
+                _this.array_numOfitem = [];
+                _this.SelectThisCategory = [];
+                _this.SelectCategory = "";
+                _this.SelectTopic = undefined;
+                _this.SelectNumofItem = "";
+                _this.InputDescription = "";
+                __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+                    type: 'success',
+                    title: 'cleared',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
     };
     TestStep1Component.prototype.ngOnInit = function () { };
     TestStep1Component = __decorate([
@@ -4243,6 +4309,8 @@ module.exports = "<table class=\"table\">\r\n    <!-- <thead class=\"thead\">\r\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_firebase_service__ = __webpack_require__("../../../../../src/app/services/firebase.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_database__ = __webpack_require__("../../../../angularfire2/database/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4252,6 +4320,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -4274,50 +4343,17 @@ var TestStep2Component = (function () {
         this.receiveTest1 = this.firebaseService.arrayTest1;
         console.log(this.receiveTest1);
         console.log(this.receiveTest1[4]);
-        // ตำแหน่ง4 array คำถาม  [  {answer: 2, choice: Array(4), key: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด"},
-        //   {answer: 3, choice: Array(4), key: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม"},
-        //   {answer: 1, choice: Array(4), key: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม"}
-        // ]
         this.receiveQuestion = this.receiveTest1[4];
         this.question_list_display = this.receiveQuestion;
-        // console.log(this.question_list_display[0].choice);
-        /*
-            //Database
-            let sub_index = 0;
-            console.log(this.receiveQid);
-            this.receiveQid.forEach((item, index) => {
-              console.log(item);
-        
-              let path = 'Questions/' + item;
-              let ref2 = this.db.list(path).valueChanges();
-              this.tmpQid.push(item);
-        
-              ref2.subscribe(data => {
-                // console.log("size" + this.receiveQid.length);
-                console.log(data);
-                //
-                this.tmp.push(data);
-        
-                // console.log(this.tmp[index]);
-                let tem = {
-                  keyQ: this.receiveQid[index],
-                  answer_index: data[0],
-                  choice: data[1],
-                  question: data[2],
-                  topic_id: data[3],
-                  i: index
-                }
-                // console.log(data[1]);
-                this.question_list_display.push(tem);
-                console.log(this.question_list_display);
-              });
-            });
-            console.log(this.tmpQid);
-            */
     }
     TestStep2Component.prototype.ngOnInit = function () {
     };
     TestStep2Component.prototype.moveUp = function (value, index) {
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            title: 'Up!',
+            showConfirmButton: false,
+            timer: 500
+        });
         console.log(index);
         console.log(value);
         if (index > 0) {
@@ -4332,6 +4368,11 @@ var TestStep2Component = (function () {
         }
     };
     TestStep2Component.prototype.moveDown = function (value, index) {
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            title: 'Down!',
+            showConfirmButton: false,
+            timer: 500
+        });
         console.log(index);
         console.log(this.question_list_display.length);
         if (index < this.question_list_display.length - 1) {
@@ -4346,18 +4387,28 @@ var TestStep2Component = (function () {
         }
     };
     TestStep2Component.prototype.StartSelectQuestion = function () {
+        var _this = this;
         var arrayTest2pack = [];
-        var c = confirm("Are you sure to go to the next step?");
-        if (c == true) {
-            this.question_list_display.forEach(function (element) {
-                console.log(element);
-                arrayTest2pack.push(element);
-            });
-            // console.log(arrayTest2pack);
-            this.firebaseService.arrayTest2 = arrayTest2pack;
-            console.log(this.firebaseService.arrayTest2);
-        }
-        this.router.navigate(['dashboard', 'test', 'test-step3']);
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            title: 'Are you sure?',
+            text: "go to the next step",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, to go!'
+        }).then(function (result) {
+            if (result.value) {
+                _this.question_list_display.forEach(function (element) {
+                    console.log(element);
+                    arrayTest2pack.push(element);
+                });
+                // console.log(arrayTest2pack);
+                _this.firebaseService.arrayTest2 = arrayTest2pack;
+                console.log(_this.firebaseService.arrayTest2);
+                _this.router.navigate(['dashboard', 'test', 'test-step3']);
+            }
+        });
     };
     TestStep2Component = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -4411,6 +4462,8 @@ module.exports = "<!-- {{now | date :'short'}}  -->\r\n<label for=\"exampleSelec
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2__ = __webpack_require__("../../../../sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_sweetalert2__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4425,6 +4478,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // import { FirebaseService } from '../services/firebase.service';
 // import { Observable } from 'rxjs/Observable';
 //new
+
 
 
 
@@ -4445,6 +4499,7 @@ var TestStep3Component = (function () {
         this.std_list_display = [];
         this.studentListAdd = [];
         this.isdataStudent = false;
+        this.student_ans = {};
         this.isdataStudent = false;
         console.log("_____________step 3____________");
         console.log(this.firebaseService.arrayTest1);
@@ -4508,77 +4563,99 @@ var TestStep3Component = (function () {
         });
         console.log(selectStudent.length);
         if (selectStudent.length == 0) {
-            alert("Please select students.");
+            __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+                type: 'error',
+                title: 'Unsuccessful',
+                text: 'Please select students.',
+            });
         }
         else {
-            var c = confirm("Are you sure to go to the Quis?");
-            if (c == true) {
-                console.log(selectStudent);
-                //set timestamp
-                this.now = Date.now();
-                console.log(this.now); // shows current timestamp
-                //set exam code 
-                this.subject_code = this.receiveTest1[0].code;
-                this.chapter_code = this.receiveTest1[1].code;
-                this.exam_code = this.subject_code + "_" + this.chapter_code + "_" + this.now;
-                console.log(this.exam_code);
-                this.firebaseService.Test_id_new = this.exam_code; //subject_chapter_timestamp : 205100_ch0_1523089877262
-                this.examData = {
-                    amount: this.receiveTest1[2],
-                    chapter_code: this.receiveTest1[1].code,
-                    chapter_name: this.receiveTest1[1].name,
-                    current_question: 0,
-                    date: this.now,
-                    description: this.receiveTest1[3],
-                    exam_code: this.exam_code,
-                    status: "active",
-                    subject_code: this.receiveTest1[0].code,
-                    subject_name: this.receiveTest1[0].name,
-                    type: this.receiveTest1[5]
-                };
-                console.log(this.examData);
-                //---add data detail in exam
-                var examRef = this.afs.doc("/exam/" + this.exam_code);
-                examRef.set(this.examData);
-                //---หา student ที่ selectStudent มีค่าเป็น true
-                __WEBPACK_IMPORTED_MODULE_4_lodash__["forEach"](selectStudent, function (student) {
-                    // console.log(student.code, student.name, student.url);
-                    _this.studentExam = {
-                        code: student.code,
-                        name: student.name,
-                        score: 0,
-                        url: student.url
+            __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
+                title: 'Are you sure?',
+                text: "go to the Quiz",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, to go!'
+            }).then(function (result) {
+                if (result.value) {
+                    console.log(selectStudent);
+                    //set timestamp
+                    _this.now = Date.now();
+                    console.log(_this.now); // shows current timestamp
+                    //set exam code 
+                    _this.subject_code = _this.receiveTest1[0].code;
+                    _this.chapter_code = _this.receiveTest1[1].code;
+                    _this.exam_code = _this.subject_code + "_" + _this.chapter_code + "_" + _this.now;
+                    console.log(_this.exam_code);
+                    _this.firebaseService.Test_id_new = _this.exam_code; //subject_chapter_timestamp : 205100_ch0_1523089877262
+                    _this.examData = {
+                        amount: _this.receiveTest1[2],
+                        chapter_code: _this.receiveTest1[1].code,
+                        chapter_name: _this.receiveTest1[1].name,
+                        current_question: 0,
+                        date: _this.now,
+                        description: _this.receiveTest1[3],
+                        exam_code: _this.exam_code,
+                        status: "active",
+                        subject_code: _this.receiveTest1[0].code,
+                        subject_name: _this.receiveTest1[0].name,
+                        type: _this.receiveTest1[5],
+                        max: null,
+                        min: null,
+                        sd: null,
+                        average: null
                     };
-                    console.log(_this.studentExam);
-                    //---add students in exam
-                    var StudentExamRef = _this.afs.doc("/exam/" + _this.exam_code + "/students/" + student.code);
-                    StudentExamRef.set(_this.studentExam);
-                    arrayTest3pack.push(_this.studentExam);
-                });
-                console.log(arrayTest3pack);
-                this.receiveTest2.forEach(function (question, index) {
-                    console.log(question, index);
-                    _this.questionExam = {
-                        answer: question.answer,
-                        choice: question.choice,
-                        // code: question.key,
-                        code: question.code,
-                        indax: index,
-                        question: question.question,
-                        status: true
-                    };
-                    console.log(_this.questionExam);
-                    //---add questions in exam
-                    var QuestionExamRef = _this.afs.doc("/exam/" + _this.exam_code + "/questions/" + question.code);
-                    QuestionExamRef.set(_this.questionExam);
-                    arrayTest3pack2.push(_this.questionExam);
-                });
-                this.firebaseService.arrayTest3 = arrayTest3pack;
-                console.log(arrayTest3pack);
-                this.firebaseService.arrayTest3_2 = arrayTest3pack2;
-                console.log(arrayTest3pack2);
-                this.router.navigate(['dashboard', 'test', 'quiz']);
-            }
+                    console.log(_this.examData);
+                    //---add data detail in exam
+                    var examRef = _this.afs.doc("/exam/" + _this.exam_code);
+                    examRef.set(_this.examData);
+                    //---หา student ที่ selectStudent มีค่าเป็น true
+                    __WEBPACK_IMPORTED_MODULE_4_lodash__["forEach"](selectStudent, function (student) {
+                        // console.log(student.code, student.name, student.url);
+                        _this.studentExam = {
+                            code: student.code,
+                            name: student.name,
+                            score: 0,
+                            url: student.url
+                        };
+                        console.log(_this.studentExam);
+                        //---add students in exam
+                        var StudentExamRef = _this.afs.doc("/exam/" + _this.exam_code + "/students/" + student.code);
+                        StudentExamRef.set(_this.studentExam);
+                        arrayTest3pack.push(_this.studentExam);
+                        //---add students code in answers
+                        // this.question_obj[student.code] = null;
+                        _this.student_ans[student.code] = {};
+                        var AnswersRef = _this.afs.doc("/answers/" + _this.exam_code + "/");
+                        AnswersRef.set(_this.student_ans);
+                    });
+                    console.log(arrayTest3pack);
+                    _this.receiveTest2.forEach(function (question, index) {
+                        console.log(question, index);
+                        _this.questionExam = {
+                            answer: question.answer,
+                            choice: question.choice,
+                            // code: question.key,
+                            code: question.code,
+                            indax: index,
+                            question: question.question,
+                            status: false
+                        };
+                        console.log(_this.questionExam);
+                        //---add questions in exam
+                        var QuestionExamRef = _this.afs.doc("/exam/" + _this.exam_code + "/questions/" + question.code);
+                        QuestionExamRef.set(_this.questionExam);
+                        arrayTest3pack2.push(_this.questionExam);
+                    });
+                    _this.firebaseService.arrayTest3 = arrayTest3pack;
+                    console.log(arrayTest3pack);
+                    _this.firebaseService.arrayTest3_2 = arrayTest3pack2;
+                    console.log(arrayTest3pack2);
+                    _this.router.navigate(['dashboard', 'test', 'quiz']);
+                }
+            });
         }
     };
     TestStep3Component.prototype.ngOnInit = function () { };
