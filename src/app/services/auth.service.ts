@@ -7,6 +7,8 @@ import * as firebase from 'firebase/app';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseService } from '../services/firebase.service';
 import { CookieService } from 'ngx-cookie-service';
+import swal from 'sweetalert2'
+
 @Injectable()
 export class AuthService {
   cookieValue = 'UNKNOWN';
@@ -55,7 +57,7 @@ export class AuthService {
         this.router.navigate(['dashboard']);
       })
       // .catch(error => console.log(error));
-      .catch(error => alert(error));
+      .catch(error => swal({  type: 'error', text: error}));
   }
   emailLogin(email: string, password: string) {
     console.log(password);
@@ -74,7 +76,7 @@ export class AuthService {
         this.router.navigate(['dashboard'])
       })
       // .catch(error => console.log(error));
-      .catch(error => alert(error));
+      .catch(error => swal({  type: 'error', text: error}));
   }
   resetPassword(email: string) {
     const fbAuth = firebase.auth();
