@@ -73,7 +73,6 @@ export class StudentListComponent implements OnInit {
     let count;
 
     if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
-      // alert("Unsuccessful : Please enter all fields.");
       swal({
         type: 'error',
         title: 'Unsuccessful',
@@ -96,13 +95,12 @@ export class StudentListComponent implements OnInit {
 
 
           if (data.code == this.newStudentCode) {
-            // alert("Unsuccessful : This code already exists.");
             swal({
               type: 'error',
               title: 'Unsuccessful',
               text: 'This code already exists.',
               // showConfirmButton: false,
-              timer: 1500
+              // timer: 1500
             })
             this.studentAddcheck = true;
             count = 1;
@@ -161,13 +159,12 @@ export class StudentListComponent implements OnInit {
   // Update student name or picture file this key
   UpdateStudent() {
     if (this.studentNameLocal == "") {
-      // alert("Unsuccessful : Please enter subject name.");
       swal({
         type: 'error',
         title: 'Unsuccessful',
         text: 'Please enter subject name.',
-        showConfirmButton: false,
-        timer: 1500
+        // showConfirmButton: false,
+        // timer: 1500
       })
     } else {
       const studentUpdate = {

@@ -151,10 +151,24 @@ export class TestStep3Component implements OnInit {
     console.log(selectStudent.length);
 
     if (selectStudent.length == 0) {
-      alert("Please select students.");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please select students.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
-      let c = confirm("Are you sure to go to the Quis?");
-      if (c == true) {
+      swal({
+        title: 'Are you sure?',
+        text: "go to the Quiz",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, to go!'
+      }).then((result) => {
+        if (result.value) {
         console.log(selectStudent);
 
         //set timestamp
@@ -245,6 +259,7 @@ export class TestStep3Component implements OnInit {
 
         this.router.navigate(['dashboard', 'test', 'quiz'])
       }
+    })
     }
   }
 

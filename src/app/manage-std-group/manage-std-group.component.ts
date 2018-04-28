@@ -108,13 +108,12 @@ export class ManageStdGroupComponent implements OnInit {
         this.qroupsCheck.forEach(data => {
 
           if (data.name == this.groupName) {
-            // alert("Unsuccessful : This code already exists.");
             swal({
               type: 'error',
               title: 'Unsuccessful',
               text: 'This name already exists.',
               // showConfirmButton: false,
-              timer: 1500
+              // timer: 1500
             })
             this.qroupsCheckAdd = true;
             count = 1;

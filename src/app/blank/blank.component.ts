@@ -54,7 +54,7 @@ export class BlankComponent implements OnInit {
     swal({
       title: 'Are you sure?',
       text: "take this Quiz!",
-      type: 'warning',
+      type: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',

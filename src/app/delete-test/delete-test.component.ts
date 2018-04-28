@@ -58,9 +58,6 @@ export class DeleteTestComponent implements OnInit {
   ngOnInit() {
   }
   setRemoveSubjectCode(subCode, chapList) {
-    console.log(chapList);
-    console.log(subCode);
-
     this.chapInSubCode_del = chapList;
     this.subCode_del = subCode;
 
@@ -86,7 +83,12 @@ export class DeleteTestComponent implements OnInit {
 
       this.Refresh()
     });
-
+    swal({
+      type: 'success',
+      title: 'Removed',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
   setRemoveChapterCode(subCode, ChapCode) {
     console.log(subCode + "====" + ChapCode);
@@ -109,6 +111,11 @@ export class DeleteTestComponent implements OnInit {
 
     const questionRef: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${SubChapCode}`)
     questionRef.delete();
-
+    swal({
+      type: 'success',
+      title: 'Removed',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 }

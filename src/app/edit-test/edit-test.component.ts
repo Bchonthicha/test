@@ -86,7 +86,13 @@ console.log(subject);
 
 
     if (this.subjectNameLocal == "") {
-      alert("Unsuccessful : Please enter subject name.");
+        swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter subject name.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
       console.log("UpdateSubject");
 
@@ -101,6 +107,12 @@ console.log(subject);
 
         this.Refresh()
       });
+      swal({
+        type: 'success',
+        title: 'Successful',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
   }
 

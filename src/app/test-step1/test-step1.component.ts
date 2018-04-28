@@ -76,7 +76,7 @@ export class TestStep1Component implements OnInit {
   chapterRef: AngularFirestoreDocument<Chapter>
   question_type: any;
 
-  constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService ,private router: Router) {
+  constructor(private afs: AngularFirestore, private db: AngularFireDatabase, private firebaseService: FirebaseService, private router: Router) {
     /*
         this.CategoryList = this.db.list('/Category');
         this.dataObj = this.CategoryList.snapshotChanges().map(changes => {    // Use snapshotChanges().map() to store the key
@@ -227,16 +227,26 @@ export class TestStep1Component implements OnInit {
   }
 
   StartSelectTest(data: NgForm) {
-    if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined||this.InputDescription =="") {
-      alert("Please enter all fields.");
+    if (this.SelectCategory == "" || this.SelectTopic == undefined || this.InputDescription == undefined || this.InputDescription == "") {
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter all fields.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
-      let c = confirm("Are you sure to go to the next step?");
-      if (c == true) {
+      swal({
+        title: 'Are you sure?',
+        text: "go to the next step",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, to go!'
+      }).then((result) => {
+        if (result.value) {
         this.questionTmp = [];
-        console.log("is meeeee");
-        console.log(data.value);
-        console.log(this.questionAllList);
-
         console.log(this.SelectNumofItem);
         if (this.SelectNumofItem == "" || this.SelectNumofItem == undefined) {
           this.NumOfItemThis = 1;
@@ -249,9 +259,6 @@ export class TestStep1Component implements OnInit {
 
         } else {
           let rand = -1;
-          console.log("rand");
-
-          console.log(rand);
           let i = 0;
           this.questionTmp = [];
           while (i < this.NumOfItemThis) {
@@ -288,25 +295,41 @@ export class TestStep1Component implements OnInit {
         this.SelectTopic = undefined;
         this.SelectNumofItem = "";
         this.InputDescription = "";
-      
-      // /dashboard/test/test-step2
-      this.router.navigate(['dashboard','test','test-step2'])
+
+        // /dashboard/test/test-step2
+        this.router.navigate(['dashboard', 'test', 'test-step2'])
+      }
+    })
     }
   }
-}
   clearTest1() {
     // alert("clear");
-    let c = confirm("confirm to clear this form");
-    if (c == true) {
-      this.chapterList = null;
-      this.questionTmp = [];
-      this.array_numOfitem = [];
-      this.SelectThisCategory = [];
-      this.SelectCategory = "";
-      this.SelectTopic = undefined;
-      this.SelectNumofItem = "";
-      this.InputDescription = "";
-    }
+    swal({
+      title: 'Are you sure?',
+      text: "clear this form!",
+      type: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, clear it!'
+    }).then((result) => {
+      if (result.value) {
+        this.chapterList = null;
+        this.questionTmp = [];
+        this.array_numOfitem = [];
+        this.SelectThisCategory = [];
+        this.SelectCategory = "";
+        this.SelectTopic = undefined;
+        this.SelectNumofItem = "";
+        this.InputDescription = "";
+        swal({
+          type: 'success',
+          title: 'cleared',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    })
   }
 
 

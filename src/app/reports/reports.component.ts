@@ -71,10 +71,10 @@ export class ReportsComponent implements OnInit {
   doing: number;
 
   studentExportObj = [];
-  options:any;
+  options: any;
 
   constructor(private afs: AngularFirestore, private excelService: ExcelService) {
-    this.studentExportObj=[];
+    this.studentExportObj = [];
     //สำหรับใช้ export excel
     this.excelService = excelService;
     //Exam
@@ -83,11 +83,11 @@ export class ReportsComponent implements OnInit {
 
     this.ExamListShow = [];
     this.ExamList.subscribe(data => {
-      console.log(data);
+      // console.log(data);
       data.forEach(d => {
-        console.log(d.status);
+        // console.log(d.status);
         if (d.status == "finish") {
-          console.log(d);
+          // console.log(d);
           this.ExamListShow.push(d);
         }
       })
@@ -95,12 +95,12 @@ export class ReportsComponent implements OnInit {
 
     })
     this.options = {
-      scales:{
-        yAxes:[
+      scales: {
+        yAxes: [
           {
-            ticks:{
-              stepSize:1,
-              beginAtZero:true
+            ticks: {
+              stepSize: 1,
+              beginAtZero: true
             }
           }
         ]
@@ -112,10 +112,10 @@ export class ReportsComponent implements OnInit {
   }
 
   onChange(dataExam) {
-    this.studentExportObj=[];
+    this.studentExportObj = [];
     this.doing = 0;
-    console.log("change");
-    console.log(dataExam);
+    // console.log("change");
+    // console.log(dataExam);
     this.isdataExam = true;
     this.studentShow = [];
     this.scoreGraph = [];
@@ -125,7 +125,7 @@ export class ReportsComponent implements OnInit {
     this.subject_name = dataExam.subject_name;
     this.chapter_name = dataExam.chapter_name;
     this.description = dataExam.description;
-    console.log(dataExam.type);
+    // console.log(dataExam.type);
     switch (dataExam.type) {
       case 1: {
         //statements; 
@@ -156,9 +156,9 @@ export class ReportsComponent implements OnInit {
     this.questionExamCollection = this.afs.collection<QuestionExam>(`/exam/${this.exam_code}/questions`)
     this.questions = this.questionExamCollection.valueChanges()
     this.questions.subscribe(ques => {
-      console.log(ques);
+      // console.log(ques);
       ques.forEach(data => {
-        console.log(data.status);
+        // console.log(data.status);
         if (data.status == true) {
           this.doing = this.doing + 1;
         }
@@ -169,12 +169,12 @@ export class ReportsComponent implements OnInit {
     this.students = this.studentExamCollection.valueChanges()
 
     this.students.subscribe(stu => {
-      console.log(stu);
+      // console.log(stu);
       stu.forEach((data, index) => {
-        console.log(data);
+        // console.log(data);
         this.studentShow.push(data)
 
-        console.log(data.score);
+        // console.log(data.score);
         this.sum = 0;
         this.scoreGraph.push(data.score);
         this.codeGraph.push(data.code);
@@ -184,25 +184,30 @@ export class ReportsComponent implements OnInit {
           return obj2.score - obj1.score
         });
 
-        console.log(this.scoreGraph);
-        console.log("คำนวณ");
+        // console.log(this.scoreGraph);
+        // console.log("คำนวณ");
         //คำนวน MAX, MIN
-        console.log(this.scoreGraph);
-        this.max = Math.max.apply(null, this.scoreGraph);
-        console.log("Max = " + this.max);
-        this.min = Math.min.apply(null, this.scoreGraph);
-        console.log("Min = " + this.min);
+        // console.log(this.scoreGraph);
+        this.max = dataExam.max;
+        // this.max = Math.max.apply(null, this.scoreGraph);
+        // console.log("Max = " + this.max);
+        this.min = dataExam.min;
+        // this.min = Math.min.apply(null, this.scoreGraph);
+        // console.log("Min = " + this.min);
+
         // console.log(Math.sqrt(this.variance(hii)));
 
         this.sum = this.scoreGraph.reduce((previous, current) => current += previous);
-        console.log("sum" + this.sum);
+        // console.log("sum" + this.sum);
 
-        this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
-        console.log("AVG = " + this.avg);
-        this.std = this.standardDeviation().toFixed(2)
-        console.log("STD = " + this.std);
+        // this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
+        this.avg = dataExam.avg;
+        // console.log("AVG = " + this.avg);
+        this.std = dataExam.sd;
+        // this.std = this.standardDeviation().toFixed(2)
+        // console.log("STD = " + this.std);
 
-        console.log(index, this.std.length - 1);
+        // console.log(index, this.std.length - 1);
         //bar
         this.data1 = {
           labels: this.codeGraph,
@@ -230,32 +235,32 @@ export class ReportsComponent implements OnInit {
       })
     })
   }
-
-  //-------function หาค่า SD
-  standardDeviation() {
-    var avg = this.avg;
-
-    var squareDiffs = this.scoreGraph.map(function (value) {
-      var diff = value - avg;
-      var sqrDiff = diff * diff;
-      return sqrDiff;
-    });
-
-    var avgSquareDiff = this.average(squareDiffs);
-
-    var stdDev = Math.sqrt(avgSquareDiff);
-    return stdDev;
-  }
-
-  average(data) {
-    var sum = data.reduce(function (sum, value) {
-      return sum + value;
-    }, 0);
-
-    var avg = sum / data.length;
-    return avg;
-  }
-
+  /*
+    //-------function หาค่า SD
+    standardDeviation() {
+      var avg = this.avg;
+  
+      var squareDiffs = this.scoreGraph.map(function (value) {
+        var diff = value - avg;
+        var sqrDiff = diff * diff;
+        return sqrDiff;
+      });
+  
+      var avgSquareDiff = this.average(squareDiffs);
+  
+      var stdDev = Math.sqrt(avgSquareDiff);
+      return stdDev;
+    }
+  
+    average(data) {
+      var sum = data.reduce(function (sum, value) {
+        return sum + value;
+      }, 0);
+  
+      var avg = sum / data.length;
+      return avg;
+    }
+  */
 
   //-------function สลับการแสดงผลรหว่างกราฟ
 
@@ -270,12 +275,12 @@ export class ReportsComponent implements OnInit {
 
   //-------function export เป็น excel file
   exportToExcel(event) {
-    console.log(event);
-    console.log(this.studentExportObj);
+    // console.log(event);
+    // console.log(this.studentExportObj);
     //to data export
     this.studentShow.forEach((data, indax) => {
-      console.log(data);
-      console.log(data.code);
+      // console.log(data);
+      // console.log(data.code);
 
       let studentExport = {
         student_id: data.code,
@@ -283,22 +288,22 @@ export class ReportsComponent implements OnInit {
         score: data.score
       }
       this.studentExportObj.push(studentExport)
-      console.log(this.studentExportObj);
+      // console.log(this.studentExportObj);
     })
     //
     this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
   }
 
-  generatePDF(){
-    console.log(this.exam_code);
-    let temp = this.exam_code+'.pdf';
-    console.log(temp);
-    
-    html2canvas(document.getElementById('content')).then(function(canvas){
-      document.body.appendChild(canvas);
-      var pdf = new jsPDF('p','pt','a4');
+  generatePDF() {
+    // console.log(this.exam_code);
+    let temp = this.exam_code + '.pdf';
+    // console.log(temp);
 
-      pdf.addHTML(canvas,function(){
+    html2canvas(document.getElementById('content')).then(function (canvas) {
+      document.body.appendChild(canvas);
+      var pdf = new jsPDF('p', 'pt', 'a4');
+
+      pdf.addHTML(canvas, function () {
         pdf.save(temp);
       });
     });

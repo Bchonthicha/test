@@ -94,7 +94,13 @@ export class EditDetailComponent implements OnInit {
     this.question_objDisplay = [];
     console.log("display question");
     if (this.file == undefined) {
-      alert("Please select file");
+      swal({
+        type: 'warning',
+        title: 'Unsuccessful',
+        text: 'Please select file.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     }
     else {
       this.isDisplayQuestion = false;
@@ -149,7 +155,13 @@ export class EditDetailComponent implements OnInit {
 
   updateTest() {
     if (this.chapter_Name == "") {
-      alert("Please enter chapter name. ");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter chapter name.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
       console.log("UpdateSubject");
       //update data : chapter name
@@ -187,8 +199,14 @@ export class EditDetailComponent implements OnInit {
         const questionRef = this.afs.doc<Question>(`questions/${this.questionCode}`);
         questionRef.update(questionUpdate);
       }
-
+      swal({
+        type: 'success',
+        title: 'Successful',
+        showConfirmButton: false,
+        timer: 1500
+      })
       this.goBackEditTeste();
+
     }
   }
 

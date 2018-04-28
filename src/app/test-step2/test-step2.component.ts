@@ -29,56 +29,18 @@ export class TestStep2Component implements OnInit {
   question_list_display = [];
   //new
   receiveQuestion: any;
-  
-  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService,private router: Router) {
+
+  constructor(private db: AngularFireDatabase, private firebaseService: FirebaseService, private router: Router) {
     // console.log(this.firebaseService.arrayTest1);
     console.log("______in step 2______");
-   
+
     this.receiveTest1 = this.firebaseService.arrayTest1;
     console.log(this.receiveTest1);
     console.log(this.receiveTest1[4]);
-    // ตำแหน่ง4 array คำถาม  [  {answer: 2, choice: Array(4), key: "0", question: "การที่พืชสังเคราะห์อาหารได้เอง เพราะพืชมีโครงสร้างใด"},
-    //   {answer: 3, choice: Array(4), key: "3", question: "เซลล์ใดต่อไปนี้มีลักษณะค่อนข้างกลม"},
-    //   {answer: 1, choice: Array(4), key: "1", question: "“เซลล์เยื่อหอม” หมายถึงส่วนใดของหัวหอม"}
-    // ]
+
     this.receiveQuestion = this.receiveTest1[4];
-    this.question_list_display =this.receiveQuestion;
-    // console.log(this.question_list_display[0].choice);
-    
-    
-/*
-    //Database
-    let sub_index = 0;
-    console.log(this.receiveQid);
-    this.receiveQid.forEach((item, index) => {
-      console.log(item);
+    this.question_list_display = this.receiveQuestion;
 
-      let path = 'Questions/' + item;
-      let ref2 = this.db.list(path).valueChanges();
-      this.tmpQid.push(item);
-
-      ref2.subscribe(data => {
-        // console.log("size" + this.receiveQid.length);
-        console.log(data);
-        //
-        this.tmp.push(data);
-
-        // console.log(this.tmp[index]);
-        let tem = {
-          keyQ: this.receiveQid[index],
-          answer_index: data[0],
-          choice: data[1],
-          question: data[2],
-          topic_id: data[3],
-          i: index
-        }
-        // console.log(data[1]);
-        this.question_list_display.push(tem);
-        console.log(this.question_list_display);
-      });
-    });
-    console.log(this.tmpQid);
-    */
   }
 
   ngOnInit() {
@@ -86,6 +48,11 @@ export class TestStep2Component implements OnInit {
   }
 
   moveUp(value, index) {
+    swal({
+      title: 'Up!',
+      showConfirmButton: false,
+      timer: 500
+    })
     console.log(index);
     console.log(value);
     if (index > 0) {
@@ -100,6 +67,11 @@ export class TestStep2Component implements OnInit {
     }
   }
   moveDown(value, index) {
+    swal({
+      title: 'Down!',
+      showConfirmButton: false,
+      timer: 500
+    })
     console.log(index);
     console.log(this.question_list_display.length);
 
@@ -116,16 +88,26 @@ export class TestStep2Component implements OnInit {
   }
   StartSelectQuestion() {
     let arrayTest2pack = [];
-    let c = confirm("Are you sure to go to the next step?");
-    if (c == true) {
-    this.question_list_display.forEach(element => {
-      console.log(element);
-      arrayTest2pack.push(element);
-    });
-    // console.log(arrayTest2pack);
-    this.firebaseService.arrayTest2 = arrayTest2pack;
-    console.log(this.firebaseService.arrayTest2);
+    swal({
+      title: 'Are you sure?',
+      text: "go to the next step",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, to go!'
+    }).then((result) => {
+      if (result.value) {
+        this.question_list_display.forEach(element => {
+          console.log(element);
+          arrayTest2pack.push(element);
+        });
+        // console.log(arrayTest2pack);
+        this.firebaseService.arrayTest2 = arrayTest2pack;
+        console.log(this.firebaseService.arrayTest2); 
+        this.router.navigate(['dashboard', 'test', 'test-step3'])
+      }
+     
+    })
   }
-  this.router.navigate(['dashboard','test','test-step3'])
-}
 }

@@ -134,7 +134,13 @@ export class AddTestComponent implements OnInit {
     let count;
 
     if (this.newSubjectCode == "" || this.newSubjectName == "") {
-      alert("Unsuccessful : Please enter all fields.");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter all fields.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     } else {
       console.log(this.newSubjectName);
       console.log(this.newSubjectCode);
@@ -155,7 +161,13 @@ export class AddTestComponent implements OnInit {
           if (data.code == this.newSubjectCode) {
             count = 1;
             console.log("ซ้ำ");
-            alert("Unsuccessful : This code already exists.");
+            swal({
+              type: 'error',
+              title: 'Unsuccessful',
+              text: 'This code already exists.',
+              // showConfirmButton: false,
+              //timer: 1500
+            })
           } else {
             this.subjectAddcheck = false;
           }
@@ -191,7 +203,13 @@ export class AddTestComponent implements OnInit {
     this.question_objDisplay = [];
     console.log("display question");
     if (this.file == undefined) {
-      alert("Please select file");
+      swal({
+        type: 'warning',
+        title: 'Unsuccessful',
+        text: 'Please select file.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
     }
     else {
       this.isDisplayQuestion = false;
@@ -248,7 +266,14 @@ export class AddTestComponent implements OnInit {
   createNewTest() {
 
     if (this.file == undefined || this.chapter_Name == null || this.SelectSubject == "" || this.type == "" || this.chapter_Name == "") {
-      alert("Please enter all fields. ");
+      swal({
+        type: 'error',
+        title: 'Unsuccessful',
+        text: 'Please enter all fields.',
+        // showConfirmButton: false,
+        // timer: 1500
+      })
+      
     }
     else {
       console.log(this.question_obj);
@@ -295,13 +320,27 @@ export class AddTestComponent implements OnInit {
         console.log(this.file);
         this.selectedFiles = null;
       });
+      swal({
+        type: 'success',
+        title: 'Successful',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
     // 
   }
   //---clear Manage Test page
   clearAddTest() {
-    let c = confirm("confirm to clear this form");
-    if (c == true) {
+    swal({
+      title: 'Are you sure?',
+      text: "clear this form!",
+      type: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, clear it!'
+    }).then((result) => {
+      if (result.value) {
       this.isDisplayQuestion = true;
       this.createTestBnt = true;
       this.question_objDisplay = [];
@@ -316,6 +355,7 @@ export class AddTestComponent implements OnInit {
       console.log(this.file);
       this.selectedFiles = null;
     }
+  })
   }
 
 }
