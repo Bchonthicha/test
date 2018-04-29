@@ -201,8 +201,8 @@ export class ReportsComponent implements OnInit {
         // console.log("sum" + this.sum);
 
         // this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
-        this.avg = dataExam.avg;
-        // console.log("AVG = " + this.avg);
+        this.avg = dataExam.average;
+        console.log("AVG = " + this.avg);
         this.std = dataExam.sd;
         // this.std = this.standardDeviation().toFixed(2)
         // console.log("STD = " + this.std);

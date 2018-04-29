@@ -71,6 +71,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var AddTestComponent = (function () {
     function AddTestComponent(xlservice, afs) {
+        // console.log(this.file + "file");
         var _this = this;
         this.xlservice = xlservice;
         this.afs = afs;
@@ -85,13 +86,12 @@ var AddTestComponent = (function () {
         this.createTestBnt = true;
         this.subjectAddcheck = true;
         this.subjectCheck = [];
-        console.log(this.file + "file");
         //subject
         var subjectRef = this.afs.collection("/subjects");
         this.subjectList = subjectRef.valueChanges();
         this.subCollection = afs.collection('/subjects');
         this.subjectList.subscribe(function (sub) {
-            console.log(sub);
+            // console.log(sub);
             sub.forEach(function (data) {
                 _this.subjectCheck.push(data);
             });
@@ -103,12 +103,12 @@ var AddTestComponent = (function () {
     //-------function เมื่อเลือกCatagory select
     AddTestComponent.prototype.onChange = function (sub) {
         var _this = this;
-        console.log("change");
+        // console.log("change");
         this.Subject_Code = sub.code;
         this.Subject_Name = sub.name;
         var chapterRef = this.afs.collection("/subjects/" + this.Subject_Code + "/chapters/");
         this.chapterList = chapterRef.valueChanges();
-        console.log(this.chapterList);
+        // console.log(this.chapterList);
         this.chapterList.forEach(function (chap) {
             _this.chapLenght = chap.length;
             // console.log(this.chapLenght);
@@ -116,16 +116,16 @@ var AddTestComponent = (function () {
                 _this.chapter_Code = "0"; ///makeeeeeeeeeeeeeeeeeeeee
                 //make document key in questions
                 _this.question_keyAdd = _this.Subject_Code + "_" + _this.chapter_Code;
-                console.log(_this.question_keyAdd);
+                // console.log(this.question_keyAdd);
             }
             else {
                 _this.chapterCodeLast = chap[chap.length - 1].code;
                 _this.chapterCodeLast = +_this.chapterCodeLast; //string to number
                 // console.log(this.chapterCodeLast);
                 _this.chapter_Code = (_this.chapterCodeLast + 1).toString();
-                console.log(_this.chapter_Code);
+                // console.log(this.chapter_Code);
                 _this.question_keyAdd = _this.Subject_Code + "_" + _this.chapter_Code;
-                console.log(_this.question_keyAdd);
+                // console.log(this.question_keyAdd);
                 // this.chapter_Code = "ch" + this.chapLenght;
                 // //make document key in questions
                 // this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
@@ -134,7 +134,7 @@ var AddTestComponent = (function () {
         });
     };
     AddTestComponent.prototype.DefaultModal = function () {
-        console.log("DefaultModal");
+        // console.log("DefaultModal")
         this.newSubjectName = "";
         this.newSubjectCode = "";
     };
@@ -149,13 +149,13 @@ var AddTestComponent = (function () {
             });
         }
         else {
-            console.log(this.newSubjectName);
-            console.log(this.newSubjectCode);
+            // console.log(this.newSubjectName);
+            // console.log(this.newSubjectCode);
             //
-            console.log(this.subjectCheck);
+            // console.log(this.subjectCheck);
             //ไม่มีวิชาในระบบ
             if (this.subjectCheck.length == 0) {
-                console.log("ไม่มี");
+                // console.log("ไม่มี");
                 count = 0;
                 this.subjectAddcheck = false;
                 //----Add subject detail in subject
@@ -164,10 +164,10 @@ var AddTestComponent = (function () {
             }
             else {
                 this.subjectCheck.forEach(function (data) {
-                    console.log(data.code);
+                    // console.log(data.code);
                     if (data.code == _this.newSubjectCode) {
                         count = 1;
-                        console.log("ซ้ำ");
+                        // console.log("ซ้ำ");
                         __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
                             type: 'error',
                             title: 'Unsuccessful',
@@ -181,12 +181,12 @@ var AddTestComponent = (function () {
                 });
             }
             if (this.subjectAddcheck == false && count != 1) {
-                console.log("โอเค");
+                // console.log("โอเค");
                 this.subjectAdd = {
                     code: this.newSubjectCode,
                     name: this.newSubjectName
                 };
-                console.log(this.subjectAdd);
+                // console.log(this.subjectAdd);
                 //----Add subject detail in subject
                 var subjectRef2 = this.afs.doc("/subjects/" + this.newSubjectCode);
                 subjectRef2.set(this.subjectAdd);
@@ -197,14 +197,14 @@ var AddTestComponent = (function () {
     AddTestComponent.prototype.incomingfile = function (event) {
         this.selectedFiles = event.target.files;
         this.file = event.target.files[0];
-        console.log(this.file);
+        // console.log(this.file);
         // console.log(this.file.name);
     };
     //--- Upload ecel and display
     AddTestComponent.prototype.Upload = function () {
         var _this = this;
         this.question_objDisplay = [];
-        console.log("display question");
+        // console.log("display question");
         if (this.file == undefined) {
             __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
                 type: 'warning',
@@ -220,7 +220,7 @@ var AddTestComponent = (function () {
                 _this.arrayBuffer = fileReader_1.result;
                 var data = new Uint8Array(_this.arrayBuffer);
                 var arr = new Array();
-                console.log(data.length);
+                // console.log(data.length);
                 for (var i = 0; i != data.length; ++i)
                     arr[i] = String.fromCharCode(data[i]);
                 var bstr = arr.join("");
@@ -229,13 +229,13 @@ var AddTestComponent = (function () {
                 var worksheet = workbook.Sheets[first_sheet_name];
                 // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
                 _this.question_excel = __WEBPACK_IMPORTED_MODULE_2_ts_xlsx__["utils"].sheet_to_json(worksheet, { raw: true });
-                console.log(_this.question_excel);
+                // console.log(this.question_excel);
                 _this.question_excel.forEach(function (question, index) {
                     _this.amount = index + 1;
-                    console.log(question);
-                    console.log(index);
+                    // console.log(question);
+                    // console.log(index);
                     _this.question_key = index;
-                    console.log(_this.question_excel[index].choice);
+                    // console.log(this.question_excel[index].choice);
                     //make array type of choice
                     var choice_string = (_this.question_excel[index].choice).toString();
                     var re = /\s*,\s*/;
@@ -247,11 +247,11 @@ var AddTestComponent = (function () {
                         "code": _this.question_key,
                         "question": _this.question_excel[index].question
                     };
-                    console.log(_this.question_objDisplay);
+                    // console.log(this.question_objDisplay);
                     _this.question_objDisplay.push(_this.sub_question);
                     // console.log(this.sub_question);
                     _this.question_obj[_this.question_key] = _this.sub_question;
-                    console.log(_this.question_obj);
+                    // console.log(this.question_obj);
                 });
             };
             fileReader_1.readAsArrayBuffer(this.file);
@@ -268,28 +268,28 @@ var AddTestComponent = (function () {
             });
         }
         else {
-            console.log(this.question_obj);
+            // console.log(this.question_obj);
             //make type string to number
             var type_num = +this.type;
-            console.log(type_num);
+            // console.log(type_num);
             this.questionAdd = {
                 amount: this.amount,
                 question: this.question_obj,
                 type: type_num
             };
-            console.log(this.questionAdd);
+            // console.log(this.questionAdd);
             //----Add data in questions ,document key=subCode_chapterCode
             var questionRef = this.afs.doc("/questions/" + this.question_keyAdd);
             questionRef.set(this.questionAdd);
             var questionDoc = this.afs.doc("/questions/" + this.question_keyAdd);
-            console.log(questionDoc.ref);
-            console.log(this.chapter_Code);
+            // console.log(questionDoc.ref);
+            // console.log(this.chapter_Code);
             this.chapterAdd = {
                 code: this.chapter_Code,
                 name: this.chapter_Name,
                 questions: questionDoc.ref
             };
-            console.log(this.chapterAdd);
+            // console.log(this.chapterAdd);
             //----Add chapter in subject
             var subjectRef = this.afs.doc("/subjects/" + this.Subject_Code + "/chapters/" + this.chapter_Code);
             subjectRef.set(this.chapterAdd).then(function () {
@@ -301,9 +301,9 @@ var AddTestComponent = (function () {
                 _this.Subject_Name = null;
                 _this.chapter_Name = null;
                 _this.type = "";
-                console.log(_this.file);
+                // console.log(this.file);
                 _this.file = undefined;
-                console.log(_this.file);
+                // console.log(this.file);
                 _this.selectedFiles = null;
             });
             __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
@@ -336,9 +336,9 @@ var AddTestComponent = (function () {
                 _this.Subject_Name = null;
                 _this.chapter_Name = null;
                 _this.type = "";
-                console.log(_this.file);
+                // console.log(this.file);
                 _this.file = undefined;
-                console.log(_this.file);
+                // console.log(this.file);
                 _this.selectedFiles = null;
             }
         });
@@ -1968,7 +1968,7 @@ var ManageStdGroupComponent = (function () {
         this.groupList = sectionRef.valueChanges();
         this.groupList.forEach(function (data) {
             data.forEach(function (data1) {
-                console.log(data1);
+                // console.log(data1);
                 _this.qroupsCheck.push(data1);
             });
         });
@@ -2007,7 +2007,7 @@ var ManageStdGroupComponent = (function () {
         var selectStudent = __WEBPACK_IMPORTED_MODULE_3_lodash__["filter"](this.studentList, function (student) {
             return student.selected;
         });
-        console.log(selectStudent.length);
+        // console.log(selectStudent.length);
         if (this.groupName == "" || selectStudent.length == 0) {
             __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
                 type: 'error',
@@ -2889,7 +2889,7 @@ var ReportsComponent = (function () {
                 _this.sum = _this.scoreGraph.reduce(function (previous, current) { return current += previous; });
                 // console.log("sum" + this.sum);
                 // this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
-                _this.avg = dataExam.avg;
+                _this.avg = dataExam.average;
                 // console.log("AVG = " + this.avg);
                 _this.std = dataExam.sd;
                 // this.std = this.standardDeviation().toFixed(2)
@@ -3392,7 +3392,7 @@ var AuthService = (function () {
     };
     AuthService.prototype.emailLogin = function (email, password) {
         var _this = this;
-        console.log(password);
+        // console.log(password);
         this.cookieService.set('password', password);
         this.cookieValue = this.cookieService.get('password');
         console.log("I am logging in");
@@ -3727,7 +3727,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/student-list/student-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"student-list\">\r\n  <!-- <button type=\"button\" class=\"btn btn-primary btn-md\" (click)=\"test()\">\r\n    <i class=\"fa fa-user-plus\"></i> Test</button> -->\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly  name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\" required>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n                <!-- upload file -->\r\n                            <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th >Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src= {{student?.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.name}}</td>\r\n\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\" (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\" (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form >\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\"  [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\"  [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"student-list\">\r\n  <!-- <button type=\"button\" class=\"btn btn-primary btn-md\" (click)=\"test()\">\r\n    <i class=\"fa fa-user-plus\"></i> Test</button> -->\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <button type=\"button\" class=\"btn btn-danger btn-md\" data-toggle=\"modal\" data-target=\"#deleteAll\">\r\n        <i class=\"fa fa-trash\"></i> DELETE ALL</button>\r\n      <!-- <button type=\"button\" class=\"btn btn-info btn-md\" (click)=\"uploadFile()\">\r\n        <i class=\"fa fa-upload\"></i> UPLOAD FILE</button> -->\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\"\r\n                    required>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n                <!-- upload file -->\r\n                <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th>Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src={{student?.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.name}}</td>\r\n\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\"\r\n                        (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\"\r\n                        (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form>\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\" [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\" [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"deleteAll\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete all students?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"deleteAll()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -3766,9 +3766,11 @@ var StudentListComponent = (function () {
         this.firebaseService = firebaseService;
         this.uploadService = uploadService;
         // progress: { percentage: number } = { percentage: 0 }
+        this.studentsCode = [];
         this.studentsCheck = [];
         this.studentAddcheck = true;
         this.studentsCheck = [];
+        this.studentsCode = [];
         this.studentCollection = afs.collection('/students', function (ref) { return ref.orderBy('code'); });
         this.students = this.studentCollection.valueChanges();
         this.students.forEach(function (data) {
@@ -3776,6 +3778,7 @@ var StudentListComponent = (function () {
             data.forEach(function (data1) {
                 // console.log(data1.code);
                 _this.studentsCheck.push(data1);
+                _this.studentsCode.push(data1.code);
             });
         });
     }
@@ -3928,6 +3931,25 @@ var StudentListComponent = (function () {
                 __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()('Deleted!', 'Your file has been deleted.', 'success');
             }
         });
+    };
+    StudentListComponent.prototype.deleteAll = function () {
+        //console.log( this.studentsCheck);
+        var _this = this;
+        this.studentsCode.forEach(function (code) {
+            // console.log(code);
+            var stuRef = _this.afs.doc("/students/" + code);
+            stuRef.delete().then(function () {
+            });
+        });
+        __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
+            type: 'success',
+            title: 'Successful',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    };
+    StudentListComponent.prototype.uploadFile = function () {
+        console.log("uploadFile");
     };
     StudentListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"])({
