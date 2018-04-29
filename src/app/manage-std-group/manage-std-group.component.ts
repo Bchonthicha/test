@@ -49,7 +49,7 @@ export class ManageStdGroupComponent implements OnInit {
     this.groupList.forEach(data => {
 
       data.forEach(data1 => {
-        console.log(data1);
+        // console.log(data1);
         this.qroupsCheck.push(data1)
       })
     })
@@ -89,7 +89,7 @@ export class ManageStdGroupComponent implements OnInit {
 
       return student.selected;
     });
-    console.log(selectStudent.length);
+    // console.log(selectStudent.length);
 
     if (this.groupName == "" || selectStudent.length == 0) {
       swal({

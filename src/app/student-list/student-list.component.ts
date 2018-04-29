@@ -1,5 +1,5 @@
 import { Student } from './../inteterfaces/student';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 //import { AngularFireDatabase } from 'angularfire2/database';
@@ -20,11 +20,13 @@ import swal from 'sweetalert2'
 export class StudentListComponent implements OnInit {
   ngOnInit(): void {
   }
+
   // Firestore Collection Ref
   studentCollection: AngularFirestoreCollection<Student>;
-
+  studentRef: AngularFirestoreDocument<Student>
   // Firestore database observable
   students: Observable<Student[]>;
+
 
   studentNameLocal: any;
   studentCodeLocal: any;
@@ -37,12 +39,14 @@ export class StudentListComponent implements OnInit {
   selectedFiles: FileList
   currentFileUpload: FileUpload
   // progress: { percentage: number } = { percentage: 0 }
-
+  studentsCode=[];
   studentsCheck = [];
   studentAddcheck: boolean = true;
 
   constructor(private afs: AngularFirestore, private firebaseService: FirebaseService, private uploadService: UploadFileService) {
     this.studentsCheck = [];
+    this.studentsCode =[];
+
     this.studentCollection = afs.collection<Student>('/students', ref => ref.orderBy('code'))
     this.students = this.studentCollection.valueChanges()
 
@@ -51,8 +55,10 @@ export class StudentListComponent implements OnInit {
       data.forEach(data1 => {
         // console.log(data1.code);
         this.studentsCheck.push(data1);
+        this.studentsCode.push(data1.code)
       })
     })
+
   }
 
   getStudent() {
@@ -231,5 +237,26 @@ export class StudentListComponent implements OnInit {
         )
       }
     })
+  }
+  deleteAll() {
+    //console.log( this.studentsCheck);
+
+    this.studentsCode.forEach(code => {
+      // console.log(code);
+      let stuRef = this.afs.doc<Student>(`/students/${code}`)
+      stuRef.delete().then(() => {
+      
+      })
+    }) 
+     swal({
+          type: 'success',
+          title: 'Successful',
+          showConfirmButton: false,
+          timer: 1500
+        })
+  }
+  uploadFile(){
+    console.log("uploadFile");
+    
   }
 }

@@ -72,7 +72,7 @@ export class AddTestComponent implements OnInit {
   selectedFiles: FileList;
 
   constructor(private xlservice: ExcelService, private afs: AngularFirestore) {
-    console.log(this.file + "file");
+    // console.log(this.file + "file");
 
     //subject
     const subjectRef: AngularFirestoreCollection<Subject> = this.afs.collection<Subject>(`/subjects`);
@@ -80,7 +80,7 @@ export class AddTestComponent implements OnInit {
     this.subCollection = afs.collection<Subject>('/subjects')
 
     this.subjectList.subscribe(sub => {
-      console.log(sub);
+      // console.log(sub);
       sub.forEach(data => {
         this.subjectCheck.push(data)
       })
@@ -91,13 +91,13 @@ export class AddTestComponent implements OnInit {
   }
   //-------function เมื่อเลือกCatagory select
   onChange(sub) {
-    console.log("change");
+    // console.log("change");
     this.Subject_Code = sub.code;
     this.Subject_Name = sub.name;
 
     const chapterRef: AngularFirestoreCollection<Chapter> = this.afs.collection<Chapter>(`/subjects/${this.Subject_Code}/chapters/`);
     this.chapterList = chapterRef.valueChanges()
-    console.log(this.chapterList);
+    // console.log(this.chapterList);
 
     this.chapterList.forEach(chap => {
       this.chapLenght = chap.length;
@@ -107,15 +107,15 @@ export class AddTestComponent implements OnInit {
         this.chapter_Code = "0";      ///makeeeeeeeeeeeeeeeeeeeee
         //make document key in questions
         this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
-        console.log(this.question_keyAdd);
+        // console.log(this.question_keyAdd);
       } else {
         this.chapterCodeLast = chap[chap.length - 1].code;
         this.chapterCodeLast = +this.chapterCodeLast;   //string to number
         // console.log(this.chapterCodeLast);
         this.chapter_Code = (this.chapterCodeLast + 1).toString();
-        console.log(this.chapter_Code);
+        // console.log(this.chapter_Code);
         this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
-        console.log(this.question_keyAdd);
+        // console.log(this.question_keyAdd);
         // this.chapter_Code = "ch" + this.chapLenght;
         // //make document key in questions
         // this.question_keyAdd = this.Subject_Code + "_" + this.chapter_Code;
@@ -125,7 +125,7 @@ export class AddTestComponent implements OnInit {
   }
 
   DefaultModal() {
-    console.log("DefaultModal")
+    // console.log("DefaultModal")
     this.newSubjectName = "";
     this.newSubjectCode = "";
   }
@@ -142,13 +142,13 @@ export class AddTestComponent implements OnInit {
         // timer: 1500
       })
     } else {
-      console.log(this.newSubjectName);
-      console.log(this.newSubjectCode);
+      // console.log(this.newSubjectName);
+      // console.log(this.newSubjectCode);
       //
-      console.log(this.subjectCheck);
+      // console.log(this.subjectCheck);
       //ไม่มีวิชาในระบบ
       if (this.subjectCheck.length == 0) {
-        console.log("ไม่มี");
+        // console.log("ไม่มี");
         count = 0;
         this.subjectAddcheck = false;
 
@@ -157,10 +157,10 @@ export class AddTestComponent implements OnInit {
         subjectRef2.set(this.subjectAdd);
       } else {
         this.subjectCheck.forEach(data => {
-          console.log(data.code);
+          // console.log(data.code);
           if (data.code == this.newSubjectCode) {
             count = 1;
-            console.log("ซ้ำ");
+            // console.log("ซ้ำ");
             swal({
               type: 'error',
               title: 'Unsuccessful',
@@ -176,12 +176,12 @@ export class AddTestComponent implements OnInit {
       }
 
       if (this.subjectAddcheck == false && count != 1) {
-        console.log("โอเค");
+        // console.log("โอเค");
         this.subjectAdd = {
           code: this.newSubjectCode,
           name: this.newSubjectName
         }
-        console.log(this.subjectAdd);
+        // console.log(this.subjectAdd);
 
         //----Add subject detail in subject
         const subjectRef2: AngularFirestoreDocument<Subject> = this.afs.doc<Subject>(`/subjects/${this.newSubjectCode}`);
@@ -194,14 +194,14 @@ export class AddTestComponent implements OnInit {
   incomingfile(event) {
     this.selectedFiles = event.target.files;
     this.file = event.target.files[0];
-    console.log(this.file);
+    // console.log(this.file);
     // console.log(this.file.name);
 
   }
   //--- Upload ecel and display
   Upload() {
     this.question_objDisplay = [];
-    console.log("display question");
+    // console.log("display question");
     if (this.file == undefined) {
       swal({
         type: 'warning',
@@ -220,7 +220,7 @@ export class AddTestComponent implements OnInit {
         this.arrayBuffer = fileReader.result;
         var data = new Uint8Array(this.arrayBuffer);
         var arr = new Array();
-        console.log(data.length);
+        // console.log(data.length);
 
         for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
         var bstr = arr.join("");
@@ -230,14 +230,14 @@ export class AddTestComponent implements OnInit {
         // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
         this.question_excel = XLSX.utils.sheet_to_json(worksheet, { raw: true });
 
-        console.log(this.question_excel);
+        // console.log(this.question_excel);
 
         this.question_excel.forEach((question, index) => {
           this.amount = index + 1;
-          console.log(question);
-          console.log(index);
+          // console.log(question);
+          // console.log(index);
           this.question_key = index;
-          console.log(this.question_excel[index].choice);
+          // console.log(this.question_excel[index].choice);
 
           //make array type of choice
           let choice_string = (this.question_excel[index].choice).toString();
@@ -251,12 +251,12 @@ export class AddTestComponent implements OnInit {
             "code": this.question_key,
             "question": this.question_excel[index].question
           }
-          console.log(this.question_objDisplay);
+          // console.log(this.question_objDisplay);
 
           this.question_objDisplay.push(this.sub_question)
           // console.log(this.sub_question);
           this.question_obj[this.question_key] = this.sub_question;
-          console.log(this.question_obj);
+          // console.log(this.question_obj);
         })
       }
       fileReader.readAsArrayBuffer(this.file);
@@ -276,32 +276,32 @@ export class AddTestComponent implements OnInit {
       
     }
     else {
-      console.log(this.question_obj);
+      // console.log(this.question_obj);
       //make type string to number
       let type_num = + this.type;
-      console.log(type_num);
+      // console.log(type_num);
 
       this.questionAdd = {
         amount: this.amount,
         question: this.question_obj,
         type: type_num
       }
-      console.log(this.questionAdd);
+      // console.log(this.questionAdd);
       //----Add data in questions ,document key=subCode_chapterCode
       const questionRef: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${this.question_keyAdd}`);
       questionRef.set(this.questionAdd);
 
       let questionDoc: AngularFirestoreDocument<Question> = this.afs.doc<Question>(`/questions/${this.question_keyAdd}`)
-      console.log(questionDoc.ref);
+      // console.log(questionDoc.ref);
 
-      console.log(this.chapter_Code);
+      // console.log(this.chapter_Code);
 
       this.chapterAdd = {
         code: this.chapter_Code,
         name: this.chapter_Name,
         questions: questionDoc.ref
       }
-      console.log(this.chapterAdd);
+      // console.log(this.chapterAdd);
 
       //----Add chapter in subject
       const subjectRef: AngularFirestoreDocument<Chapter> = this.afs.doc<Chapter>(`/subjects/${this.Subject_Code}/chapters/${this.chapter_Code}`)
@@ -315,9 +315,9 @@ export class AddTestComponent implements OnInit {
         this.Subject_Name = null;
         this.chapter_Name = null;
         this.type = "";
-        console.log(this.file);
+        // console.log(this.file);
         this.file = undefined;
-        console.log(this.file);
+        // console.log(this.file);
         this.selectedFiles = null;
       });
       swal({
@@ -350,9 +350,9 @@ export class AddTestComponent implements OnInit {
       this.Subject_Name = null;
       this.chapter_Name = null;
       this.type = "";
-      console.log(this.file);
+      // console.log(this.file);
       this.file = undefined;
-      console.log(this.file);
+      // console.log(this.file);
       this.selectedFiles = null;
     }
   })

@@ -60,7 +60,7 @@ export class AuthService {
       .catch(error => swal({  type: 'error', text: error}));
   }
   emailLogin(email: string, password: string) {
-    console.log(password);
+    // console.log(password);
     this.cookieService.set('password', password);
     this.cookieValue = this.cookieService.get('password');
     console.log("I am logging in");
