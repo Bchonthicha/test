@@ -74,9 +74,9 @@ export class AuthService {
 
 
         this.router.navigate(['dashboard'])
-      })
+      }).catch(error => swal({  type: 'error', text: error}));
       // .catch(error => console.log(error));
-      .catch(error => swal({  type: 'error', text: error}));
+      
   }
   resetPassword(email: string) {
     const fbAuth = firebase.auth();

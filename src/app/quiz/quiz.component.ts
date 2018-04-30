@@ -202,6 +202,7 @@ export class QuizComponent implements OnInit {
       this.answerCheck = this.answerType1;
     } else {
       this.answerCheck = this.Q_answer_index;
+      console.log(this.answerCheck+1);
     }
 
     let new_score;
