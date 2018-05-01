@@ -18,10 +18,6 @@ import swal from 'sweetalert2'
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  //สำหรับการจำลอง รับคำตอบเข้ามา
-  eiei: any;
-  tesssttext1: any;
-  tesssttext2: any;
 
   //สำหรับค่าที่ส่งมาแบบ pubilc จาก step ต่างๆ
   receiveTest1: any;
@@ -30,10 +26,6 @@ export class QuizComponent implements OnInit {
   receiveTest3_2: any;
   //สำหรับการดึงค่าจาก database ในตาราง testList
   testList: any;
-  dataObj_pre: any;
-
-  //["Q5", "Q4", "Q3"]
-  q_id: any;
 
   //จำนวนคำถามที่มี รับมาจาก database
   total_num: any;
@@ -103,21 +95,13 @@ export class QuizComponent implements OnInit {
     this.receiveTest3_2 = this.firebaseService.arrayTest3_2;
     this.testID = this.firebaseService.Test_id_new;
 
-    console.log(this.receiveTest1);
-    // console.log(this.receiveTest2);
-    console.log(this.receiveTest3);
-    console.log(this.receiveTest3_2);
-    console.log(this.testID);
-
     const examRefLocal = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.examObservable = examRefLocal.valueChanges()
-
 
     const answerRefLocal = this.afs.doc(`/answers/${this.testID}`)
     this.ansObservable = answerRefLocal.valueChanges()
 
     this.examObservable.subscribe(exam => {
-      console.log(exam.status);
       this.examStatus = exam.status;
       //exam data detail
       if (this.examStatus == "pause") {
@@ -139,7 +123,6 @@ export class QuizComponent implements OnInit {
       } else {
         this.examDataDetail((studentList) => {
           this.afs.doc(`/answers/${this.testID}`).valueChanges().forEach(element => {
-            // console.log(element);
             this.answerProcessList(element)
             this.scoreProcess(element)
           });
@@ -153,10 +136,8 @@ export class QuizComponent implements OnInit {
     this.isValidNext = true;
 
     this.ansObservable.subscribe(ans => {
-      console.log(ans);
 
       this.AnsObservableResult = ans;
-      console.log(this.AnsObservableResult);
 
       this.answerProcessList(this.AnsObservableResult)
       this.scoreProcess(this.AnsObservableResult)
@@ -165,33 +146,31 @@ export class QuizComponent implements OnInit {
   }
 
   answerProcessList(ans) {
-    // console.log(this.Q_no);
     const array_testList = [];
-    // console.log("ans in answerProcessList=", ans);
+
     let pack_array_testList = {};
     this.student_temp.forEach(stu => {
 
       this.answer = ans[stu.code][this.Q_index];
-      // console.log(this.answer);
 
       if (this.answer != undefined) {
 
-        // console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
-          student_name: stu.name,
+          student_name: stu.nickname,
           score: stu.score,
           url: stu.url,
           answer: this.answer
         }
         //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
-        //this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
         array_testList.push(pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
-        // console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
+        console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
       }
     })
     this.array_testList = array_testList;
+    console.log(this.array_testList);
+
   }
 
   scoreProcess(ans) {
@@ -202,7 +181,6 @@ export class QuizComponent implements OnInit {
       this.answerCheck = this.answerType1;
     } else {
       this.answerCheck = this.Q_answer_index;
-      console.log(this.answerCheck+1);
     }
 
     let new_score;
@@ -229,8 +207,7 @@ export class QuizComponent implements OnInit {
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
-          student_name: stu.name,
-          // score: stu.score,
+          student_name: stu.nickname,
           score: new_score,
           url: stu.url,
           answer: this.answerCheckImg
@@ -242,7 +219,7 @@ export class QuizComponent implements OnInit {
         //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
         pack_array_testList = {
           student_id: stu.code,
-          student_name: stu.name,
+          student_name: stu.nickname,
           score: new_score,
           url: stu.url,
           answer: "assets/dist/img/question.png"
@@ -252,24 +229,18 @@ export class QuizComponent implements OnInit {
 
       //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
       array_testListProcess.push(pack_array_testList);  //เพิ่มเข้าข้างหลัง
-      //console.log(array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
-      // this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
     })
     this.array_testListProcess = array_testListProcess;
-    // console.log(this.array_testListProcess);
   }
 
   examDataDetail(callback) {
-    console.log("examDataDetail");
-    console.log("status   =  " + this.examStatus);
 
     //---exam data detail
     const examRefLocal = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.examObservable = examRefLocal.valueChanges()
-    console.log(this.examObservable);
+
 
     this.examObservable.forEach(exam => {
-      console.log(exam);
 
       this.examSubDisplay = exam.subject_name;
       this.examChapDisplay = exam.chapter_name;
@@ -278,9 +249,6 @@ export class QuizComponent implements OnInit {
       this.examStatus = exam.status;
       this.current_question = exam.current_question;
 
-      console.log("status   =  " + this.examStatus);
-
-      console.log(this.examSubDisplay, this.examChapDisplay, this.examDesDisplay);
       this.total_num = exam.amount;
       this.total_num_cal = exam.amount;
 
@@ -296,11 +264,9 @@ export class QuizComponent implements OnInit {
     this.students = this.studentExamCollection.valueChanges()
 
     this.students.forEach(stu => {
-      // console.log(stu);
 
       if (!this.isExamDataDetailLoaded) {
         stu.forEach(data1 => {
-          // console.log(data1.code);
           this.student_temp.push(data1);
         })
         callback(this.student_temp)
@@ -312,29 +278,22 @@ export class QuizComponent implements OnInit {
     this.questions = this.questionExamCollection.valueChanges()
 
     this.questions.forEach(ques => {
-      console.log(ques);
-      console.log(_.filter(ques, ['indax', this.current_question]));
+
       this.questionObj = _.filter(ques, ['indax', this.current_question]);
       this.question_show = this.questionObj[0].question;
       this.Q_no = this.questionObj[0].code;
       this.Q_index = this.questionObj[0].indax;
-      // console.log(this.questionObj[0]);
 
       this.updateAllInfo()
-      console.log("Q_no====" + this.Q_no);
-      console.log("Q_index====" + this.Q_index);
 
       if (this.examType == 1) {
         this.choice_show = null;
         this.Q_answer_index = this.questionObj[0].answer;
         this.answerType1 = this.questionObj[0].choice[this.Q_answer_index];
-        // console.log("ans= " + this.answerType1);
+
       } else {
         this.choice_show = this.questionObj[0].choice;
-        // console.log(this.choice_show);
-
         this.Q_answer_index = this.questionObj[0].answer;
-        // console.log("ans= " + this.Q_answer_index);
 
       }
     })
@@ -357,7 +316,7 @@ export class QuizComponent implements OnInit {
       timer: 1500
     }).then(() => {
       //update status
-      console.log(this.Q_no);
+
       let question_status = {
         status: true
       }
@@ -369,9 +328,8 @@ export class QuizComponent implements OnInit {
 
   NextQuestion() {
 
-    console.log(this.array_testListProcess);
+
     this.array_testListProcess.forEach((d, indax) => {
-      console.log(d.student_id + "=" + d.score);
       //update ค่า score ใน database
       let newScoreUp = {
         score: d.score
@@ -380,10 +338,7 @@ export class QuizComponent implements OnInit {
       examRef.update(newScoreUp)
       //ต้อง update ค่า score ใน student_temp
       this.student_temp[indax].score = d.score;
-      console.log(this.student_temp[indax].score);
-
     })
-    console.log(this.student_temp);
 
     this.array_testList = [];
     this.array_testListProcess = [];
@@ -396,11 +351,7 @@ export class QuizComponent implements OnInit {
 
     if (this.current_question < this.total_num - 1) {
 
-      console.log("NextQuestion");
       this.current_question = this.current_question + 1;
-
-      console.log(this.current_question);
-      //update current_question
       let newCrrent_question = {
         current_question: this.current_question
       }
@@ -459,7 +410,7 @@ export class QuizComponent implements OnInit {
       confirmButtonText: 'Yes, stop it!'
     }).then((result) => {
       if (result.value) {
-        console.log("stop");
+
         const statusUpdate = {
           status: "finish"
         };
@@ -482,7 +433,6 @@ export class QuizComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, skip it!'
     }).then((result) => {
-      console.log(result);
       if (result.value) {
         swal({
           type: 'success',
@@ -494,8 +444,6 @@ export class QuizComponent implements OnInit {
         this.isValidProcess = false;
         this.isprocess = false;
 
-        console.log("skip");
-        console.log("old " + this.current_question);
         //update question status
         // let question_status = {
         //   status: false
@@ -504,9 +452,8 @@ export class QuizComponent implements OnInit {
         // examRef.update(question_status)
 
         if (this.current_question < this.total_num - 1) {
-          console.log("new " + this.current_question);
+
           this.current_question = this.current_question + 1;
-          console.log(this.current_question);
           // //update current_question
           let newCrrent_question = {
             current_question: this.current_question
@@ -519,8 +466,6 @@ export class QuizComponent implements OnInit {
 
         } else {
           this.current_question = this.current_question + 1;
-          console.log(this.current_question);
-          console.log("finish");
           this.doing_percent = ((this.current_question / this.total_num_cal) * 100).toFixed(1);
 
           //update examStatus
@@ -536,7 +481,6 @@ export class QuizComponent implements OnInit {
       }
     })
   }
-
 
   updateAllInfo() {
     this.answerProcessList(this.AnsObservableResult)

@@ -52,7 +52,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-7 reft_content">
+          <div class="col-md-8 reft_content">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -88,23 +88,23 @@
               </thead>
             </table>
           </div>
-          <div class="col-md-5 right_content table-scroll">
+          <div class="col-md-4 right_content table-scroll">
             <table class="table table-hover">
               <thead>
                 <tr>
                   <th> #
                   </th>
-                  <th scope="col">Student ID</th>
-                  <th scope="col">Student Name</th>
-                  <th scope="col">Score</th>
+                  <th scope="col" style="text-align: center">Picture</th>
+                  <th scope="col" style="text-align: center">Student Name</th>
+                  <th scope="col" style="text-align: center">Score</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let data of studentShow; let i=index">
                   <td>{{i+1}}</td>
-                  <td>{{data.code}}</td>
-                  <td>{{data.name}}</td>
-                  <td>{{data.score}}</td>
+                  <td style="text-align: center"><img src={{data?.url}} width="40 px" class="picture_show img-circle"></td>
+                  <td style="text-align: center" >{{data.nickname}}</td>
+                  <td style="text-align: center" >{{data.score}}</td>
                 </tr>
                 <tr>
                   <td colspan='4' align="center">

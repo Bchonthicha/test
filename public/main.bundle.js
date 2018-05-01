@@ -823,7 +823,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/blank/blank.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"test\">\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"content\">\r\n              <!-- display when no data question to be add -->\r\n              <br>\r\n              <br>\r\n              <ng-container *ngIf=\"!isDisplayPause\">\r\n              <div class=\"row\">\r\n                  <div class=\"col-md-12 tableShow\">\r\n                    <p style=\"text-align: center\">\r\n                      <br>\r\n                     --- No quiz paused. ---    \r\n            \r\n                    </p>\r\n                  </div>\r\n                </div>\r\n              </ng-container>\r\n              <!--  -->\r\n     <!-- <label style=\"background-color: wheat\"><h4>The quiz was paused</h4></label> \r\n      <br> -->\r\n      <!-- Trigger the modal with a button -->\r\n\r\n      <button type=\"button\" class=\"btn btn-primary createTest\" (click)=\"createTest()\">\r\n        <h4>\r\n          <i class=\"fa fa-plus\"></i>\r\n        </h4>\r\n      </button>\r\n\r\n      <ng-container *ngIf=\"isDisplayPause\">\r\n          <div class=\"row\" style=\"background-color: white\">\r\n              <div class=\"col-md-12 tableShow\">\r\n                <p style=\"text-align: center\">\r\n                 --- Quiz paused. ---         \r\n                </p>\r\n                <br>\r\n              </div>\r\n            </div>\r\n\r\n      <div class=\"row\">\r\n        <div class=\"col-md-3\" *ngFor=\"let exam of examPause\">\r\n\r\n          <div class=\"item_group\" (click)=\"goToQuiz(exam.exam_code)\">\r\n            <div class=\"row rowPic\" style=\"text-align: center\">\r\n              <img src=\"assets/dist/img/picP3.PNG\" class=\"pause-image\">\r\n            </div>\r\n\r\n            <div class=\"row rowContent\" style=\"text-align: center\">\r\n              <h5>\r\n                {{exam.exam_code}}\r\n                <br>\r\n                <b> Date: </b>{{exam.date | date :'short'}}\r\n              </h5>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>          \r\n    </ng-container>\r\n    </div>\r\n  </div>"
+module.exports = "<div class=\"test\">\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"content\">\r\n              <!-- display when no data question to be add -->\r\n              <br>\r\n              <br>\r\n              <ng-container *ngIf=\"!isDisplayPause\">\r\n              <div class=\"row\">\r\n                  <div class=\"col-md-12 tableShow\">\r\n                    <p style=\"text-align: center\">\r\n                      <br>\r\n                     --- No quiz paused. ---    \r\n            \r\n                    </p>\r\n                  </div>\r\n                </div>\r\n              </ng-container>\r\n              <!--  -->\r\n     <!-- <label style=\"background-color: wheat\"><h4>The quiz was paused</h4></label> \r\n      <br> -->\r\n      <!-- Trigger the modal with a button -->\r\n\r\n      <button type=\"button\" class=\"btn btn-primary createTest\" (click)=\"createTest()\">\r\n        <h4>\r\n          <i class=\"fa fa-plus\"></i>\r\n        </h4>\r\n      </button>\r\n\r\n      <ng-container *ngIf=\"isDisplayPause\">\r\n          <div class=\"row\" style=\"background-color: white\">\r\n              <div class=\"col-md-12 tableShow\">\r\n                <p style=\"text-align: center\">\r\n                 --- Quiz paused. ---         \r\n                </p>\r\n                <br>\r\n              </div>\r\n            </div>\r\n\r\n      <div class=\"row\">\r\n        <div class=\"col-md-3\" *ngFor=\"let exam of examPause\">\r\n\r\n          <div class=\"item_group\" (click)=\"goToQuiz(exam.exam_code)\">\r\n            <div class=\"row rowPic\" style=\"text-align: center\">\r\n              <img src=\"assets/dist/img/picP3.PNG\" class=\"pause-image\">\r\n            </div>\r\n\r\n            <div class=\"row rowContent\" style=\"text-align: center\">\r\n              <h5>\r\n                {{exam.chapter_name}}\r\n                <br>\r\n                <b> Date: </b>{{exam.date | date :'short'}}\r\n              </h5>\r\n            </div>\r\n          </div>\r\n\r\n        </div>\r\n      </div>          \r\n    </ng-container>\r\n    </div>\r\n  </div>"
 
 /***/ }),
 
@@ -869,7 +869,6 @@ var BlankComponent = (function () {
             data.forEach(function (d) {
                 // console.log(d.status);
                 if (d.status == "pause") {
-                    // console.log(d);
                     _this.examPause.push(d);
                 }
             });
@@ -1830,7 +1829,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<body>\r\n  <div class=\"container\">\r\n\r\n    <div class=\"info\">\r\n      <h1>Online Quiz System for Multiple Choice and Short Answer Question</h1>\r\n    </div>\r\n\r\n  </div>\r\n\r\n  <div class=\"form\">\r\n\r\n    <div class=\"thumbnail\">\r\n      <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/hat.svg\" >\r\n    </div>\r\n\r\n    <form class=\"login-form\">\r\n      <input type=\"email\" placeholder=\"email\" class=\"form-control\" name=\"emailLogin\" [(ngModel)]=\"emailSignup\" />\r\n      <input type=\"password\" placeholder=\"password\" class=\"form-control\" name=\"passwordLogin\" [(ngModel)]=\"passwordSignup\">\r\n\r\n      <!-- <a [routerLink]=\"'/dashboard'\"><input type =\"submit\" class =\"button\" value=\"login\"></a> -->\r\n      <button type=\"submit\" class=\"button btn btn-primary\" (click)=\"login()\">\r\n        <i class=\"fa fa-lock\" aria-hidden=\"true\"></i>\r\n        เข้าสู่ระบบ\r\n      </button>\r\n      <div class=\"col-6 text-center signup-text\">\r\n        <a class=\"text-muted\" [routerLink]=\"['/signup']\">\r\n          สมัครสมาชิกใหม่ ?\r\n        </a>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</body>\r\n<!-- <div class=\"row justify-content-center\">\r\n  <div class=\"col-md-6\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header text-center text-white bg-dark\">\r\n        เข้าสู่ระบบ\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-sm-3 col-form-label\">Email</label>\r\n            <div class=\"col-sm-9\">\r\n              <input type=\"email\" class=\"form-control\" name=\"name\" [(ngModel)]=\"emailSignup\">\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-sm-3 col-form-label\">Password</label>\r\n            <div class=\"col-sm-9\">\r\n              <input type=\"password\" class=\"form-control\" name=\"eiei\" [(ngModel)]=\"passwordSignup\">\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-6 text-left\">\r\n              <a class=\"text-muted\" [routerLink]=\"['/signup']\">\r\n                สมัครสมาชิกใหม่ ?\r\n              </a>\r\n            </div>\r\n            <div class=\"col-6 text-right\">\r\n              <button type=\"submit\" class=\"btn btn-primary\" (click)=\"login()\">\r\n                <i class=\"fa fa-lock\" aria-hidden=\"true\"></i>\r\n                เข้าสู่ระบบ\r\n              </button>\r\n              <button type=\"submit\" class=\"btn btn-primary\" (click)=\"logout()\">Log Out</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div> -->"
+module.exports = "<body>\r\n  <div class=\"container\">\r\n\r\n    <div class=\"info\">\r\n      <h1>Online Quiz System for Multiple Choice and Short Answer Questions</h1>\r\n    </div>\r\n\r\n  </div>\r\n\r\n  <div class=\"form\">\r\n\r\n    <div class=\"thumbnail\">\r\n      <img src=\"https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/hat.svg\" >\r\n    </div>\r\n\r\n    <form class=\"login-form\">\r\n      <input type=\"email\" placeholder=\"email\" class=\"form-control\" name=\"emailLogin\" [(ngModel)]=\"emailSignup\" />\r\n      <input type=\"password\" placeholder=\"password\" class=\"form-control\" name=\"passwordLogin\" [(ngModel)]=\"passwordSignup\">\r\n\r\n      <!-- <a [routerLink]=\"'/dashboard'\"><input type =\"submit\" class =\"button\" value=\"login\"></a> -->\r\n      <button type=\"submit\" class=\"button btn btn-primary\" (click)=\"login()\">\r\n        <i class=\"fa fa-lock\" aria-hidden=\"true\"></i>\r\n        เข้าสู่ระบบ\r\n      </button>\r\n      <div class=\"col-6 text-center signup-text\">\r\n        <a class=\"text-muted\" [routerLink]=\"['/signup']\">\r\n          สมัครสมาชิกใหม่ ?\r\n        </a>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</body>\r\n<!-- <div class=\"row justify-content-center\">\r\n  <div class=\"col-md-6\">\r\n    <div class=\"card\">\r\n      <div class=\"card-header text-center text-white bg-dark\">\r\n        เข้าสู่ระบบ\r\n      </div>\r\n      <div class=\"card-body\">\r\n        <form>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-sm-3 col-form-label\">Email</label>\r\n            <div class=\"col-sm-9\">\r\n              <input type=\"email\" class=\"form-control\" name=\"name\" [(ngModel)]=\"emailSignup\">\r\n            </div>\r\n          </div>\r\n          <div class=\"form-group row\">\r\n            <label class=\"col-sm-3 col-form-label\">Password</label>\r\n            <div class=\"col-sm-9\">\r\n              <input type=\"password\" class=\"form-control\" name=\"eiei\" [(ngModel)]=\"passwordSignup\">\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-6 text-left\">\r\n              <a class=\"text-muted\" [routerLink]=\"['/signup']\">\r\n                สมัครสมาชิกใหม่ ?\r\n              </a>\r\n            </div>\r\n            <div class=\"col-6 text-right\">\r\n              <button type=\"submit\" class=\"btn btn-primary\" (click)=\"login()\">\r\n                <i class=\"fa fa-lock\" aria-hidden=\"true\"></i>\r\n                เข้าสู่ระบบ\r\n              </button>\r\n              <button type=\"submit\" class=\"btn btn-primary\" (click)=\"logout()\">Log Out</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div> -->"
 
 /***/ }),
 
@@ -2250,7 +2249,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/quiz/quiz.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"quiz\">\r\n  <div class=\"row\">\r\n\r\n    <div class=\"col-md-8\">\r\n      <div class=\"row header_test_left\">\r\n\r\n        <div class=\"col-md-10\">\r\n          <h4>\r\n            <b> Subject:</b> &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp;\r\n            <b> Chapter:</b> &nbsp; &nbsp; {{examChapDisplay}}\r\n          </h4>\r\n          <h4>\r\n            <b> Description:</b> &nbsp; &nbsp; {{examDesDisplay}}\r\n          </h4>\r\n          <div class=\"btn-group btn-group-justified \">\r\n              <a  (click)=\"pauseTest()\" class=\"btn PauseBtn\">\r\n                <span class=\"glyphicon glyphicon-pause\"></span> Pause</a>\r\n                <a (click)=\"stopTest()\" class=\"btn StopBtn\">\r\n                    <span class=\"glyphicon glyphicon-stop\"></span> Stop</a>\r\n              <a (click)=\"SkipQuestion()\" class=\"btn SkipBtn\">\r\n                <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</a>\r\n            </div>\r\n          <!-- <div class=\"btnn-header\">\r\n            <button type=\"submit\" class=\"btn btn-warning btn-md\" style=\"width: 45%;\" (click)=\"pauseTest()\">\r\n              <span class=\"glyphicon glyphicon-pause\"></span> Pause</button>\r\n            <button type=\"submit\" class=\"btn btn-danger btn-md\" style=\"width: 45%;\" (click)=\"SkipQuestion()\">\r\n              <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</button>\r\n          </div> -->\r\n\r\n        </div>\r\n        <div class=\"col-md-2 header_numOfTest_right\">\r\n          <h1>\r\n            {{doing_percent}}%\r\n          </h1>\r\n          <h4>\r\n            {{current_question}}/{{total_num_cal}} ข้อ\r\n          </h4>\r\n\r\n        </div>\r\n      </div>\r\n      <div class=\"row body_test_left\">\r\n        <div class=\"content-body \">\r\n          <h3> <b> ข้อที่ {{current_question+1}}:</b> {{question_show}} </h3>\r\n          <p *ngFor=\"let data of choice_show ; let i=index\">\r\n            <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>\r\n          </p>\r\n          <!-- test -->\r\n          <br>\r\n          <!--    <div>\r\n          รหัส:<input type=\"text\" name=\"testttname1\" id=\"testttname1\"[(ngModel)]=\"tesssttext1\">\r\n          คำตอบ:<input type=\"text\" name=\"testttname2\" id=\"testttname2\"[(ngModel)]=\"tesssttext2\">\r\n        <button type=\"submit\" class=\"btn-warning btn-md\" style=\"width: 25%;\"(click)=\"TestStuList()\">\r\n         TestStuList </button>\r\n        </div>\r\n     test end -->\r\n        </div>\r\n       <!-- button -->\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 \">\r\n    <p class=\"buttonForm\">\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary btn-md bntAdd\" (click)=\"ProcessAnswer()\">\r\n        <span class=\"\tglyphicon glyphicon glyphicon-refresh\"></span> Process Answer </button>\r\n      <button type=\"submit\" class=\"btn btn-success btn-md bntAdd\"(click)=\"NextQuestion()\" [disabled]=isValidNext>\r\n        <span class=\"\tglyphicon glyphicon-forward\"></span> Next </button>\r\n    </p>\r\n  </div>\r\n</div>\r\n<!--  -->\r\n          \r\n\r\n      </div>\r\n    </div>\r\n    <div class=\"col-md-4 display_list_right \" id=\"table-wrapper\">\r\n      <div class=\"tableAllList tests\" id=\"table-scroll\">\r\n        <table class=\"table table-striped test2 \">\r\n          <thead>\r\n            <tr>\r\n              <th scope=\"col\">#</th>\r\n              <th scope=\"col\">Pic.</th>\r\n              <th scope=\"col\">Name</th>\r\n              <th scope=\"col\">Score</th>\r\n              <th scope=\"col\">Ans.</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"TableList\">\r\n            <ng-container *ngIf=\"!isprocess\">\r\n              <tr *ngFor=\"let data of array_testList ; let i=index\">\r\n                <th scope=\"row\">{{i+1}}</th>\r\n                <td>\r\n                  <img src=  {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                </td>\r\n                <td>{{data.student_name}}</td>\r\n                <td>{{data.score}}/{{total_num_cal}}</td>\r\n                <td>{{data.answer}}</td>\r\n              </tr>\r\n            </ng-container>\r\n            <ng-container *ngIf=\"isprocess\">\r\n                <tr *ngFor=\"let data of array_testListProcess ; let i=index\">\r\n                  <th scope=\"row\">{{i+1}}</th>\r\n                  <td>\r\n                    <img src= {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{data.student_name}}</td>\r\n                  <td>{{data.score}}/{{total_num_cal}}</td>\r\n                  <td> <img src= {{data.answer}} width=\"30\" ></td>\r\n                </tr>\r\n              </ng-container>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"quiz\">\r\n  <div class=\"row\">\r\n\r\n    <div class=\"col-md-8\">\r\n      <div class=\"row header_test_left\">\r\n\r\n        <div class=\"col-md-10\">\r\n          <h4>\r\n            <b> Subject:</b> &nbsp; &nbsp; {{examSubDisplay}} &nbsp; &nbsp;&nbsp; &nbsp;\r\n            <b> Chapter:</b> &nbsp; &nbsp; {{examChapDisplay}}\r\n          </h4>\r\n          <h4>\r\n            <b> Description:</b> &nbsp; &nbsp; {{examDesDisplay}}\r\n          </h4>\r\n          <div class=\"btn-group btn-group-justified \">\r\n              <a  (click)=\"pauseTest()\" class=\"btn PauseBtn\">\r\n                <span class=\"glyphicon glyphicon-pause\"></span> Pause</a>\r\n                <a (click)=\"stopTest()\" class=\"btn StopBtn\">\r\n                    <span class=\"glyphicon glyphicon-stop\"></span> Stop</a>\r\n              <a (click)=\"SkipQuestion()\" class=\"btn SkipBtn\">\r\n                <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</a>\r\n            </div>\r\n          <!-- <div class=\"btnn-header\">\r\n            <button type=\"submit\" class=\"btn btn-warning btn-md\" style=\"width: 45%;\" (click)=\"pauseTest()\">\r\n              <span class=\"glyphicon glyphicon-pause\"></span> Pause</button>\r\n            <button type=\"submit\" class=\"btn btn-danger btn-md\" style=\"width: 45%;\" (click)=\"SkipQuestion()\">\r\n              <span class=\"\tglyphicon glyphicon-step-forward\"></span> Skip</button>\r\n          </div> -->\r\n\r\n        </div>\r\n        <div class=\"col-md-2 header_numOfTest_right\">\r\n          <h1>\r\n            {{doing_percent}}%\r\n          </h1>\r\n          <h4>\r\n            {{current_question}}/{{total_num_cal}} ข้อ\r\n          </h4>\r\n\r\n        </div>\r\n      </div>\r\n      <div class=\"row body_test_left\">\r\n        <div class=\"content-body \">\r\n          <h3> <b> ข้อที่ {{current_question+1}}:</b> {{question_show}} </h3>\r\n          <p *ngFor=\"let data of choice_show ; let i=index\">\r\n            <br><h4>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;({{i+1}}.)&nbsp;{{data}}</h4>\r\n          </p>\r\n          <!-- test -->\r\n          <br>\r\n          <!--    <div>\r\n          รหัส:<input type=\"text\" name=\"testttname1\" id=\"testttname1\"[(ngModel)]=\"tesssttext1\">\r\n          คำตอบ:<input type=\"text\" name=\"testttname2\" id=\"testttname2\"[(ngModel)]=\"tesssttext2\">\r\n        <button type=\"submit\" class=\"btn-warning btn-md\" style=\"width: 25%;\"(click)=\"TestStuList()\">\r\n         TestStuList </button>\r\n        </div>\r\n     test end -->\r\n        </div>\r\n       <!-- button -->\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 \">\r\n    <p class=\"buttonForm\">\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary btn-md bntAdd\" (click)=\"ProcessAnswer()\">\r\n        <span class=\"\tglyphicon glyphicon glyphicon-refresh\"></span> Process Answer </button>\r\n      <button type=\"submit\" class=\"btn btn-success btn-md bntAdd\"(click)=\"NextQuestion()\" [disabled]=isValidNext>\r\n        <span class=\"\tglyphicon glyphicon-forward\"></span> Next </button>\r\n    </p>\r\n  </div>\r\n</div>\r\n<!--  -->\r\n          \r\n\r\n      </div>\r\n    </div>\r\n    <div class=\"col-md-4 display_list_right \" id=\"table-wrapper\">\r\n      <div class=\"tableAllList tests\" id=\"table-scroll\">\r\n        <table class=\"table table-striped test2 \">\r\n          <thead>\r\n            <tr>\r\n              <th scope=\"col\">#</th>\r\n              <th scope=\"col\"style=\"text-align: center\">Pic.</th>\r\n              <th scope=\"col\"style=\"text-align: center\">Name</th>\r\n              <th scope=\"col\"style=\"text-align: center\">Score</th>\r\n              <th scope=\"col\"style=\"text-align: center\">Ans.</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody class=\"TableList\">\r\n            <ng-container *ngIf=\"!isprocess\">\r\n              <tr *ngFor=\"let data of array_testList ; let i=index\">\r\n                <th scope=\"row\">{{i+1}}</th>\r\n                <td style=\"text-align: center\">\r\n                  <img src=  {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                </td>\r\n                <td style=\"text-align: center\">{{data.student_name}}</td>\r\n                <td style=\"text-align: center\">{{data.score}}/{{total_num_cal}}</td>\r\n                <td style=\"text-align: center\">{{data.answer}}</td>\r\n              </tr>\r\n            </ng-container>\r\n            <ng-container *ngIf=\"isprocess\">\r\n                <tr *ngFor=\"let data of array_testListProcess ; let i=index\">\r\n                  <th scope=\"row\">{{i+1}}</th>\r\n                  <td style=\"text-align: center\">\r\n                    <img src= {{data.url}} width=\"40\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td style=\"text-align: center\">{{data.student_name}}</td>\r\n                  <td style=\"text-align: center\">{{data.score}}/{{total_num_cal}}</td>\r\n                  <td style=\"text-align: center\"> <img src= {{data.answer}} width=\"30\" ></td>\r\n                </tr>\r\n              </ng-container>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -2306,17 +2305,11 @@ var QuizComponent = (function () {
         this.receiveTest3 = this.firebaseService.arrayTest3;
         this.receiveTest3_2 = this.firebaseService.arrayTest3_2;
         this.testID = this.firebaseService.Test_id_new;
-        console.log(this.receiveTest1);
-        // console.log(this.receiveTest2);
-        console.log(this.receiveTest3);
-        console.log(this.receiveTest3_2);
-        console.log(this.testID);
         var examRefLocal = this.afs.doc("/exam/" + this.testID);
         this.examObservable = examRefLocal.valueChanges();
         var answerRefLocal = this.afs.doc("/answers/" + this.testID);
         this.ansObservable = answerRefLocal.valueChanges();
         this.examObservable.subscribe(function (exam) {
-            console.log(exam.status);
             _this.examStatus = exam.status;
             //exam data detail
             if (_this.examStatus == "pause") {
@@ -2338,7 +2331,6 @@ var QuizComponent = (function () {
             else {
                 _this.examDataDetail(function (studentList) {
                     _this.afs.doc("/answers/" + _this.testID).valueChanges().forEach(function (element) {
-                        // console.log(element);
                         _this.answerProcessList(element);
                         _this.scoreProcess(element);
                     });
@@ -2349,39 +2341,33 @@ var QuizComponent = (function () {
         this.isValidProcess = false;
         this.isValidNext = true;
         this.ansObservable.subscribe(function (ans) {
-            console.log(ans);
             _this.AnsObservableResult = ans;
-            console.log(_this.AnsObservableResult);
             _this.answerProcessList(_this.AnsObservableResult);
             _this.scoreProcess(_this.AnsObservableResult);
         });
     }
     QuizComponent.prototype.answerProcessList = function (ans) {
         var _this = this;
-        // console.log(this.Q_no);
         var array_testList = [];
-        // console.log("ans in answerProcessList=", ans);
         var pack_array_testList = {};
         this.student_temp.forEach(function (stu) {
             _this.answer = ans[stu.code][_this.Q_index];
-            // console.log(this.answer);
             if (_this.answer != undefined) {
-                // console.log(stu.code + "in" + this.Q_no + "==" + this.answer);
                 //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
                 pack_array_testList = {
                     student_id: stu.code,
-                    student_name: stu.name,
+                    student_name: stu.nickname,
                     score: stu.score,
                     url: stu.url,
                     answer: _this.answer
                 };
                 //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
-                //this.array_testList.unshift(this.pack_array_testList);  //unshift เพิ่มเข้าข้างหน้า
                 array_testList.push(pack_array_testList); //unshift เพิ่มเข้าข้างหน้า
-                // console.log(array_testList);                     //ที่ตรงกับที่กำลังทำ     
+                console.log(array_testList); //ที่ตรงกับที่กำลังทำ     
             }
         });
         this.array_testList = array_testList;
+        console.log(this.array_testList);
     };
     QuizComponent.prototype.scoreProcess = function (ans) {
         // console.log("ans in scoreProcess=", ans);
@@ -2413,8 +2399,7 @@ var QuizComponent = (function () {
                 //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
                 pack_array_testList = {
                     student_id: stu.code,
-                    student_name: stu.name,
-                    // score: stu.score,
+                    student_name: stu.nickname,
                     score: new_score,
                     url: stu.url,
                     answer: _this.answerCheckImg
@@ -2426,7 +2411,7 @@ var QuizComponent = (function () {
                 //สร้าง obj ใหม่เพื่อไว้สำหรับไปแสดง
                 pack_array_testList = {
                     student_id: stu.code,
-                    student_name: stu.name,
+                    student_name: stu.nickname,
                     score: new_score,
                     url: stu.url,
                     answer: "assets/dist/img/question.png"
@@ -2435,30 +2420,21 @@ var QuizComponent = (function () {
             }
             //array ที่บรรจุค่า obj ในรูปแบบเพิ่มเข้าข้างหน้าเพื่อให้อันล่าสุดอยู่ข้างบน
             array_testListProcess.push(pack_array_testList); //เพิ่มเข้าข้างหลัง
-            //console.log(array_testListProcess);     //ที่ตรงกับที่กำลังทำ     
-            // this.array_testListProcess = this.array_testList;     //เอาไว้ใช่ในการ update new score ใน DB
         });
         this.array_testListProcess = array_testListProcess;
-        // console.log(this.array_testListProcess);
     };
     QuizComponent.prototype.examDataDetail = function (callback) {
         var _this = this;
-        console.log("examDataDetail");
-        console.log("status   =  " + this.examStatus);
         //---exam data detail
         var examRefLocal = this.afs.doc("/exam/" + this.testID);
         this.examObservable = examRefLocal.valueChanges();
-        console.log(this.examObservable);
         this.examObservable.forEach(function (exam) {
-            console.log(exam);
             _this.examSubDisplay = exam.subject_name;
             _this.examChapDisplay = exam.chapter_name;
             _this.examDesDisplay = exam.description;
             _this.examType = exam.type;
             _this.examStatus = exam.status;
             _this.current_question = exam.current_question;
-            console.log("status   =  " + _this.examStatus);
-            console.log(_this.examSubDisplay, _this.examChapDisplay, _this.examDesDisplay);
             _this.total_num = exam.amount;
             _this.total_num_cal = exam.amount;
             if (_this.current_question == 0) {
@@ -2473,10 +2449,8 @@ var QuizComponent = (function () {
         this.studentExamCollection = this.afs.collection("/exam/" + this.testID + "/students", function (ref) { return ref.orderBy('code'); });
         this.students = this.studentExamCollection.valueChanges();
         this.students.forEach(function (stu) {
-            // console.log(stu);
             if (!_this.isExamDataDetailLoaded) {
                 stu.forEach(function (data1) {
-                    // console.log(data1.code);
                     _this.student_temp.push(data1);
                 });
                 callback(_this.student_temp);
@@ -2487,27 +2461,19 @@ var QuizComponent = (function () {
         this.questionExamCollection = this.afs.collection("/exam/" + this.testID + "/questions", function (ref) { return ref.orderBy('indax'); });
         this.questions = this.questionExamCollection.valueChanges();
         this.questions.forEach(function (ques) {
-            console.log(ques);
-            console.log(__WEBPACK_IMPORTED_MODULE_5_lodash__["filter"](ques, ['indax', _this.current_question]));
             _this.questionObj = __WEBPACK_IMPORTED_MODULE_5_lodash__["filter"](ques, ['indax', _this.current_question]);
             _this.question_show = _this.questionObj[0].question;
             _this.Q_no = _this.questionObj[0].code;
             _this.Q_index = _this.questionObj[0].indax;
-            // console.log(this.questionObj[0]);
             _this.updateAllInfo();
-            console.log("Q_no====" + _this.Q_no);
-            console.log("Q_index====" + _this.Q_index);
             if (_this.examType == 1) {
                 _this.choice_show = null;
                 _this.Q_answer_index = _this.questionObj[0].answer;
                 _this.answerType1 = _this.questionObj[0].choice[_this.Q_answer_index];
-                // console.log("ans= " + this.answerType1);
             }
             else {
                 _this.choice_show = _this.questionObj[0].choice;
-                // console.log(this.choice_show);
                 _this.Q_answer_index = _this.questionObj[0].answer;
-                // console.log("ans= " + this.Q_answer_index);
             }
         });
     };
@@ -2525,7 +2491,6 @@ var QuizComponent = (function () {
             timer: 1500
         }).then(function () {
             //update status
-            console.log(_this.Q_no);
             var question_status = {
                 status: true
             };
@@ -2535,9 +2500,7 @@ var QuizComponent = (function () {
     };
     QuizComponent.prototype.NextQuestion = function () {
         var _this = this;
-        console.log(this.array_testListProcess);
         this.array_testListProcess.forEach(function (d, indax) {
-            console.log(d.student_id + "=" + d.score);
             //update ค่า score ใน database
             var newScoreUp = {
                 score: d.score
@@ -2546,9 +2509,7 @@ var QuizComponent = (function () {
             examRef.update(newScoreUp);
             //ต้อง update ค่า score ใน student_temp
             _this.student_temp[indax].score = d.score;
-            console.log(_this.student_temp[indax].score);
         });
-        console.log(this.student_temp);
         this.array_testList = [];
         this.array_testListProcess = [];
         this.isValidNext = true;
@@ -2556,10 +2517,7 @@ var QuizComponent = (function () {
         this.isprocess = false;
         //เริ่มข้อคำถามใหม่ 
         if (this.current_question < this.total_num - 1) {
-            console.log("NextQuestion");
             this.current_question = this.current_question + 1;
-            console.log(this.current_question);
-            //update current_question
             var newCrrent_question = {
                 current_question: this.current_question
             };
@@ -2616,7 +2574,6 @@ var QuizComponent = (function () {
             confirmButtonText: 'Yes, stop it!'
         }).then(function (result) {
             if (result.value) {
-                console.log("stop");
                 var statusUpdate = {
                     status: "finish"
                 };
@@ -2639,7 +2596,6 @@ var QuizComponent = (function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, skip it!'
         }).then(function (result) {
-            console.log(result);
             if (result.value) {
                 __WEBPACK_IMPORTED_MODULE_6_sweetalert2___default()({
                     type: 'success',
@@ -2650,8 +2606,6 @@ var QuizComponent = (function () {
                 _this.isValidNext = true;
                 _this.isValidProcess = false;
                 _this.isprocess = false;
-                console.log("skip");
-                console.log("old " + _this.current_question);
                 //update question status
                 // let question_status = {
                 //   status: false
@@ -2659,9 +2613,7 @@ var QuizComponent = (function () {
                 // const examRef = this.afs.doc<QuestionExam>(`exam/${this.testID}/questions/${this.Q_no}`);
                 // examRef.update(question_status)
                 if (_this.current_question < _this.total_num - 1) {
-                    console.log("new " + _this.current_question);
                     _this.current_question = _this.current_question + 1;
-                    console.log(_this.current_question);
                     // //update current_question
                     var newCrrent_question = {
                         current_question: _this.current_question
@@ -2673,8 +2625,6 @@ var QuizComponent = (function () {
                 }
                 else {
                     _this.current_question = _this.current_question + 1;
-                    console.log(_this.current_question);
-                    console.log("finish");
                     _this.doing_percent = ((_this.current_question / _this.total_num_cal) * 100).toFixed(1);
                     //update examStatus
                     var statusUpdate = {
@@ -2716,7 +2666,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reports{\r\n    margin: 30px;  \r\n  }\r\n\r\n\r\n  .content{\r\n    margin-top: 20px;\r\n    background-color:white;\r\n  }\r\n\r\n  .header{\r\n    background: #d8e9f3;\r\n    padding: 15px;\r\n    height: 120px;\r\n  }\r\n  .reft_content{\r\n    background:#F8F8FF;\r\n\r\n  }\r\n  .right_content{\r\n    background: white;\r\n\r\n  }\r\n  #table-wrapper {\r\n    position:relative;\r\n  }\r\n  #table-scroll {\r\n    height:590px;\r\n    overflow:auto;  \r\n    margin-top:20px;\r\n  }\r\n  #table-wrapper table {\r\n    width:100%;\r\n  \r\n  }\r\n  .table-hover{\r\n\r\n    margin-top: 40px;\r\n  }\r\n  .scores {\r\n    margin: 5px;\r\n  }\r\n  .bntAdd1{\r\n    width: 40%;\r\n    margin: 5px;\r\n    background-color: #008000;\r\n    color: whitesmoke\r\n  }\r\n  .bntAdd2{\r\n    width: 40%;\r\n    margin: 5px;\r\n    background-color: #BD2819;\r\n    color: white\r\n  }\r\n  ", ""]);
+exports.push([module.i, ".reports{\r\n    margin: 30px;  \r\n  }\r\n\r\n\r\n  .content{\r\n    margin-top: 20px;\r\n    background-color:white;\r\n  }\r\n\r\n  .header{\r\n    background: #d8e9f3;\r\n    padding: 15px;\r\n    height: 120px;\r\n  }\r\n  .reft_content{\r\n    background:#F8F8FF;\r\n\r\n  }\r\n  .right_content{\r\n    background: white;\r\n\r\n  }\r\n  #table-wrapper {\r\n    position:relative;\r\n  }\r\n  #table-scroll {\r\n    height:590px;\r\n    overflow:auto;  \r\n    margin-top:20px;\r\n  }\r\n  #table-wrapper table {\r\n    width:100%;\r\n  \r\n  }\r\n  .table-hover{\r\n\r\n    margin-top: 40px;\r\n  }\r\n  .scores {\r\n    margin: 5px;\r\n  }\r\n  .bntAdd1{\r\n    width: 45%;\r\n    margin: 5px;\r\n    background-color: #008000;\r\n    color: whitesmoke\r\n  }\r\n  .bntAdd2{\r\n    width: 45%;\r\n    margin: 5px;\r\n    background-color: #BD2819;\r\n    color: white\r\n  }\r\n  .picture_show:hover{\r\n    position: absolute;\r\n    cursor: pointer;\r\n    width: 250px;\r\n    transition: width 1s;\r\n    border-radius: 10px;\r\n    box-shadow: -3px -3px 20px #888888;\r\n  }\r\n", ""]);
 
 // exports
 
@@ -2729,7 +2679,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/reports/reports.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"reports\">\n  <div class=\"box box-info\">\n    <div class=\"content\" id = \"content\">\n      <br>\n\n      <form #SelectManageTest=\"ngForm\">\n        <div class=\"form-group\">\n          <label for=\"exampleSelect1\">Subject select;</label>\n          <select class=\"form-control\" id=\"SelectCategory\" name=\"SelectCategory\" (ngModelChange)=\"onChange($event)\" [(ngModel)]=\"SelectSubject\">\n            <option value=\"\" [selected]=\"isSelected\" [disabled]=\"true\"> ----Please choose one---- </option>\n            <option *ngFor=\"let data of ExamListShow \" [ngValue]=data [selected]=\"isSelected\">\n              <b> {{data.exam_code}} :</b> {{data.description}}\n            </option>\n          </select>\n        </div>\n      </form>\n        <!-- display when no data question to be add -->\n        <ng-container *ngIf=\"!isdataExam\">\n          <div class=\"scores\">\n        <div class=\"row\" style=\"background-color: white\">\n            <div class=\"col-md-12 tableShow\">\n              <p style=\"text-align: center\">\n                <br>\n               --- no data ---    \n              </p>\n            </div>\n          </div>\n        </div>\n        </ng-container>\n        <!--  -->\n      <div class=\"scores\" *ngIf=\"isdataExam\">\n        <div class=\"row\">\n          <div class=\"col-md-12 header\">\n            <!-- <h4> -->\n              <p>\n                <b> exem code:</b> &nbsp; &nbsp; {{exam_code}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> subject name:</b> &nbsp; &nbsp; {{subject_name}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> chapter name:</b> &nbsp; &nbsp; {{chapter_name}}\n              </p>\n              <p>\n                <b> description:</b> &nbsp; &nbsp; {{description}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> type:</b> &nbsp; &nbsp; {{type}}\n              </p>\n              <p>\n                <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> date:</b> &nbsp; &nbsp; {{date | date :'short'}}\n              </p>\n\n            <!-- </h4> -->\n          </div>\n\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-md-7 reft_content\">\n            <table class=\"table table-hover\">\n              <thead>\n                <tr>\n                  <td colspan='5' align=\"center\">\n\n                    <ng-container *ngIf=\"isbar\">\n                      <p-chart type=\"bar\" [data]=\"data1\"  [options]=\"options\" ></p-chart>\n                    </ng-container>\n                    <ng-container *ngIf=\"isline\">\n                      <p-chart type=\"line\" [data]=\"data2\"  [options]=\"options\" ></p-chart>\n                    </ng-container>\n                    <div class=\"btn-group btn-group-justified \">\n                      <a class=\"btn  addTestBtn bg-info\" (click)=\"barBtn()\"> Bar</a>\n                      <a class=\"btn editTestBtn bg-danger\" (click)=\"lineBtn()\"> Line </a>\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td></td>\n                </tr>\n                <tr>\n                  <td>\n                    <b> Max : </b> {{max}} </td>\n                  <td>\n                    <b> Min : </b> {{min}}</td>\n                </tr>\n                <tr>\n                  <td>\n                    <b> Average : </b>{{avg}}</td>\n                  <td>\n                    <b> Standard Deviation : </b> {{std}} </td>\n                </tr>\n              </thead>\n            </table>\n          </div>\n          <div class=\"col-md-5 right_content table-scroll\">\n            <table class=\"table table-hover\">\n              <thead>\n                <tr>\n                  <th> #\n                  </th>\n                  <th scope=\"col\">Student ID</th>\n                  <th scope=\"col\">Student Name</th>\n                  <th scope=\"col\">Score</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr *ngFor=\"let data of studentShow; let i=index\">\n                  <td>{{i+1}}</td>\n                  <td>{{data.code}}</td>\n                  <td>{{data.name}}</td>\n                  <td>{{data.score}}</td>\n                </tr>\n                <tr>\n                  <td colspan='4' align=\"center\">\n                    <button (click)=\"exportToExcel()\" class=\"btn bntAdd1\">\n                        <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to excel</button>\n                    <button (click)=\"generatePDF()\" class=\"btn bntAdd2\">\n                        <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to PDF</button>\n                  </td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n      <!-- Tabs report -->\n      <!-- <mat-tab-group>\n      <mat-tab label=\"report of test\">\n        <br>\n        <app-report-of-test></app-report-of-test>\n      </mat-tab>\n\n      <mat-tab label=\"report of student\">\n        <br>\n        <app-report-of-student></app-report-of-student>\n      </mat-tab>\n\n    </mat-tab-group> -->\n      <!-- end Tab report -->\n\n\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"reports\">\n  <div class=\"box box-info\">\n    <div class=\"content\" id = \"content\">\n      <br>\n\n      <form #SelectManageTest=\"ngForm\">\n        <div class=\"form-group\">\n          <label for=\"exampleSelect1\">Subject select;</label>\n          <select class=\"form-control\" id=\"SelectCategory\" name=\"SelectCategory\" (ngModelChange)=\"onChange($event)\" [(ngModel)]=\"SelectSubject\">\n            <option value=\"\" [selected]=\"isSelected\" [disabled]=\"true\"> ----Please choose one---- </option>\n            <option *ngFor=\"let data of ExamListShow \" [ngValue]=data [selected]=\"isSelected\">\n              <b> {{data.exam_code}} :</b> {{data.description}}\n            </option>\n          </select>\n        </div>\n      </form>\n        <!-- display when no data question to be add -->\n        <ng-container *ngIf=\"!isdataExam\">\n          <div class=\"scores\">\n        <div class=\"row\" style=\"background-color: white\">\n            <div class=\"col-md-12 tableShow\">\n              <p style=\"text-align: center\">\n                <br>\n               --- no data ---    \n              </p>\n            </div>\n          </div>\n        </div>\n        </ng-container>\n        <!--  -->\n      <div class=\"scores\" *ngIf=\"isdataExam\">\n        <div class=\"row\">\n          <div class=\"col-md-12 header\">\n            <!-- <h4> -->\n              <p>\n                <b> exem code:</b> &nbsp; &nbsp; {{exam_code}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> subject name:</b> &nbsp; &nbsp; {{subject_name}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> chapter name:</b> &nbsp; &nbsp; {{chapter_name}}\n              </p>\n              <p>\n                <b> description:</b> &nbsp; &nbsp; {{description}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> type:</b> &nbsp; &nbsp; {{type}}\n              </p>\n              <p>\n                <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;\n                <b> date:</b> &nbsp; &nbsp; {{date | date :'short'}}\n              </p>\n\n            <!-- </h4> -->\n          </div>\n\n        </div>\n\n        <div class=\"row\">\n          <div class=\"col-md-8 reft_content\">\n            <table class=\"table table-hover\">\n              <thead>\n                <tr>\n                  <td colspan='5' align=\"center\">\n\n                    <ng-container *ngIf=\"isbar\">\n                      <p-chart type=\"bar\" [data]=\"data1\"  [options]=\"options\" ></p-chart>\n                    </ng-container>\n                    <ng-container *ngIf=\"isline\">\n                      <p-chart type=\"line\" [data]=\"data2\"  [options]=\"options\" ></p-chart>\n                    </ng-container>\n                    <div class=\"btn-group btn-group-justified \">\n                      <a class=\"btn  addTestBtn bg-info\" (click)=\"barBtn()\"> Bar</a>\n                      <a class=\"btn editTestBtn bg-danger\" (click)=\"lineBtn()\"> Line </a>\n                    </div>\n                  </td>\n                </tr>\n                <tr>\n                  <td></td>\n                </tr>\n                <tr>\n                  <td>\n                    <b> Max : </b> {{max}} </td>\n                  <td>\n                    <b> Min : </b> {{min}}</td>\n                </tr>\n                <tr>\n                  <td>\n                    <b> Average : </b>{{avg}}</td>\n                  <td>\n                    <b> Standard Deviation : </b> {{std}} </td>\n                </tr>\n              </thead>\n            </table>\n          </div>\n          <div class=\"col-md-4 right_content table-scroll\">\n            <table class=\"table table-hover\">\n              <thead>\n                <tr>\n                  <th> #\n                  </th>\n                  <th scope=\"col\" style=\"text-align: center\">Picture</th>\n                  <th scope=\"col\" style=\"text-align: center\">Student Name</th>\n                  <th scope=\"col\" style=\"text-align: center\">Score</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr *ngFor=\"let data of studentShow; let i=index\">\n                  <td>{{i+1}}</td>\n                  <td style=\"text-align: center\"><img src={{data?.url}} width=\"40 px\" class=\"picture_show img-circle\"></td>\n                  <td style=\"text-align: center\" >{{data.nickname}}</td>\n                  <td style=\"text-align: center\" >{{data.score}}</td>\n                </tr>\n                <tr>\n                  <td colspan='4' align=\"center\">\n                    <button (click)=\"exportToExcel()\" class=\"btn bntAdd1\">\n                        <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to excel</button>\n                    <button (click)=\"generatePDF()\" class=\"btn bntAdd2\">\n                        <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to PDF</button>\n                  </td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n      <!-- Tabs report -->\n      <!-- <mat-tab-group>\n      <mat-tab label=\"report of test\">\n        <br>\n        <app-report-of-test></app-report-of-test>\n      </mat-tab>\n\n      <mat-tab label=\"report of student\">\n        <br>\n        <app-report-of-student></app-report-of-student>\n      </mat-tab>\n\n    </mat-tab-group> -->\n      <!-- end Tab report -->\n\n\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -2781,15 +2731,11 @@ var ReportsComponent = (function () {
         this.ExamList = ExamRef.valueChanges();
         this.ExamListShow = [];
         this.ExamList.subscribe(function (data) {
-            // console.log(data);
             data.forEach(function (d) {
-                // console.log(d.status);
                 if (d.status == "finish") {
-                    // console.log(d);
                     _this.ExamListShow.push(d);
                 }
             });
-            // console.log(data.status);
         });
         this.options = {
             scales: {
@@ -2810,8 +2756,6 @@ var ReportsComponent = (function () {
         var _this = this;
         this.studentExportObj = [];
         this.doing = 0;
-        // console.log("change");
-        // console.log(dataExam);
         this.isdataExam = true;
         this.studentShow = [];
         this.scoreGraph = [];
@@ -2821,7 +2765,6 @@ var ReportsComponent = (function () {
         this.subject_name = dataExam.subject_name;
         this.chapter_name = dataExam.chapter_name;
         this.description = dataExam.description;
-        // console.log(dataExam.type);
         switch (dataExam.type) {
             case 1: {
                 //statements; 
@@ -2850,9 +2793,7 @@ var ReportsComponent = (function () {
         this.questionExamCollection = this.afs.collection("/exam/" + this.exam_code + "/questions");
         this.questions = this.questionExamCollection.valueChanges();
         this.questions.subscribe(function (ques) {
-            // console.log(ques);
             ques.forEach(function (data) {
-                // console.log(data.status);
                 if (data.status == true) {
                     _this.doing = _this.doing + 1;
                 }
@@ -2862,39 +2803,21 @@ var ReportsComponent = (function () {
         this.studentExamCollection = this.afs.collection("/exam/" + this.exam_code + "/students", function (ref) { return ref.orderBy('score'); });
         this.students = this.studentExamCollection.valueChanges();
         this.students.subscribe(function (stu) {
-            // console.log(stu);
             stu.forEach(function (data, index) {
-                // console.log(data);
                 _this.studentShow.push(data);
-                // console.log(data.score);
                 _this.sum = 0;
                 _this.scoreGraph.push(data.score);
-                _this.codeGraph.push(data.code);
+                _this.codeGraph.push(data.nickname);
                 //test show sort score
-                _this.studentShow.sort(function (obj1, obj2) {
-                    // มากไปน้อย
-                    return obj2.score - obj1.score;
-                });
-                // console.log(this.scoreGraph);
-                // console.log("คำนวณ");
-                //คำนวน MAX, MIN
-                // console.log(this.scoreGraph);
+                // this.studentShow.sort(function (obj1, obj2) {
+                //   // มากไปน้อย
+                //   return obj2.score - obj1.score
+                // });
                 _this.max = dataExam.max;
-                // this.max = Math.max.apply(null, this.scoreGraph);
-                // console.log("Max = " + this.max);
                 _this.min = dataExam.min;
-                // this.min = Math.min.apply(null, this.scoreGraph);
-                // console.log("Min = " + this.min);
-                // console.log(Math.sqrt(this.variance(hii)));
                 _this.sum = _this.scoreGraph.reduce(function (previous, current) { return current += previous; });
-                // console.log("sum" + this.sum);
-                // this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
                 _this.avg = dataExam.average;
-                console.log("AVG = " + _this.avg);
                 _this.std = dataExam.sd;
-                // this.std = this.standardDeviation().toFixed(2)
-                // console.log("STD = " + this.std);
-                // console.log(index, this.std.length - 1);
                 //bar
                 _this.data1 = {
                     labels: _this.codeGraph,
@@ -2922,33 +2845,6 @@ var ReportsComponent = (function () {
             });
         });
     };
-    /*
-      //-------function หาค่า SD
-      standardDeviation() {
-        var avg = this.avg;
-    
-        var squareDiffs = this.scoreGraph.map(function (value) {
-          var diff = value - avg;
-          var sqrDiff = diff * diff;
-          return sqrDiff;
-        });
-    
-        var avgSquareDiff = this.average(squareDiffs);
-    
-        var stdDev = Math.sqrt(avgSquareDiff);
-        return stdDev;
-      }
-    
-      average(data) {
-        var sum = data.reduce(function (sum, value) {
-          return sum + value;
-        }, 0);
-    
-        var avg = sum / data.length;
-        return avg;
-      }
-    */
-    //-------function สลับการแสดงผลรหว่างกราฟ
     ReportsComponent.prototype.barBtn = function () {
         this.isbar = true;
         this.isline = false;
@@ -2960,27 +2856,21 @@ var ReportsComponent = (function () {
     //-------function export เป็น excel file
     ReportsComponent.prototype.exportToExcel = function (event) {
         var _this = this;
-        // console.log(event);
-        // console.log(this.studentExportObj);
         //to data export
         this.studentShow.forEach(function (data, indax) {
-            // console.log(data);
-            // console.log(data.code);
             var studentExport = {
                 student_id: data.code,
-                student_name: data.name,
+                student_name: data.nickname,
+                student_fullname: data.name,
                 score: data.score
             };
             _this.studentExportObj.push(studentExport);
-            // console.log(this.studentExportObj);
         });
         //
         this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
     };
     ReportsComponent.prototype.generatePDF = function () {
-        // console.log(this.exam_code);
         var temp = this.exam_code + '.pdf';
-        // console.log(temp);
         __WEBPACK_IMPORTED_MODULE_3_html2canvas__(document.getElementById('content')).then(function (canvas) {
             document.body.appendChild(canvas);
             var pdf = new jsPDF('p', 'pt', 'a4');
@@ -3012,7 +2902,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".scores {\r\n    margin: 5px;\r\n  }\r\n\r\n  .header{\r\n    background: #d8e9f3;\r\n    padding: 15px;\r\n    height: 120px;\r\n  }\r\n  .reft_content{\r\n    background:#F8F8FF;\r\n    /* height: 480px; */\r\n  }\r\n  .right_content{\r\n    background: white;\r\n    /* height: 480px; */\r\n  }\r\n  #table-wrapper {\r\n    position:relative;\r\n  }\r\n  #table-scroll {\r\n    height:590px;\r\n    overflow:auto;  \r\n    margin-top:20px;\r\n  }\r\n  #table-wrapper table {\r\n    width:100%;\r\n  \r\n  }\r\n  /* #table-wrapper table * {\r\n    background:yellow;\r\n    color:black;\r\n  } */\r\n  #table-wrapper table thead th .text {\r\n    position:absolute;   \r\n    top:-20px;\r\n    z-index:2;\r\n    height:20px;\r\n    width:35%;\r\n    border:1px solid red;\r\n  }\r\n  .table-hover{\r\n\r\n    margin-top: 40px;\r\n  }\r\n  .bntAdd{\r\n    width: 85%;\r\n    margin: 5px;\r\n    /* background-color: #FF8460;\r\n    color: whitesmoke */\r\n  }\r\n  .bntAdd1{\r\n    width: 40%;\r\n    margin: 5px;\r\n    background-color: #008000;\r\n    color: whitesmoke\r\n  }\r\n  .bntAdd2{\r\n    width: 40%;\r\n    margin: 5px;\r\n    background-color: #BD2819;\r\n    color: white\r\n  }", ""]);
+exports.push([module.i, ".scores {\r\n    margin: 10px;\r\n  }\r\n\r\n  .header{\r\n    background: #d8e9f3;\r\n    padding: 15px;\r\n    height: 120px;\r\n  }\r\n  .reft_content{\r\n    background:#F8F8FF;\r\n    /* height: 480px; */\r\n  }\r\n  .right_content{\r\n    background: white;\r\n    /* height: 480px; */\r\n  }\r\n  #table-wrapper {\r\n    position:relative;\r\n  }\r\n  #table-scroll {\r\n    height:590px;\r\n    overflow:auto;  \r\n    margin-top:20px;\r\n  }\r\n  #table-wrapper table {\r\n    width:100%;\r\n  \r\n  }\r\n  /* #table-wrapper table * {\r\n    background:yellow;\r\n    color:black;\r\n  } */\r\n  #table-wrapper table thead th .text {\r\n    position:absolute;   \r\n    top:-20px;\r\n    z-index:2;\r\n    height:20px;\r\n    width:35%;\r\n    border:1px solid red;\r\n  }\r\n  .table-hover{\r\n\r\n    margin-top: 40px;\r\n  }\r\n  .bntAdd{\r\n    width: 94%;\r\n    margin: 5px;\r\n    /* background-color: #FF8460;\r\n    color: whitesmoke */\r\n  }\r\n  .bntAdd1{\r\n    width: 45%;\r\n    margin: 5px;\r\n    background-color: #008000;\r\n    color: whitesmoke\r\n  }\r\n  .bntAdd2{\r\n    width: 45%;\r\n    margin: 5px;\r\n    background-color: #BD2819;\r\n    color: white\r\n  }\r\n  .picture_show:hover{\r\n    position: absolute;\r\n    cursor: pointer;\r\n    width: 250px;\r\n    transition: width 1s;\r\n    border-radius: 10px;\r\n    box-shadow: -3px -3px 20px #888888;\r\n  }\r\n", ""]);
 
 // exports
 
@@ -3025,7 +2915,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/scores/scores.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"scores\" id = \"content\">\n  <div class=\"row\">\n    <div class=\"col-md-12 header\">\n      <h4>\n        <p>\n          <b> exem code:</b> &nbsp; &nbsp; {{exam_code}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> subject name:</b> &nbsp; &nbsp; {{subject_name}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> chapter name:</b> &nbsp; &nbsp; {{chapter_name}}\n        </p>\n        <p>\n          <b> description:</b> &nbsp; &nbsp; {{description}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> type:</b> &nbsp; &nbsp; {{type}}\n        </p>\n        <p>\n          <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> date:</b> &nbsp; &nbsp;  {{date | date :'short'}} \n        </p>\n\n      </h4>\n    </div>\n\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-7 reft_content\">\n      <table class=\"table table-hover\">\n        <thead>\n          <tr>\n            <td colspan='5' align=\"center\">\n\n              <ng-container *ngIf=\"isbar\">\n                <p-chart type=\"bar\" [data]=\"data1\"  [options]=\"options\"></p-chart>\n              </ng-container>\n              <ng-container *ngIf=\"isline\">\n                <p-chart type=\"line\" [data]=\"data2\"  [options]=\"options\"></p-chart>\n              </ng-container>\n              <div class=\"btn-group btn-group-justified \">\n                <a class=\"btn  addTestBtn bg-info\" (click)=\"barBtn()\"> Bar</a>\n                <a class=\"btn editTestBtn bg-danger\" (click)=\"lineBtn()\"> Line </a>\n              </div>\n            </td>\n          </tr>\n          <tr>\n            <td></td>\n          </tr>\n          <tr>\n            <td>\n              <b> Max : </b> {{max}} </td>\n            <td>\n              <b> Min : </b> {{min}}</td>\n          </tr>\n          <tr>\n            <td>\n              <b> Average : </b>{{avg}}</td>\n            <td>\n              <b> Standard Deviation : </b> {{std}} </td>\n          </tr>\n        </thead>\n      </table>\n    </div>\n    <div class=\"col-md-5 right_content table-scroll\">\n      <table class=\"table table-hover\">\n        <thead>\n          <tr>\n            <th> #\n            </th>\n            <th scope=\"col\">Student ID</th>\n            <th scope=\"col\">Student Name</th>\n            <th scope=\"col\">Score</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let data of studentShow; let i=index\">\n            <td>{{i+1}}</td>\n            <td>{{data.code}}</td>\n            <td>{{data.name}}</td>\n            <td>{{data.score}}</td>\n          </tr>\n          <tr>\n            <td colspan='4' align=\"center\">\n              <button (click)=\"exportToExcel()\" class=\"btn bntAdd1\">\n                <span class=\"glyphicon glyphicon-export\"></span>  Export to excel</button>\n                <button (click)=\"generatePDF()\" class=\"btn bntAdd2\">\n                  <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to PDF</button>\n            </td>\n          </tr>\n            <tr>\n            <td colspan='4' align=\"center\">\n                <button (click)=\"exitTest()\" class=\"btn btn-primary bntAdd\">\n                    <span class=\"glyphicon glyphicon-off\"></span> Close </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"scores\" id = \"content\">\n  <div class=\"row\">\n    <div class=\"col-md-12 header\">\n      <h4>\n        <p>\n          <b> exem code:</b> &nbsp; &nbsp; {{exam_code}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> subject name:</b> &nbsp; &nbsp; {{subject_name}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> chapter name:</b> &nbsp; &nbsp; {{chapter_name}}\n        </p>\n        <p>\n          <b> description:</b> &nbsp; &nbsp; {{description}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> type:</b> &nbsp; &nbsp; {{type}}\n        </p>\n        <p>\n          <b> amount:</b> &nbsp; &nbsp; {{doing}}/{{amount}} &nbsp; &nbsp;&nbsp; &nbsp;\n          <b> date:</b> &nbsp; &nbsp;  {{date | date :'short'}} \n        </p>\n\n      </h4>\n    </div>\n\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-8 reft_content\">\n      <table class=\"table table-hover\">\n        <thead>\n          <tr>\n            <td colspan='5' align=\"center\">\n\n              <ng-container *ngIf=\"isbar\">\n                <p-chart type=\"bar\" [data]=\"data1\"  [options]=\"options\"></p-chart>\n              </ng-container>\n              <ng-container *ngIf=\"isline\">\n                <p-chart type=\"line\" [data]=\"data2\"  [options]=\"options\"></p-chart>\n              </ng-container>\n              <div class=\"btn-group btn-group-justified \">\n                <a class=\"btn  addTestBtn bg-info\" (click)=\"barBtn()\"> Bar</a>\n                <a class=\"btn editTestBtn bg-danger\" (click)=\"lineBtn()\"> Line </a>\n              </div>\n            </td>\n          </tr>\n          <tr>\n            <td></td>\n          </tr>\n          <tr>\n            <td>\n              <b> Max : </b> {{max}} </td>\n            <td>\n              <b> Min : </b> {{min}}</td>\n          </tr>\n          <tr>\n            <td>\n              <b> Average : </b>{{avg}}</td>\n            <td>\n              <b> Standard Deviation : </b> {{std}} </td>\n          </tr>\n        </thead>\n      </table>\n    </div>\n    <div class=\"col-md-4 right_content table-scroll\">\n      <table class=\"table table-hover\">\n        <thead>\n          <tr>\n            <th> #\n            </th>\n            <th scope=\"col\" style=\"text-align: center\">Picture</th>\n            <th scope=\"col\" style=\"text-align: center\">Student Name</th>\n            <th scope=\"col\" style=\"text-align: center\">Score</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let data of studentShow; let i=index\">\n            <td>{{i+1}}</td>\n            <td style=\"text-align: center\"><img src={{data?.url}} width=\"40 px\" class=\"picture_show img-circle\"></td>\n            <td style=\"text-align: center\" >{{data.nickname}}</td>\n            <td style=\"text-align: center\" >{{data.score}}</td>\n          </tr>\n          <tr>\n            <td colspan='4' align=\"center\">\n              <button (click)=\"exportToExcel()\" class=\"btn bntAdd1\">\n                <span class=\"glyphicon glyphicon-export\"></span>  Export to excel</button>\n                <button (click)=\"generatePDF()\" class=\"btn bntAdd2\">\n                  <span class=\"glyphicon glyphicon-export\"></span>&nbsp;Export to PDF</button>\n            </td>\n          </tr>\n            <tr>\n            <td colspan='4' align=\"center\">\n                <button (click)=\"exitTest()\" class=\"btn btn-primary bntAdd\">\n                    <span class=\"glyphicon glyphicon-off\"></span> Close </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -3089,18 +2979,16 @@ var ScoresComponent = (function () {
         this.excelService = excelService;
         this.testID = this.firebaseService.Test_id_new;
         //this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
-        // this.testID="205100_0_1523986758534";
+        // this.testID="201100_0_1524996176902";
         //---data in exam
         this.ExamDoc = this.afs.doc("/exam/" + this.testID);
         this.dataExam = this.ExamDoc.valueChanges();
         this.dataExam.take(1).subscribe(function (data) {
             //รายละเอียดส่วนหัวของรายงาน
-            console.log(data);
             _this.amount = data.amount;
             _this.subject_name = data.subject_name;
             _this.chapter_name = data.chapter_name;
             _this.description = data.description;
-            console.log(data.type);
             switch (data.type) {
                 case 1: {
                     //statements; 
@@ -3131,12 +3019,9 @@ var ScoresComponent = (function () {
         this.questions = this.questionExamCollection.valueChanges();
         this.questions.take(1).subscribe(function (ques) {
             _this.doing = 0;
-            console.log(ques);
             ques.forEach(function (data) {
-                console.log(data.status);
                 if (data.status == true) {
                     _this.doing = _this.doing + 1;
-                    console.log("doing" + _this.doing);
                 }
             });
         });
@@ -3144,34 +3029,22 @@ var ScoresComponent = (function () {
         this.studentExamCollection = this.afs.collection("/exam/" + this.testID + "/students", function (ref) { return ref.orderBy('score'); });
         this.students = this.studentExamCollection.valueChanges();
         this.students.take(1).subscribe(function (stu) {
-            console.log(stu);
             stu.forEach(function (data, index) {
-                console.log(data);
                 _this.studentShow.push(data);
-                console.log(data.score);
                 _this.sum = 0;
                 _this.scoreGraph.push(data.score);
-                _this.codeGraph.push(data.code);
+                _this.codeGraph.push(data.nickname);
                 //test show sort score
-                _this.studentShow.sort(function (obj1, obj2) {
-                    // มากไปน้อย
-                    return obj2.score - obj1.score;
-                });
-                console.log(_this.scoreGraph);
-                console.log("คำนวณ");
+                // this.studentShow.sort(function (obj1, obj2) {
+                //   // มากไปน้อย
+                //   return obj2.score - obj1.score
+                // });
                 //คำนวน MAX, MIN
-                console.log(_this.scoreGraph);
                 _this.max = Math.max.apply(null, _this.scoreGraph);
-                console.log("Max = " + _this.max);
                 _this.min = Math.min.apply(null, _this.scoreGraph);
-                console.log("Min = " + _this.min);
-                // console.log(Math.sqrt(this.variance(hii)));
                 _this.sum = _this.scoreGraph.reduce(function (previous, current) { return current += previous; });
-                console.log("sum" + _this.sum);
                 _this.avg = (_this.sum / _this.scoreGraph.length).toFixed(2);
-                console.log("AVG = " + _this.avg);
                 _this.std = _this.standardDeviation().toFixed(2);
-                console.log("STD = " + _this.std);
                 ///add to DB
                 var cal = {
                     max: _this.max,
@@ -3181,7 +3054,6 @@ var ScoresComponent = (function () {
                 };
                 var ExamRef = _this.afs.doc("/exam/" + _this.testID);
                 ExamRef.update(cal);
-                console.log(index, _this.std.length - 1);
                 //bar
                 _this.data1 = {
                     labels: _this.codeGraph,
@@ -3240,19 +3112,15 @@ var ScoresComponent = (function () {
     //-------function export เป็น excel file
     ScoresComponent.prototype.exportToExcel = function (event) {
         var _this = this;
-        console.log(event);
-        console.log(this.studentExportObj);
         //to data export
         this.studentShow.forEach(function (data, indax) {
-            console.log(data);
-            console.log(data.code);
             var studentExport = {
                 student_id: data.code,
-                student_name: data.name,
+                student_name: data.nickname,
+                student_fullname: data.name,
                 score: data.score
             };
             _this.studentExportObj.push(studentExport);
-            console.log(_this.studentExportObj);
         });
         //
         this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
@@ -3263,9 +3131,7 @@ var ScoresComponent = (function () {
     ScoresComponent.prototype.ngOnInit = function () {
     };
     ScoresComponent.prototype.generatePDF = function () {
-        console.log(this.exam_code);
         var temp = this.exam_code + '.pdf';
-        console.log(temp);
         __WEBPACK_IMPORTED_MODULE_5_html2canvas__(document.getElementById('content')).then(function (canvas) {
             document.body.appendChild(canvas);
             var pdf = new jsPDF('p', 'pt', 'a4');
@@ -3404,8 +3270,8 @@ var AuthService = (function () {
             _this.cookieService.set('email', email);
             _this.cookieValue = _this.cookieService.get('email');
             _this.router.navigate(['dashboard']);
-        })
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_7_sweetalert2___default()({ type: 'error', text: error }); });
+        }).catch(function (error) { return __WEBPACK_IMPORTED_MODULE_7_sweetalert2___default()({ type: 'error', text: error }); });
+        // .catch(error => console.log(error));
     };
     AuthService.prototype.resetPassword = function (email) {
         var fbAuth = __WEBPACK_IMPORTED_MODULE_3_firebase_app__["auth"]();
@@ -3727,7 +3593,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/student-list/student-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"student-list\">\r\n  <!-- <button type=\"button\" class=\"btn btn-primary btn-md\" (click)=\"test()\">\r\n    <i class=\"fa fa-user-plus\"></i> Test</button> -->\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <button type=\"button\" class=\"btn btn-danger btn-md\" data-toggle=\"modal\" data-target=\"#deleteAll\">\r\n        <i class=\"fa fa-trash\"></i> DELETE ALL</button>\r\n      <!-- <button type=\"button\" class=\"btn btn-info btn-md\" (click)=\"uploadFile()\">\r\n        <i class=\"fa fa-upload\"></i> UPLOAD FILE</button> -->\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\"\r\n                   maxlength=\"9\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n                <!-- upload file -->\r\n                <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th>Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src={{student?.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.name}}</td>\r\n\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\"\r\n                        (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\"\r\n                        (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form>\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\" [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\" [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"deleteAll\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete all students?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"deleteAll()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"student-list\">\r\n  <!-- <button type=\"button\" class=\"btn btn-primary btn-md\" (click)=\"test()\">\r\n    <i class=\"fa fa-user-plus\"></i> Test</button> -->\r\n  <div class=\"box box-info\">\r\n    <div class=\"container\">\r\n      <!-- Trigger the modal with a button New -->\r\n      <button type=\"button\" class=\"btn btn-primary btn-md\" data-toggle=\"modal\" data-target=\"#myModalNewStd\" (click)=\"DefaultModal()\">\r\n        <i class=\"fa fa-user-plus\"></i> NEW STUDENT</button>\r\n      <button type=\"button\" class=\"btn btn-danger btn-md\" data-toggle=\"modal\" data-target=\"#deleteAll\">\r\n        <i class=\"fa fa-trash\"></i> DELETE ALL</button>\r\n      <!-- <button type=\"button\" class=\"btn btn-info btn-md\" (click)=\"uploadFile()\">\r\n        <i class=\"fa fa-upload\"></i> UPLOAD FILE</button> -->\r\n      <!-- Modal ADD-->\r\n      <div class=\"modal fade\" id=\"myModalNewStd\" role=\"dialog\">\r\n        <div class=\"modal-dialog  modal-md\">\r\n          <!-- Modal size sm,md-->\r\n          <!-- Modal content-->\r\n          <div class=\"modal-content\">\r\n            <form (ngSubmit)=\"addNewStudent()\" #NewStdForm=\"ngForm\">\r\n              <div class=\"modal-header\">\r\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n                <h4 class=\"modal-title\">ADD NEW STUDENT</h4>\r\n              </div>\r\n              <div class=\"modal-body\">\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input type=\"text\" class=\"form-control\" myNumberOnly name=\"student_id\" ngModel [(ngModel)]=\"newStudentCode\" placeholder=\"ex.570510637\"\r\n                   maxlength=\"9\">\r\n                </div>\r\n            \r\n                <div class=\"form-group\">\r\n                  <label>Full Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"FullName\" name=\"FullName\" ngModel [(ngModel)]=\"newFullName\" placeholder=\"ex.ชลธิชา บัวตูม\">\r\n                </div>\r\n\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input type=\"text\" class=\"form-control\" id=\"StdName\" name=\"student_name\" ngModel [(ngModel)]=\"newStudentName\" placeholder=\"ex.บี\">\r\n                </div>\r\n\r\n                <!-- upload file -->\r\n                <!-- <div *ngIf=\"currentFileUpload\" class=\"progress\" style=\"width:400px\">\r\n      <div class=\"progress-bar progress-bar-info progress-bar-striped\" role=\"progressbar\" attr.aria-valuenow=\"{{progress.percentage}}\"\r\n                    aria-valuemin=\"0\" aria-valuemax=\"100\" [ngStyle]=\"{width:progress.percentage+'%'}\">\r\n                    {{progress.percentage}}%\r\n                  </div> \r\n                </div>-->\r\n\r\n                <label class=\"btn btn-default\">\r\n                  <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:550px\">\r\n                </label>\r\n\r\n                <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                      (click)=\"upload()\">Upload</button> -->\r\n                <!--  -->\r\n              </div>\r\n\r\n            </form>\r\n            <div class=\"modal-footer\">\r\n              <!-- <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" data-dismiss=\"modal\"> -->\r\n              <button type=\"submit\" class=\"btn btn-success btn-lg\" style=\"width: 100%;\" (click)=\"addNewStudent(NewStdForm);\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span>ADD</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- Display student list -->\r\n      <!-- table -->\r\n      <div class=\"row\">\r\n        <div class=\"col-md-10\">\r\n          <div class=\"table-responsive\">\r\n            <!-- table std list -->\r\n            <table class=\"table table-hover\">\r\n              <thead>\r\n                <tr>\r\n                  <th>\r\n                    #\r\n                    <!-- <input type=\"checkbox\" class=\"checkthis\" /> -->\r\n                    <!-- <input type=\"checkbox\" id=\"checkall\" /> -->\r\n                  </th>\r\n                  <th>Picture</th>\r\n                  <th scope=\"col\">Student ID</th>\r\n                  <th scope=\"col\">Student Name</th>\r\n                  <th scope=\"col\">Full Name</th>\r\n                  <th class=\"thisTextCenter\">Edit</th>\r\n                  <th class=\"thisTextCenter\">Delete</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of students | async ; let i=index  let index=index\">\r\n                  <td> {{i+1}} </td>\r\n                  <td>\r\n                    <img src={{student?.url}} width=\"60 px\" class=\"picture_show img-circle\">\r\n                  </td>\r\n                  <td>{{student?.code}}</td>\r\n                  <td>{{student?.nickname}}</td>\r\n                  <td>{{student?.name}}</td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Edit\">\r\n                      <button class=\"btn btn-warning btn-xs\" style=\"font-size: 16px;\" data-title=\"Edit\" data-toggle=\"modal\" data-target=\"#edit\"\r\n                        (click)=\"setModalData(student)\">\r\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                  <td class=\"thisTextCenter\">\r\n                    <p data-placement=\"top\" data-toggle=\"tooltip\" title=\"Delete\">\r\n                      <!-- <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" data-toggle=\"modal\" type=\"button\" (click)=\"delStd(data)\"> -->\r\n                      <button class=\"btn btn-danger btn-xs\" data-title=\"Delete\" style=\"font-size: 16px;\" data-toggle=\"modal\" data-target=\"#delete\"\r\n                        (click)=\"setRemoveCode(student.code)\">\r\n                        <span class=\"glyphicon glyphicon-trash\"></span>\r\n                      </button>\r\n                    </p>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <!-- edit modal -->\r\n      <div class=\"modal fade\" id=\"edit\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Edit Your Detail</h4>\r\n            </div>\r\n            <!-- ////// -->\r\n            <div class=\"modal-body\">\r\n              <form>\r\n                <div class=\"form-group\">\r\n                  <label>Student ID:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentCode\" [(ngModel)]=\"studentCodeLocal\" disabled>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Full Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentFullNameLocal\" [(ngModel)]=\"studentFullNameLocal\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <label>Student Name:</label>\r\n                  <input class=\"form-control \" type=\"text\" name=\"studentName\" [(ngModel)]=\"studentNameLocal\">\r\n                </div>\r\n              </form>\r\n\r\n              <label class=\"btn btn-default\">\r\n                <input type=\"file\" (change)=\"selectFile($event)\" style=\"width:1000px\">\r\n              </label>\r\n\r\n              <!-- <button class=\"btn btn-success\" [disabled]=\"!selectedFiles\"\r\n                            (click)=\"upload()\">Upload</button> -->\r\n              <!--  -->\r\n\r\n            </div>\r\n\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-warning btn-lg\" style=\"width: 100%;\" (click)=\"UpdateStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Update</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"delete\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete this Record?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"removeStudent()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n      <!-- delete modal -->\r\n      <div class=\"modal fade\" id=\"deleteAll\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>\r\n              </button>\r\n              <h4 class=\"modal-title custom_align\" id=\"Heading\">Delete this entry</h4>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              <div class=\"alert alert-danger\">\r\n                <span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete all students?\r\n              </div>\r\n            </div>\r\n            <div class=\"modal-footer \">\r\n              <button type=\"button\" class=\"btn btn-success\" type=\"button\" (click)=\"deleteAll()\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-ok-sign\"></span> Yes</button>\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">\r\n                <span class=\"glyphicon glyphicon-remove\"></span> No</button>\r\n            </div>\r\n          </div>\r\n          <!-- /.modal-content -->\r\n        </div>\r\n        <!-- /.modal-dialog -->\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -3789,6 +3655,7 @@ var StudentListComponent = (function () {
     StudentListComponent.prototype.DefaultModal = function () {
         this.newStudentCode = "";
         this.newStudentName = "";
+        this.newFullName = "";
     };
     //upload file picture student
     StudentListComponent.prototype.selectFile = function (event) {
@@ -3797,7 +3664,9 @@ var StudentListComponent = (function () {
     StudentListComponent.prototype.addNewStudent = function () {
         var _this = this;
         var count;
-        if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
+        var splitted;
+        var nickname;
+        if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newFullName == "") {
             __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
                 type: 'error',
                 title: 'Unsuccessful',
@@ -3806,9 +3675,12 @@ var StudentListComponent = (function () {
         }
         else {
             //Add item with Custom IDs In Firebase
-            console.log(this.newStudentCode);
             //ไม่มีวิชาในระบบ
-            console.log(this.studentsCheck.length);
+            nickname = this.newStudentName;
+            if (this.newStudentName == "") {
+                splitted = this.newFullName.split(" ", 2);
+                nickname = splitted[0];
+            }
             if (this.studentsCheck.length == 0) {
                 this.studentAddcheck == false;
                 count = 0;
@@ -3833,11 +3705,10 @@ var StudentListComponent = (function () {
                 var id = this.newStudentCode;
                 var student = {
                     code: this.newStudentCode,
-                    name: this.newStudentName,
+                    name: this.newFullName,
+                    nickname: nickname,
                     url: null
                 };
-                console.log(student);
-                console.log(this.selectedFiles);
                 var studentCollection = this.afs.collection('students');
                 studentCollection.doc(id).set(student);
                 //upload picture file
@@ -3861,14 +3732,14 @@ var StudentListComponent = (function () {
     //Set data Edit to modal
     StudentListComponent.prototype.setModalData = function (student) {
         //console.log(student);   //this student display ex. {code: "570510100", name: "มาลี ดีใจ", url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=e086515b-7369-4c47-a791-7b64ee5f35d3"}
-        console.log(student);
-        this.studentNameLocal = student.name;
-        console.log(this.studentNameLocal);
+        this.studentNameLocal = student.nickname;
+        this.studentFullNameLocal = student.name;
         this.studentCodeLocal = student.code;
     };
     // Update student name or picture file this key
     StudentListComponent.prototype.UpdateStudent = function () {
-        if (this.studentNameLocal == "") {
+        var nickname;
+        if (this.studentFullNameLocal == "") {
             __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()({
                 type: 'error',
                 title: 'Unsuccessful',
@@ -3876,8 +3747,14 @@ var StudentListComponent = (function () {
             });
         }
         else {
+            nickname = this.studentNameLocal;
+            if (this.studentNameLocal == "" || this.studentNameLocal == undefined) {
+                var splitted = this.studentFullNameLocal.split(" ", 2);
+                nickname = splitted[0];
+            }
             var studentUpdate = {
-                name: this.studentNameLocal
+                name: this.studentFullNameLocal,
+                nickname: nickname
             };
             //path to update
             var studentRef = this.afs.doc("students/" + this.studentCodeLocal);
@@ -3927,7 +3804,6 @@ var StudentListComponent = (function () {
             confirmButtonText: 'Yes, delete it!'
         }).then(function (result) {
             if (result.value) {
-                console.log(result.value);
                 __WEBPACK_IMPORTED_MODULE_5_sweetalert2___default()('Deleted!', 'Your file has been deleted.', 'success');
             }
         });
@@ -4639,6 +4515,7 @@ var TestStep3Component = (function () {
                         _this.studentExam = {
                             code: student.code,
                             name: student.name,
+                            nickname: student.nickname,
                             score: 0,
                             url: student.url
                         };

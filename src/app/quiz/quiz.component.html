@@ -77,33 +77,33 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Pic.</th>
-              <th scope="col">Name</th>
-              <th scope="col">Score</th>
-              <th scope="col">Ans.</th>
+              <th scope="col"style="text-align: center">Pic.</th>
+              <th scope="col"style="text-align: center">Name</th>
+              <th scope="col"style="text-align: center">Score</th>
+              <th scope="col"style="text-align: center">Ans.</th>
             </tr>
           </thead>
           <tbody class="TableList">
             <ng-container *ngIf="!isprocess">
               <tr *ngFor="let data of array_testList ; let i=index">
                 <th scope="row">{{i+1}}</th>
-                <td>
+                <td style="text-align: center">
                   <img src=  {{data.url}} width="40" class="picture_show img-circle">
                 </td>
-                <td>{{data.student_name}}</td>
-                <td>{{data.score}}/{{total_num_cal}}</td>
-                <td>{{data.answer}}</td>
+                <td style="text-align: center">{{data.student_name}}</td>
+                <td style="text-align: center">{{data.score}}/{{total_num_cal}}</td>
+                <td style="text-align: center">{{data.answer}}</td>
               </tr>
             </ng-container>
             <ng-container *ngIf="isprocess">
                 <tr *ngFor="let data of array_testListProcess ; let i=index">
                   <th scope="row">{{i+1}}</th>
-                  <td>
+                  <td style="text-align: center">
                     <img src= {{data.url}} width="40" class="picture_show img-circle">
                   </td>
-                  <td>{{data.student_name}}</td>
-                  <td>{{data.score}}/{{total_num_cal}}</td>
-                  <td> <img src= {{data.answer}} width="30" ></td>
+                  <td style="text-align: center">{{data.student_name}}</td>
+                  <td style="text-align: center">{{data.score}}/{{total_num_cal}}</td>
+                  <td style="text-align: center"> <img src= {{data.answer}} width="30" ></td>
                 </tr>
               </ng-container>
           </tbody>

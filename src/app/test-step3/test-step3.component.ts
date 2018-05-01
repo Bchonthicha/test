@@ -214,6 +214,7 @@ export class TestStep3Component implements OnInit {
           this.studentExam = {
             code: student.code,
             name: student.name,
+            nickname:student.nickname,
             score: 0,
             url: student.url
           }

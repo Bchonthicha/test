@@ -29,23 +29,25 @@ export class StudentListComponent implements OnInit {
 
 
   studentNameLocal: any;
+  studentFullNameLocal: any;
   studentCodeLocal: any;
   removeCode: string;
 
   // Form ngModel
   newStudentCode: string;
   newStudentName: string;
+  newFullName: string;
   //upload file
   selectedFiles: FileList
   currentFileUpload: FileUpload
   // progress: { percentage: number } = { percentage: 0 }
-  studentsCode=[];
+  studentsCode = [];
   studentsCheck = [];
   studentAddcheck: boolean = true;
 
   constructor(private afs: AngularFirestore, private firebaseService: FirebaseService, private uploadService: UploadFileService) {
     this.studentsCheck = [];
-    this.studentsCode =[];
+    this.studentsCode = [];
 
     this.studentCollection = afs.collection<Student>('/students', ref => ref.orderBy('code'))
     this.students = this.studentCollection.valueChanges()
@@ -68,6 +70,7 @@ export class StudentListComponent implements OnInit {
   DefaultModal() {
     this.newStudentCode = "";
     this.newStudentName = "";
+    this.newFullName = "";
   }
 
   //upload file picture student
@@ -77,8 +80,10 @@ export class StudentListComponent implements OnInit {
 
   addNewStudent() {
     let count;
+    let splitted;
+    let nickname;
 
-    if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newStudentName == "") {
+    if (this.selectedFiles == undefined || this.newStudentCode == "" || this.newFullName == "") {
       swal({
         type: 'error',
         title: 'Unsuccessful',
@@ -88,10 +93,12 @@ export class StudentListComponent implements OnInit {
       })
     } else {
       //Add item with Custom IDs In Firebase
-      console.log(this.newStudentCode);
       //ไม่มีวิชาในระบบ
-      console.log(this.studentsCheck.length);
-
+      nickname = this.newStudentName;
+      if (this.newStudentName == "") {
+        splitted = this.newFullName.split(" ", 2)
+        nickname = splitted[0];
+      }
       if (this.studentsCheck.length == 0) {
         this.studentAddcheck == false;
         count = 0;
@@ -120,11 +127,10 @@ export class StudentListComponent implements OnInit {
         const id = this.newStudentCode;
         const student: Student = {
           code: this.newStudentCode,
-          name: this.newStudentName,
+          name: this.newFullName,
+          nickname: nickname,
           url: null
         }
-        console.log(student);
-        console.log(this.selectedFiles);
 
         const studentCollection = this.afs.collection<Student>('students');
         studentCollection.doc(id).set(student);
@@ -144,7 +150,6 @@ export class StudentListComponent implements OnInit {
           timer: 1500
         })
       }
-
     }
 
   }
@@ -154,17 +159,18 @@ export class StudentListComponent implements OnInit {
   //Set data Edit to modal
   setModalData(student: Student) {
     //console.log(student);   //this student display ex. {code: "570510100", name: "มาลี ดีใจ", url: "https://firebasestorage.googleapis.com/v0/b/online…=media&token=e086515b-7369-4c47-a791-7b64ee5f35d3"}
-    console.log(student);
 
-    this.studentNameLocal = student.name;
-    console.log(this.studentNameLocal);
+    this.studentNameLocal = student.nickname;
+    this.studentFullNameLocal = student.name;
 
     this.studentCodeLocal = student.code;
   }
 
   // Update student name or picture file this key
   UpdateStudent() {
-    if (this.studentNameLocal == "") {
+    let nickname;
+
+    if (this.studentFullNameLocal == "") {
       swal({
         type: 'error',
         title: 'Unsuccessful',
@@ -173,8 +179,16 @@ export class StudentListComponent implements OnInit {
         // timer: 1500
       })
     } else {
+      nickname = this.studentNameLocal;
+      
+      if (this.studentNameLocal == "" ||this.studentNameLocal== undefined) {
+        let splitted = this.studentFullNameLocal.split(" ", 2)
+        nickname = splitted[0];
+      }
+      
       const studentUpdate = {
-        name: this.studentNameLocal
+        name: this.studentFullNameLocal,
+        nickname: nickname
       };
 
       //path to update
@@ -228,8 +242,6 @@ export class StudentListComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        console.log(result.value);
-
         swal(
           'Deleted!',
           'Your file has been deleted.',
@@ -245,18 +257,18 @@ export class StudentListComponent implements OnInit {
       // console.log(code);
       let stuRef = this.afs.doc<Student>(`/students/${code}`)
       stuRef.delete().then(() => {
-      
+
       })
-    }) 
-     swal({
-          type: 'success',
-          title: 'Successful',
-          showConfirmButton: false,
-          timer: 1500
-        })
+    })
+    swal({
+      type: 'success',
+      title: 'Successful',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
-  uploadFile(){
+  uploadFile() {
     console.log("uploadFile");
-    
+
   }
 }

@@ -2,5 +2,6 @@ export interface StudentExam {
     code: string,
     name: string,
     score:number,
-    url: string
+    url: string,
+    nickname:string
 }

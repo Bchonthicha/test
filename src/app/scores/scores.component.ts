@@ -90,18 +90,18 @@ export class ScoresComponent implements OnInit {
     this.excelService = excelService;
     this.testID = this.firebaseService.Test_id_new;
     //this.testID = "205100_0_18658896000";   //รหัสแบบทดสอบนั้น
-    // this.testID="205100_0_1523986758534";
+    // this.testID="201100_0_1524996176902";
     //---data in exam
     this.ExamDoc = this.afs.doc<Exam>(`/exam/${this.testID}`)
     this.dataExam = this.ExamDoc.valueChanges()
     this.dataExam.take(1).subscribe(data => {
       //รายละเอียดส่วนหัวของรายงาน
-      console.log(data);
+
       this.amount = data.amount;
       this.subject_name = data.subject_name;
       this.chapter_name = data.chapter_name;
       this.description = data.description;
-      console.log(data.type);
+
       switch (data.type) {
         case 1: {
           //statements; 
@@ -134,12 +134,11 @@ export class ScoresComponent implements OnInit {
 
     this.questions.take(1).subscribe(ques => {
       this.doing=0;
-      console.log(ques);
+
       ques.forEach(data => {
-        console.log(data.status);
+
         if (data.status == true) {
           this.doing = this.doing + 1;
-          console.log("doing"+this.doing);
           
         }
       })
@@ -149,37 +148,25 @@ export class ScoresComponent implements OnInit {
     this.students = this.studentExamCollection.valueChanges()
 
     this.students.take(1).subscribe(stu => {
-      console.log(stu);
-      stu.forEach((data, index) => {
-        console.log(data);
-        this.studentShow.push(data)
 
-        console.log(data.score);
+      stu.forEach((data, index) => {
+
+        this.studentShow.push(data)
         this.sum = 0;
         this.scoreGraph.push(data.score);
-        this.codeGraph.push(data.code);
+        this.codeGraph.push(data.nickname);
         //test show sort score
-        this.studentShow.sort(function (obj1, obj2) {
-          // มากไปน้อย
-          return obj2.score - obj1.score
-        });
-        console.log(this.scoreGraph);
-        console.log("คำนวณ");
+        // this.studentShow.sort(function (obj1, obj2) {
+        //   // มากไปน้อย
+        //   return obj2.score - obj1.score
+        // });
         //คำนวน MAX, MIN
-        console.log(this.scoreGraph);
         this.max = Math.max.apply(null, this.scoreGraph);
-        console.log("Max = " + this.max);
         this.min = Math.min.apply(null, this.scoreGraph);
-        console.log("Min = " + this.min);
-        // console.log(Math.sqrt(this.variance(hii)));
-
         this.sum = this.scoreGraph.reduce((previous, current) => current += previous);
-        console.log("sum" + this.sum);
-
         this.avg = (this.sum / this.scoreGraph.length).toFixed(2);
-        console.log("AVG = " + this.avg);
         this.std = this.standardDeviation().toFixed(2)
-        console.log("STD = " + this.std);
+
         ///add to DB
         let cal = {
           max: this.max,
@@ -190,7 +177,6 @@ export class ScoresComponent implements OnInit {
         const ExamRef = this.afs.doc<Exam>(`/exam/${this.testID}`);
         ExamRef.update(cal);
 
-        console.log(index, this.std.length - 1);
         //bar
         this.data1 = {
           labels: this.codeGraph,
@@ -244,7 +230,6 @@ export class ScoresComponent implements OnInit {
     return avg;
   }
 
-
   //-------function สลับการแสดงผลรหว่างกราฟ
 
   barBtn() {
@@ -258,20 +243,17 @@ export class ScoresComponent implements OnInit {
 
   //-------function export เป็น excel file
   exportToExcel(event) {
-    console.log(event);
-    console.log(this.studentExportObj);
+
     //to data export
     this.studentShow.forEach((data, indax) => {
-      console.log(data);
-      console.log(data.code);
 
       let studentExport = {
         student_id: data.code,
-        student_name: data.name,
+        student_name: data.nickname,
+        student_fullname:data.name,
         score: data.score
       }
       this.studentExportObj.push(studentExport)
-      console.log(this.studentExportObj);
     })
     //
     this.excelService.exportAsExcelFile(this.studentExportObj, this.exam_code);
@@ -283,9 +265,7 @@ export class ScoresComponent implements OnInit {
   }
 
   generatePDF() {
-    console.log(this.exam_code);
     let temp = this.exam_code + '.pdf';
-    console.log(temp);
 
     html2canvas(document.getElementById('content')).then(function (canvas) {
       document.body.appendChild(canvas);

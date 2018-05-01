@@ -30,7 +30,7 @@ export class BlankComponent implements OnInit {
       data.forEach(d => {
         // console.log(d.status);
         if (d.status == "pause") {
-          // console.log(d);
+        
           this.examPause.push(d);
         }
       })

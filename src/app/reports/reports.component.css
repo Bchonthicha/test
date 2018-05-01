@@ -41,15 +41,22 @@
     margin: 5px;
   }
   .bntAdd1{
-    width: 40%;
+    width: 45%;
     margin: 5px;
     background-color: #008000;
     color: whitesmoke
   }
   .bntAdd2{
-    width: 40%;
+    width: 45%;
     margin: 5px;
     background-color: #BD2819;
     color: white
   }
-  
+  .picture_show:hover{
+    position: absolute;
+    cursor: pointer;
+    width: 250px;
+    transition: width 1s;
+    border-radius: 10px;
+    box-shadow: -3px -3px 20px #888888;
+  }
